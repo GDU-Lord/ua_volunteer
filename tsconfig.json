@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+      "module": "commonjs",
+      "target": "esnext",
+      "removeComments": false,
+      "preserveConstEnums": true,
+      "moduleResolution": "Node",
+      "sourceMap": false,
+      "outDir": ""
+    },
+    "include": [
+      "typescript/"
+    ]
+}
