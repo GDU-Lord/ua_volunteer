@@ -1,6 +1,7 @@
 import * as express from 'express';
 import { createServer } from 'http';
 import * as login from './login';
+import * as telegram from './telegram';
 
 const app = express();
 const server = createServer(app);
@@ -14,4 +15,8 @@ server.listen(80, "localhost", () => {
 app.use("/", express.static("client"));
 
 app.post("/signup", express.json(), login.signup);
-app.get("/isVerified", login.isVerified);
+app.post("/botAccept", express.json(), telegram.receive);
+app.get("/isVerifiedSignup", login.isVerifiedSignup);
+
+app.post("/login", express.json(), login.login);
+app.get("/isVerifiedLogin", login.isVerifiedLogin);

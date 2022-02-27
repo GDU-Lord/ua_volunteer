@@ -1,29 +1,14 @@
 {
-  "compilerOptions": {
-    "module": "esnext",
-    "target": "esnext",
-    "removeComments": false,
-    "preserveConstEnums": true,
-    "moduleResolution": "Node",
-    "sourceMap": false,
-    "outDir": "",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "preserve"
-  },
-  "include": [
-    "typescript/"
-  ]
+    "compilerOptions": {
+      "module": "commonjs",
+      "target": "esnext",
+      "removeComments": false,
+      "preserveConstEnums": true,
+      "moduleResolution": "Node",
+      "sourceMap": false,
+      "outDir": ""
+    },
+    "include": [
+      "typescript/"
+    ]
 }
