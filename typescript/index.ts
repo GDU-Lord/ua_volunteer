@@ -1,5 +1,6 @@
 import * as express from 'express';
 import { createServer } from 'http';
+import * as login from './login';
 
 const app = express();
 const server = createServer(app);
@@ -10,8 +11,7 @@ server.listen(80, "localhost", () => {
 
 });
 
-app.get("/", (req, res) => {
+app.use("/", express.static("client"));
 
-    res.send("<h1>Слава Україні!</h1>");
-
-});
+app.post("/signup", express.json(), login.signup);
+app.get("/isVerified", login.isVerified);
