@@ -1,6 +1,6 @@
 import { MongoClient, Db, ObjectId } from "mongodb";
 
-const uri = "mongodb://localhost:27017/";
+const uri = "mongodb+srv://volunteerua_dev_site:lQ5Xub5186IKvHXV@cluster0.9na5w.mongodb.net";
 const dbname = "volunteerua";
 
 export default class Data {
