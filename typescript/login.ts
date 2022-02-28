@@ -3,8 +3,10 @@ import * as telegram from "./telegram";
 import { ObjectId } from "mongodb";
 import { USER } from "./types";
 import { client } from "./mongo";
+import { SESSION } from "./types";
 
 export const pending_users = {};
+export const sessions = {};
 
 export async function signup (req: express.Request, res: express.Response) {
 
@@ -81,7 +83,8 @@ export async function isVerifiedSignup (req: express.Request, res: express.Respo
 
         await client.add("users", user);
 
-        // start session here
+        const session = new Session(user);
+        req.session.token = session._id;
 
         return res.send({
             success: true,
@@ -131,7 +134,12 @@ export async function isVerifiedLogin (req: express.Request, res: express.Respon
                 reason: "wrong-telegram"
             });
         
-        // start session here
+        let session = Session.find(user.telegramId);
+        if(session != null)
+            session.terminate();
+        
+        session = new Session(user);
+        req.session.token = session._id;
 
         return res.send({
             success: true,
@@ -144,5 +152,73 @@ export async function isVerifiedLogin (req: express.Request, res: express.Respon
         success: false,
         reason: "bot-error"
     });
+
+}
+
+export async function logout (req: express.Request, res: express.Response) {
+
+    if(req.session.token != null) {
+        req.session.token = null;
+        res.send({
+            success: true
+        });
+    }
+    else
+        res.send({
+            success: false,
+            reason: "session-not-found"
+        });
+
+}
+
+export function verify (req: express.Request, res: express.Response, next) {
+
+    const token = req.session.token;
+    const session = sessions[token];
+
+    if(session == null)
+        return res.send({
+            success: false,
+            reason: "access-denied"
+        });
+
+    next(req, res);
+
+}
+
+class Session implements SESSION {
+
+    static find (telegramId) {
+
+        for(const i in sessions) {
+            if(sessions[i].telegramId == telegramId)
+                return sessions[i];
+        }
+
+        return null;
+
+    }
+
+    telegramId: string;
+    _id: ObjectId;
+    created: Date;
+    terminated: boolean;
+
+    constructor (user: USER) {
+
+        this._id = new ObjectId();
+        this.telegramId = user.telegramId;
+        this.created = new Date();
+        this.terminated = false;
+        sessions[String(this._id)] = this;
+
+    }
+
+    terminate () {
+
+        this.terminated = true;
+        delete sessions[String(this._id)];
+
+    }
 
 }

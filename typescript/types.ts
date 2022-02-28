@@ -21,3 +21,13 @@ export type USER = {
     telegramId: string
 
 };
+
+export interface SESSION {
+
+    telegramId: string,
+    _id: ObjectId,
+    terminated: boolean,
+    created?: Date,
+    lastUpdated?: Date
+
+};

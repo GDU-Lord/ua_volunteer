@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isVerifiedLogin = exports.isVerifiedSignup = exports.login = exports.signup = exports.pending_users = void 0;
+exports.verify = exports.logout = exports.isVerifiedLogin = exports.isVerifiedSignup = exports.login = exports.signup = exports.sessions = exports.pending_users = void 0;
 const telegram = require("./telegram");
 const mongodb_1 = require("mongodb");
 const mongo_1 = require("./mongo");
 exports.pending_users = {};
+exports.sessions = {};
 async function signup(req, res) {
     const user = req.body;
     user._id = new mongodb_1.ObjectId();
@@ -59,7 +60,8 @@ async function isVerifiedSignup(req, res) {
                 reason: "telegram-exists"
             });
         await mongo_1.client.add("users", user);
-        // start session here
+        const session = new Session(user);
+        req.session.token = session._id;
         return res.send({
             success: true,
             user: user
@@ -96,7 +98,11 @@ async function isVerifiedLogin(req, res) {
                 success: false,
                 reason: "wrong-telegram"
             });
-        // start session here
+        let session = Session.find(user.telegramId);
+        if (session != null)
+            session.terminate();
+        session = new Session(user);
+        req.session.token = session._id;
         return res.send({
             success: true,
             user: user
@@ -108,3 +114,52 @@ async function isVerifiedLogin(req, res) {
     });
 }
 exports.isVerifiedLogin = isVerifiedLogin;
+async function logout(req, res) {
+    if (req.session.token != null) {
+        req.session.token = null;
+        res.send({
+            success: true
+        });
+    }
+    else
+        res.send({
+            success: false,
+            reason: "session-not-found"
+        });
+}
+exports.logout = logout;
+function verify(req, res, next) {
+    const token = req.session.token;
+    const session = exports.sessions[token];
+    if (session == null)
+        return res.send({
+            success: false,
+            reason: "access-denied"
+        });
+    next(req, res);
+}
+exports.verify = verify;
+class Session {
+    static find(telegramId) {
+        for (const i in exports.sessions) {
+            if (exports.sessions[i].telegramId == telegramId)
+                return exports.sessions[i];
+        }
+        return null;
+    }
+    telegramId;
+    _id;
+    created;
+    terminated;
+    constructor(user) {
+        this._id = new mongodb_1.ObjectId();
+        this.telegramId = user.telegramId;
+        this.created = new Date();
+        this.terminated = false;
+        exports.sessions[String(this._id)] = this;
+    }
+    terminate() {
+        this.terminated = true;
+        delete exports.sessions[String(this._id)];
+    }
+}
