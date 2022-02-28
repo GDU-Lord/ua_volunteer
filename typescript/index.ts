@@ -6,10 +6,10 @@ import * as geo from "./geo";
 import * as post from "./post";
 import * as telegramWebhook from "./telegram-weebhook";
 import cookieSession = require('cookie-session');
-import {Telegraf, Telegram} from "telegraf";
 import {BOT_API_TOKEN} from "./telegram-weebhook";
 
 const app = express();
+app.use(express.json());
 const server = createServer(app);
 
 server.listen(80, "localhost", () => {
