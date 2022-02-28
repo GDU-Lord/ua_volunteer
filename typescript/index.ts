@@ -4,7 +4,10 @@ import * as login from './login';
 import * as telegram from './telegram';
 import * as geo from "./geo";
 import * as post from "./post";
+import * as telegramWebhook from "./telegram-weebhook";
 import cookieSession = require('cookie-session');
+import {Telegraf, Telegram} from "telegraf";
+import {BOT_API_TOKEN} from "./telegram-weebhook";
 
 const app = express();
 const server = createServer(app);
@@ -35,3 +38,6 @@ app.post("/botaccept", express.json(), telegram.receive);
 app.get("/cities", login.verify, geo.cities);
 
 app.post("/post", login.verify, post.create);
+
+// webhook
+app.post(`/telegram/update/${BOT_API_TOKEN.replace(/:/g, "_")}`, telegramWebhook.receive);
