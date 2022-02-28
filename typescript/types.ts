@@ -2,8 +2,8 @@ import { ObjectId } from "mongodb";
 
 export type TELEGRAM = {
 
-    firstname: string,
-    lastname: string,
+    firstName: string,
+    username: string,
     id: string
 
 }
