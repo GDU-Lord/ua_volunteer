@@ -10,7 +10,7 @@ export function verify (code: ObjectId) {
 
         const index = listeners.length;
 
-        listeners[index] = (data: TELEGRAM, success: boolean, _code: string, response: express.Response) => {
+        listeners[index] = (data: TELEGRAM, _code: string, response: express.Response) => {
             
             if(_code == String(code)) {
                     
@@ -35,11 +35,11 @@ export function verify (code: ObjectId) {
 
 export function receive (req: express.Request, res: express.Response) {
 
-    const token = req.body.token;
-    const code = req.body.code;
+    const token = req.body.token as string;
+    const code = req.body.code as string;
     const data = req.body.data as TELEGRAM;
-    const success = req.body.success;
-    const reason = req.body.reason;
+    const success = req.body.success as boolean;
+    const reason = req.body.reason as string;
 
     if(!success)
         return res.send({
@@ -48,7 +48,7 @@ export function receive (req: express.Request, res: express.Response) {
         });
 
     for(const i in listeners)
-        if(listeners[i](data, success, code, res))
+        if(listeners[i](data, code, res))
             return;
     
     res.send({

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verify = exports.logout = exports.isVerifiedLogin = exports.isVerifiedSignup = exports.login = exports.signup = exports.sessions = exports.pending_users = void 0;
+exports.Session = exports.User = exports.verify = exports.logout = exports.isVerifiedLogin = exports.isVerifiedSignup = exports.login = exports.signup = exports.sessions = exports.pending_users = void 0;
 const telegram = require("./telegram");
 const mongodb_1 = require("mongodb");
 const mongo_1 = require("./mongo");
@@ -25,7 +25,8 @@ async function signup(req, res) {
 exports.signup = signup;
 async function login(req, res) {
     const phone = req.body.phone;
-    const [user] = await mongo_1.client.get("users", { phone: phone });
+    let [user] = await mongo_1.client.get("users", { phone: phone });
+    user = new User(user);
     if (user == null)
         return res.send({
             success: false,
@@ -50,7 +51,7 @@ async function isVerifiedSignup(req, res) {
     user.telegram = await telegram.verify(user.code);
     delete exports.pending_users[code];
     if (user.telegram) {
-        user.telegramId = user.telegram.id;
+        user.telegramId = user.telegram.telegramId;
         const [u] = await mongo_1.client.get("users", {
             telegramId: user.telegramId
         });
@@ -84,7 +85,7 @@ async function isVerifiedLogin(req, res) {
     user.telegram = await telegram.verify(user.code);
     delete exports.pending_users[code];
     if (user.telegram) {
-        user.telegramId = user.telegram.id;
+        user.telegramId = user.telegram.telegramId;
         const [u] = await mongo_1.client.get("users", {
             telegramId: user.telegramId
         });
@@ -139,6 +140,21 @@ function verify(req, res, next) {
     next(req, res);
 }
 exports.verify = verify;
+class User {
+    fullName;
+    phone;
+    socials;
+    telegram;
+    telegramId;
+    constructor(user) {
+        this.fullName = user.fullName || "";
+        this.phone = user.phone || "";
+        this.socials = user.socials || [];
+        this.telegram = user.telegram || null;
+        this.telegramId = user.telegramId || null;
+    }
+}
+exports.User = User;
 class Session {
     static find(telegramId) {
         for (const i in exports.sessions) {
@@ -163,3 +179,4 @@ class Session {
         delete exports.sessions[String(this._id)];
     }
 }
+exports.Session = Session;

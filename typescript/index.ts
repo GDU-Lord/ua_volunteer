@@ -3,6 +3,7 @@ import { createServer } from 'http';
 import * as login from './login';
 import * as telegram from './telegram';
 import * as geo from "./geo";
+import * as post from "./post";
 import cookieSession = require('cookie-session');
 
 const app = express();
@@ -32,3 +33,5 @@ app.get("/isverifiedlogin", login.isVerifiedLogin);
 app.post("/botaccept", express.json(), telegram.receive);
 
 app.get("/cities", login.verify, geo.cities);
+
+app.post("/post", login.verify, post.create);

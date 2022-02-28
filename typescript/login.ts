@@ -1,9 +1,8 @@
 import * as express from "express";
 import * as telegram from "./telegram";
 import { ObjectId } from "mongodb";
-import { USER } from "./types";
+import { USER, SESSION, TELEGRAM } from "./types";
 import { client } from "./mongo";
-import { SESSION } from "./types";
 
 export const pending_users = {};
 export const sessions = {};
@@ -34,7 +33,9 @@ export async function signup (req: express.Request, res: express.Response) {
 export async function login (req: express.Request, res: express.Response) {
 
     const phone = req.body.phone;
-    const [user] = await client.get("users", { phone: phone });
+    let [user] = await client.get("users", { phone: phone }) as USER[];
+
+    user = new User(user);
 
     if(user == null)
         return res.send({
@@ -69,7 +70,7 @@ export async function isVerifiedSignup (req: express.Request, res: express.Respo
 
     if(user.telegram) {
 
-        user.telegramId = user.telegram.id;
+        user.telegramId = user.telegram.telegramId;
         
         const [u] = await client.get("users", {
             telegramId: user.telegramId
@@ -116,7 +117,7 @@ export async function isVerifiedLogin (req: express.Request, res: express.Respon
 
     if(user.telegram) {
 
-        user.telegramId = user.telegram.id;
+        user.telegramId = user.telegram.telegramId;
         
         const [u] = await client.get("users", {
             telegramId: user.telegramId
@@ -186,7 +187,25 @@ export function verify (req: express.Request, res: express.Response, next) {
 
 }
 
-class Session implements SESSION {
+export class User implements USER {
+
+    fullName: string;
+    phone: string;
+    socials: string[];
+    telegram: TELEGRAM;
+    telegramId: string;
+
+    constructor (user: USER) {
+        this.fullName = user.fullName || "";
+        this.phone = user.phone || "";
+        this.socials = user.socials || [];
+        this.telegram = user.telegram || null;
+        this.telegramId = user.telegramId || null;
+    }
+
+}
+
+export class Session implements SESSION {
 
     static find (telegramId) {
 

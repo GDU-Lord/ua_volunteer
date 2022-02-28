@@ -5,7 +5,7 @@ const listeners = [];
 function verify(code) {
     return new Promise((res, rej) => {
         const index = listeners.length;
-        listeners[index] = (data, success, _code, response) => {
+        listeners[index] = (data, _code, response) => {
             if (_code == String(code)) {
                 delete listeners[index];
                 response.send({
@@ -31,7 +31,7 @@ function receive(req, res) {
             reason: "bot-error"
         });
     for (const i in listeners)
-        if (listeners[i](data, success, code, res))
+        if (listeners[i](data, code, res))
             return;
     res.send({
         success: false,
