@@ -20,8 +20,13 @@ async function create(req, res) {
             reason: "access-denied"
         });
     const help_type = req.body.help_type;
-    const message = req.body.help.message;
-    // new Post(user, );
+    const message = req.body.message;
+    const city = req.body.city;
+    const post = new Post(user, help_type, message, city);
+    await mongo_1.client.add("ads", post);
+    res.send({
+        success: true
+    });
 }
 exports.create = create;
 class Post {

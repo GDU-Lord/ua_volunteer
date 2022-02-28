@@ -9,6 +9,12 @@ export const sessions = {};
 
 export async function signup (req: express.Request, res: express.Response) {
 
+    if(sessions[req.session.token] != null)
+        return res.send({
+            success: false,
+            reason: "logged-in"
+        });
+
     const user = req.body as USER;
     user._id = new ObjectId();
     user.code = new ObjectId();
@@ -31,6 +37,12 @@ export async function signup (req: express.Request, res: express.Response) {
 }
 
 export async function login (req: express.Request, res: express.Response) {
+
+    if(sessions[req.session.token] != null)
+        return res.send({
+            success: false,
+            reason: "logged-in"
+        });
 
     const phone = req.body.phone;
     let [user] = await client.get("users", { phone: phone }) as USER[];
@@ -55,6 +67,12 @@ export async function login (req: express.Request, res: express.Response) {
 }
 
 export async function isVerifiedSignup (req: express.Request, res: express.Response) {
+
+    if(sessions[req.session.token] != null)
+        return res.send({
+            success: false,
+            reason: "logged-in"
+        });
 
     const code = req.query.code as string;
     const user = pending_users[code] as USER;
@@ -102,6 +120,12 @@ export async function isVerifiedSignup (req: express.Request, res: express.Respo
 }
 
 export async function isVerifiedLogin (req: express.Request, res: express.Response) {
+
+    if(sessions[req.session.token] != null)
+        return res.send({
+            success: false,
+            reason: "logged-in"
+        });
 
     const code = req.query.code as string;
     const user = pending_users[code] as USER;
@@ -183,7 +207,7 @@ export function verify (req: express.Request, res: express.Response, next) {
             reason: "access-denied"
         });
 
-    next(req, res);
+    next();
 
 }
 

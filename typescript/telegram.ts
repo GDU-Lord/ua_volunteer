@@ -10,16 +10,11 @@ export function verify (code: ObjectId) {
 
         const index = listeners.length;
 
-        listeners[index] = (data: TELEGRAM, _code: string, response: express.Response) => {
+        listeners[index] = (data: TELEGRAM, _code: string) => {
             
             if(_code == String(code)) {
                     
                 delete listeners[index];
-
-                response.send({
-                    success: true
-                });
-
                 res(data);
 
                 return true;
@@ -33,27 +28,42 @@ export function verify (code: ObjectId) {
 
 }
 
-export function receive (req: express.Request, res: express.Response) {
-
-    const token = req.body.token as string;
-    const code = req.body.code as string;
-    const data = req.body.data as TELEGRAM;
-    const success = req.body.success as boolean;
-    const reason = req.body.reason as string;
+export function check (code: string, data: TELEGRAM, success: boolean, reason?: string) {
 
     if(!success)
-        return res.send({
-            success: false,
-            reason: "bot-error"
-        });
+        return false;
 
-    for(const i in listeners)
-        if(listeners[i](data, code, res))
-            return;
+    for(const i in listeners) {
+        const res = listeners[i](data, code);
+        if(res)
+            return true;
+    }
     
-    res.send({
-        success: false,
-        reason: "user-not-found"
-    });
-
+    return false;
+    
 }
+
+// export function receive (req: express.Request, res: express.Response) {
+
+//     const token = req.body.token as string;
+//     const code = req.body.code as string;
+//     const data = req.body.data as TELEGRAM;
+//     const success = req.body.success as boolean;
+//     const reason = req.body.reason as string;
+
+//     if(!success)
+//         return res.send({
+//             success: false,
+//             reason: "bot-error"
+//         });
+
+//     for(const i in listeners)
+//         if(listeners[i](data, code, res))
+//             return;
+    
+//     res.send({
+//         success: false,
+//         reason: "user-not-found"
+//     });
+
+// }

@@ -26,10 +26,16 @@ export async function create (req: express.Request, res: express.Response) {
         });
 
     const help_type = req.body.help_type;
-    const message = req.body.help.message;
+    const message = req.body.message;
+    const city = req.body.city;
 
-    // new Post(user, );
-    
+    const post = new Post(user, help_type, message, city);
+
+    await client.add("ads", post);
+
+    res.send({
+        success: true
+    });
 
 }
 

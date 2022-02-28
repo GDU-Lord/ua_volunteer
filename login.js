@@ -7,6 +7,11 @@ const mongo_1 = require("./mongo");
 exports.pending_users = {};
 exports.sessions = {};
 async function signup(req, res) {
+    if (exports.sessions[req.session.token] != null)
+        return res.send({
+            success: false,
+            reason: "logged-in"
+        });
     const user = req.body;
     user._id = new mongodb_1.ObjectId();
     user.code = new mongodb_1.ObjectId();
@@ -24,6 +29,11 @@ async function signup(req, res) {
 }
 exports.signup = signup;
 async function login(req, res) {
+    if (exports.sessions[req.session.token] != null)
+        return res.send({
+            success: false,
+            reason: "logged-in"
+        });
     const phone = req.body.phone;
     let [user] = await mongo_1.client.get("users", { phone: phone });
     user = new User(user);
@@ -41,6 +51,11 @@ async function login(req, res) {
 }
 exports.login = login;
 async function isVerifiedSignup(req, res) {
+    if (exports.sessions[req.session.token] != null)
+        return res.send({
+            success: false,
+            reason: "logged-in"
+        });
     const code = req.query.code;
     const user = exports.pending_users[code];
     if (user == null)
@@ -75,6 +90,11 @@ async function isVerifiedSignup(req, res) {
 }
 exports.isVerifiedSignup = isVerifiedSignup;
 async function isVerifiedLogin(req, res) {
+    if (exports.sessions[req.session.token] != null)
+        return res.send({
+            success: false,
+            reason: "logged-in"
+        });
     const code = req.query.code;
     const user = exports.pending_users[code];
     if (user == null)
@@ -137,7 +157,7 @@ function verify(req, res, next) {
             success: false,
             reason: "access-denied"
         });
-    next(req, res);
+    next();
 }
 exports.verify = verify;
 class User {

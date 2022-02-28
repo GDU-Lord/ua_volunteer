@@ -15,7 +15,10 @@ export async function cities (req: express.Request, res: express.Response) {
         });
     }
 
-    res.send(cities);
+    res.send(JSON.stringify({
+        success: true,
+        data: cities
+    }));
 
 }
 

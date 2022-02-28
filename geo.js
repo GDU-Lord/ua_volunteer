@@ -13,7 +13,10 @@ async function cities(req, res) {
             parent_id: city.parent_id
         });
     }
-    res.send(cities);
+    res.send(JSON.stringify({
+        success: true,
+        data: cities
+    }));
 }
 exports.cities = cities;
 async function getCities() {

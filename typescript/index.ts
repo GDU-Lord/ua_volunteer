@@ -28,16 +28,15 @@ app.use(cookieSession({
 app.use("/", express.static("client"));
 
 app.post("/signup", express.json(), login.signup);
-app.get("/isverifiedsignup", login.isVerifiedSignup);
+app.get("/signup/verified", login.isVerifiedSignup);
 
 app.post("/login", express.json(), login.login);
-app.get("/isverifiedlogin", login.isVerifiedLogin);
+app.get("/login/verified", login.isVerifiedLogin);
 
-app.post("/botaccept", express.json(), telegram.receive);
+app.post("/logout", express.json(), login.logout);
 
 app.get("/cities", login.verify, geo.cities);
-
-app.post("/post", login.verify, post.create);
+app.post("/post/create", express.json(), login.verify, post.create);
 
 // webhook
-app.post(`/telegram/update/${BOT_API_TOKEN.replace(/:/g, "_")}`, telegramWebhook.receive);
+app.post(`/telegram/update/${BOT_API_TOKEN.replace(/:/g, "_")}`, express.json(), telegramWebhook.receive);

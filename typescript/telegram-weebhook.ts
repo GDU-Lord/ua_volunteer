@@ -1,17 +1,19 @@
 import * as express from "express";
 import {Telegraf} from "telegraf";
+import * as telegram from "./telegram";
+import { TELEGRAM } from "./types";
 
 
 export const BOT_API_TOKEN = "5280684323:AAF04vPNY9obNv18G_z4xpHhxLim3j-7MDk";        // todo: move to env variables
 
-const ID_PARAM_REGEX = /\/start=id_([a-zA-Z0-9]+)/;
+const ID_PARAM_REGEX = /\/start id_([a-zA-Z0-9]+)/;
 const telegraf = new Telegraf(BOT_API_TOKEN).telegram;
 
 export function receive(req: express.Request, res: express.Response) {
   const message: any = req.body?.message;
   const text = message?.text;
 
-  if (!text) {
+  if (!text) { // тут точно має бути "!" ?
     res.sendStatus(200);
   }
 
@@ -21,8 +23,15 @@ export function receive(req: express.Request, res: express.Response) {
   const telegramUsername = message?.chat?.username;
   const firstName = message?.chat?.first_name;
 
-  const verificationSuccess = true;
+  const telegram_data: TELEGRAM = {
+    telegramId: message?.from?.id,
+    botChatId: message?.chat?.id,
+    telegramUsername: message?.chat?.username,
+    firstName: message?.chat?.first_name
+  };
 
+  const verificationSuccess = telegram.check(verificationId, telegram_data, true);
+  
   if (verificationSuccess) {
     telegraf
       .sendMessage(botChatId, 'Реєстрація пройшла успішно!')
