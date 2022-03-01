@@ -6,61 +6,48 @@ import PropTypes from 'prop-types';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 // REdux
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { likeScream, unlikeScream } from '../../redux/actions/dataActions';
+import {
+    authenticatedSelector,
+    likesSelector,
+} from '../../redux/selectors/user';
 
-export class LikeButton extends Component {
-    likedScream = () => {
-        if (
-            this.props.user.likes &&
-            this.props.user.likes.find(
-                (like) => like.screamId === this.props.screamId
-            )
-        )
+export function LikeButton() {
+    const dispatch = useDispatch();
+    const likes = useSelector(likesSelector);
+    const authenticated = useSelector(authenticatedSelector);
+
+    const likedScream = () => {
+        if (likes && likes.find((like) => like.screamId === screamId))
             return true;
         else return false;
     };
-    likeScream = () => {
-        this.props.likeScream(this.props.screamId);
+
+    const handleLikeScream = () => {
+        dispatch(likeScream(screamId));
     };
-    unlikeScream = () => {
-        this.props.unlikeScream(this.props.screamId);
+
+    const handleUnlikeScream = () => {
+        dispatch(unlikeScream(screamId));
     };
-    render() {
-        const { authenticated } = this.props.user;
-        const likeButton = !authenticated ? (
-            <Link to="/login">
-                <MyButton tip="Like">
-                    <FavoriteBorder color="primary" />
-                </MyButton>
-            </Link>
-        ) : this.likedScream() ? (
-            <MyButton tip="Undo like" onClick={this.unlikeScream}>
-                <FavoriteIcon color="primary" />
-            </MyButton>
-        ) : (
-            <MyButton tip="Like" onClick={this.likeScream}>
+
+    const likeButton = !authenticated ? (
+        <Link to="/login">
+            <MyButton tip="Like">
                 <FavoriteBorder color="primary" />
             </MyButton>
-        );
-        return likeButton;
-    }
+        </Link>
+    ) : likedScream() ? (
+        <MyButton tip="Undo like" onClick={handleUnlikeScream}>
+            <FavoriteIcon color="primary" />
+        </MyButton>
+    ) : (
+        <MyButton tip="Like" onClick={handleLikeScream}>
+            <FavoriteBorder color="primary" />
+        </MyButton>
+    );
+    return likeButton;
 }
 
-LikeButton.propTypes = {
-    user: PropTypes.object.isRequired,
-    screamId: PropTypes.string.isRequired,
-    likeScream: PropTypes.func.isRequired,
-    unlikeScream: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-    user: state.user,
-});
-
-const mapActionsToProps = {
-    likeScream,
-    unlikeScream,
-};
-
-export default connect(mapStateToProps, mapActionsToProps)(LikeButton);
+export default LikeButton;
