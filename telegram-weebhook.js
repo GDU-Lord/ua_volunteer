@@ -1,8 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.receive = exports.BOT_API_TOKEN = void 0;
+exports.check = exports.verify = exports.receive = exports.BOT_API_TOKEN = void 0;
 const telegraf_1 = require("telegraf");
-const telegram = require("./telegram");
 exports.BOT_API_TOKEN = "5280684323:AAF04vPNY9obNv18G_z4xpHhxLim3j-7MDk"; // todo: move to env variables
 const ID_PARAM_REGEX = /\/start id_([a-zA-Z0-9]+)/;
 const telegraf = new telegraf_1.Telegraf(exports.BOT_API_TOKEN).telegram;
@@ -23,7 +22,7 @@ function receive(req, res) {
         telegramUsername: message?.chat?.username,
         firstName: message?.chat?.first_name
     };
-    const verificationSuccess = telegram.check(verificationId, telegram_data, true);
+    const verificationSuccess = check(verificationId, telegram_data, true);
     if (verificationSuccess) {
         telegraf
             .sendMessage(botChatId, 'Реєстрація пройшла успішно!')
@@ -45,3 +44,29 @@ function extractIdParam(text) {
     }
     return match[1];
 }
+const listeners = [];
+function verify(code) {
+    return new Promise((res, rej) => {
+        const index = listeners.length;
+        listeners[index] = (data, _code) => {
+            if (_code == String(code)) {
+                delete listeners[index];
+                res(data);
+                return true;
+            }
+            return false;
+        };
+    });
+}
+exports.verify = verify;
+function check(code, data, success, reason) {
+    if (!success)
+        return false;
+    for (const i in listeners) {
+        const res = listeners[i](data, code);
+        if (res)
+            return true;
+    }
+    return false;
+}
+exports.check = check;

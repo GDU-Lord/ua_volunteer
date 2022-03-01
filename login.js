@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Session = exports.User = exports.verify = exports.logout = exports.isVerifiedLogin = exports.isVerifiedSignup = exports.login = exports.signup = exports.sessions = exports.pending_users = void 0;
-const telegram = require("./telegram");
 const mongodb_1 = require("mongodb");
 const mongo_1 = require("./mongo");
+const telegramWebhook = require("./telegram-weebhook");
 exports.pending_users = {};
 exports.sessions = {};
 async function signup(req, res) {
@@ -63,7 +63,7 @@ async function isVerifiedSignup(req, res) {
             success: false,
             reason: "insufficient-code"
         });
-    user.telegram = await telegram.verify(user.code);
+    user.telegram = await telegramWebhook.verify(user.code);
     delete exports.pending_users[code];
     if (user.telegram) {
         user.telegramId = user.telegram.telegramId;
@@ -102,7 +102,7 @@ async function isVerifiedLogin(req, res) {
             success: false,
             reason: "insufficient-code"
         });
-    user.telegram = await telegram.verify(user.code);
+    user.telegram = await telegramWebhook.verify(user.code);
     delete exports.pending_users[code];
     if (user.telegram) {
         user.telegramId = user.telegram.telegramId;

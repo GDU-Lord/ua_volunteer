@@ -1,8 +1,8 @@
 import * as express from "express";
-import * as telegram from "./telegram";
 import { ObjectId } from "mongodb";
 import { USER, SESSION, TELEGRAM } from "./types";
 import { client } from "./mongo";
+import * as telegramWebhook from "./telegram-weebhook";
 
 export const pending_users = {};
 export const sessions = {};
@@ -83,7 +83,7 @@ export async function isVerifiedSignup (req: express.Request, res: express.Respo
             reason: "insufficient-code"
         });
 
-    user.telegram = await telegram.verify(user.code);
+    user.telegram = await telegramWebhook.verify(user.code);
     delete pending_users[code];
 
     if(user.telegram) {
@@ -136,7 +136,7 @@ export async function isVerifiedLogin (req: express.Request, res: express.Respon
             reason: "insufficient-code"
         });
 
-    user.telegram = await telegram.verify(user.code);
+    user.telegram = await telegramWebhook.verify(user.code);
     delete pending_users[code];
 
     if(user.telegram) {

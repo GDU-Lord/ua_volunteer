@@ -1,7 +1,7 @@
 import * as express from "express";
 import {Telegraf} from "telegraf";
-import * as telegram from "./telegram";
 import { TELEGRAM } from "./types";
+import { ObjectId } from "mongodb";
 
 
 export const BOT_API_TOKEN = "5280684323:AAF04vPNY9obNv18G_z4xpHhxLim3j-7MDk";        // todo: move to env variables
@@ -30,7 +30,7 @@ export function receive(req: express.Request, res: express.Response) {
     firstName: message?.chat?.first_name
   };
 
-  const verificationSuccess = telegram.check(verificationId, telegram_data, true);
+  const verificationSuccess = check(verificationId, telegram_data, true);
   
   if (verificationSuccess) {
     telegraf
@@ -51,4 +51,45 @@ function extractIdParam(text: string): string | undefined {
     return undefined;
   }
   return match[1];
+}
+
+const listeners = [];
+
+export function verify(code: ObjectId) {
+
+  return new Promise<TELEGRAM>((res, rej) => {
+
+    const index = listeners.length;
+
+    listeners[index] = (data: TELEGRAM, _code: string) => {
+
+      if (_code == String(code)) {
+
+        delete listeners[index];
+        res(data);
+
+        return true;
+      }
+
+      return false;
+
+    };
+
+  });
+
+}
+
+export function check(code: string, data: TELEGRAM, success: boolean, reason?: string) {
+
+  if (!success)
+    return false;
+
+  for (const i in listeners) {
+    const res = listeners[i](data, code);
+    if (res)
+      return true;
+  }
+
+  return false;
+
 }

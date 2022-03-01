@@ -2,10 +2,6 @@ import { ObjectId } from "mongodb";
 
 export type TELEGRAM = {
 
-    // firstName: string,
-    // username: string,
-    // id: string
-
     firstName: string,
     botChatId: number,
     telegramUsername?: string,
@@ -62,6 +58,7 @@ export interface POST_DATA {
     message: string,
     city: string,
     phone: string,
-    socials: string[]
+    socials: string[],
+    id: ObjectId
 }
   

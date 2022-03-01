@@ -9,6 +9,7 @@ const telegramWebhook = require("./telegram-weebhook");
 const cookieSession = require("cookie-session");
 const telegram_weebhook_1 = require("./telegram-weebhook");
 const app = express();
+app.use(express.json());
 const server = (0, http_1.createServer)(app);
 server.listen(80, "localhost", () => {
     console.log("Сервер працює!");
@@ -25,5 +26,6 @@ app.get("/login/verified", login.isVerifiedLogin);
 app.post("/logout", express.json(), login.logout);
 app.get("/cities", login.verify, geo.cities);
 app.post("/post/create", express.json(), login.verify, post.create);
+app.post("/post/update", express.json(), login.verify, post.update);
 // webhook
 app.post(`/telegram/update/${telegram_weebhook_1.BOT_API_TOKEN.replace(/:/g, "_")}`, express.json(), telegramWebhook.receive);
