@@ -1,17 +1,17 @@
 import {
-    SET_SCREAMS,
-    LIKE_SCREAM,
-    UNLIKE_SCREAM,
+    SET_POSTERS,
+    LIKE_POSTER,
+    UNLIKE_POSTER,
     LOADING_DATA,
-    DELETE_SCREAM,
-    POST_SCREAM,
-    SET_SCREAM,
+    DELETE_POSTER,
+    POST_POSTER,
+    SET_POSTER,
     SUBMIT_COMMENT,
 } from '../types';
 
 const initialState = {
-    screams: [],
-    scream: {},
+    posters: [],
+    poster: {},
     loading: false,
 };
 
@@ -22,48 +22,48 @@ export default function (state = initialState, action) {
                 ...state,
                 loading: true,
             };
-        case SET_SCREAMS:
+        case SET_POSTERS:
             return {
                 ...state,
-                screams: action.payload,
+                posters: action.payload,
                 loading: false,
             };
-        case SET_SCREAM:
+        case SET_POSTER:
             return {
                 ...state,
-                scream: action.payload,
+                poster: action.payload,
             };
-        case LIKE_SCREAM:
-        case UNLIKE_SCREAM:
-            let index = state.screams.findIndex(
-                (scream) => scream.screamId === action.payload.screamId
+        case LIKE_POSTER:
+        case UNLIKE_POSTER:
+            let index = state.posters.findIndex(
+                (poster) => poster.posterId === action.payload.posterId
             );
-            state.screams[index] = action.payload;
-            if (state.scream.screamId === action.payload.screamId) {
-                state.scream = action.payload;
+            state.posters[index] = action.payload;
+            if (state.poster.posterId === action.payload.posterId) {
+                state.poster = action.payload;
             }
             return {
                 ...state,
             };
-        case DELETE_SCREAM:
-            index = state.screams.findIndex(
-                (scream) => scream.screamId === action.payload
+        case DELETE_POSTER:
+            index = state.posters.findIndex(
+                (poster) => poster.posterId === action.payload
             );
-            state.screams.splice(index, 1);
+            state.posters.splice(index, 1);
             return {
                 ...state,
             };
-        case POST_SCREAM:
+        case POST_POSTER:
             return {
                 ...state,
-                screams: [action.payload, ...state.screams],
+                posters: [action.payload, ...state.posters],
             };
         case SUBMIT_COMMENT:
             return {
                 ...state,
-                scream: {
-                    ...state.scream,
-                    comments: [action.payload, ...state.scream.comments],
+                poster: {
+                    ...state.poster,
+                    comments: [action.payload, ...state.poster.comments],
                 },
             };
         default:

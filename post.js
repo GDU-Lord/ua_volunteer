@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Post = exports.getPosts = exports.getUser = exports.update = exports.create = void 0;
+exports.Post = exports.image = exports.upload = exports.getPosts = exports.getUser = exports.update = exports.create = void 0;
 const mongodb_1 = require("mongodb");
 const login_1 = require("./login");
 const mongo_1 = require("./mongo");
+const fs = require("fs");
 async function create(req, res) {
     const session = login_1.sessions[req.session.token];
     const user = await getUser(session, res);
@@ -65,6 +66,28 @@ async function getPosts(req, res) {
     }
 }
 exports.getPosts = getPosts;
+async function upload(req, res) {
+    if (req.file == null)
+        return res.send({
+            success: false,
+            reason: "input-error"
+        });
+    const oldname = req.file.filename;
+    const newname = oldname + "." + req.file.mimetype.split("/")[1]; //req.file.originalname;
+    fs.renameSync(__dirname + "/files/" + oldname, __dirname + "/files/" + newname);
+    res.send({
+        success: true,
+        file: {
+            url: "/image/" + newname
+        }
+    });
+}
+exports.upload = upload;
+function image(req, res) {
+    const path = req.originalUrl.replace("image/", "");
+    res.sendFile(__dirname + "/files/" + path);
+}
+exports.image = image;
 class Post {
     _id; // telegram user id for the initial version; random id for old versions or
     original_id; // represents telegram user id
