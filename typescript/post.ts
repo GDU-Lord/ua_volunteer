@@ -3,6 +3,7 @@ import { ObjectId } from "mongodb";
 import { sessions, User } from "./login"; 
 import { client } from "./mongo";
 import { HELP_TYPE, POST, POST_DATA, STATUS, TELEGRAM, USER } from "./types";
+import * as fs from "fs";
 
 export async function create (req: express.Request, res: express.Response) {
 
@@ -87,6 +88,38 @@ export async function getPosts (req: express.Request, res: express.Response) {
         });
 
     }
+
+}
+
+export async function upload (req: express.Request, res: express.Response) {
+
+    if(req.file == null)
+        return res.send({
+            success: false,
+            reason: "input-error"
+        });
+
+    const oldname = req.file.filename;
+    const newname = oldname + "." + req.file.mimetype.split("/")[1];//req.file.originalname;
+
+    fs.renameSync(__dirname + "/files/" + oldname, __dirname + "/files/" + newname);
+
+    res.send({
+
+        success: true,
+        file: {
+            url: "/image/" + newname
+        }
+
+    });
+
+}
+
+export function image (req: express.Request, res: express.Response) {
+
+    const path = req.originalUrl.replace("image/", "");
+
+    res.sendFile(__dirname + "/files/" + path);
 
 }
 

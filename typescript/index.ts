@@ -6,12 +6,19 @@ import * as post from "./post";
 import * as telegramWebhook from "./telegram-weebhook";
 import cookieSession = require('cookie-session');
 import {BOT_API_TOKEN} from "./telegram-weebhook";
+import * as multer from "multer";
+import * as cors from "cors";
+
+const upload = multer( { dest: "files/" } );
 
 const app = express();
 app.use(express.json());
+app.use(cors({
+    origin: "http://localhost"
+}));
 const server = createServer(app);
 
-server.listen(80, "localhost", () => {
+server.listen(3000, "localhost", () => {
 
     console.log("Сервер працює!");
 
@@ -20,7 +27,7 @@ server.listen(80, "localhost", () => {
 app.use(cookieSession({
 
     name: "session",
-    keys: ["rudolf steiner"]
+    keys: ["glory to ukraine"]
 
 }));
 
@@ -37,6 +44,9 @@ app.post("/logout", express.json(), login.logout);
 app.get("/cities", login.verify, geo.cities);
 app.post("/post/create", express.json(), login.verify, post.create);
 app.post("/post/update", express.json(), login.verify, post.update);
+
+app.post("/image/upload", login.verify, upload.single("image"), post.upload);
+app.use(/\/image\/.{0,}/, post.image);
 
 // webhook
 app.post(`/telegram/update/${BOT_API_TOKEN.replace(/:/g, "_")}`, express.json(), telegramWebhook.receive);
