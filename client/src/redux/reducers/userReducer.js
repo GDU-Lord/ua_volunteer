@@ -3,8 +3,8 @@ import {
     SET_AUTHENTICATED,
     SET_UNAUTHENTICATED,
     LOADING_USER,
-    LIKE_SCREAM,
-    UNLIKE_SCREAM,
+    LIKE_POSTER,
+    UNLIKE_POSTER,
     MARK_NOTIFICATIONS_READ,
 } from '../types';
 
@@ -36,7 +36,7 @@ export default function (state = initialState, action) {
                 ...state,
                 loading: true,
             };
-        case LIKE_SCREAM:
+        case LIKE_POSTER:
             return {
                 ...state,
                 likes: [
@@ -47,7 +47,7 @@ export default function (state = initialState, action) {
                     },
                 ],
             };
-        case UNLIKE_SCREAM:
+        case UNLIKE_POSTER:
             return {
                 ...state,
                 likes: state.likes.filter(

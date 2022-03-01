@@ -1,27 +1,11 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import { Route, Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { authenticatedSelector } from '../redux/selectors/user';
 
-const AuthRoute = ({ component: Component, authenticated, ...rest }) => (
-    <Route
-        {...rest}
-        render={(props) =>
-            authenticated === true ? (
-                <Redirect to="/" />
-            ) : (
-                <Component {...props} />
-            )
-        }
-    />
-);
-
-const mapStateToProps = (state) => ({
-    authenticated: state.user.authenticated,
-});
-
-AuthRoute.propTypes = {
-    user: PropTypes.object,
+const AuthRoute = ({ children }) => {
+    const authenticated = useSelector(authenticatedSelector);
+    return authenticated === true ? <Navigate to="/" /> : children;
 };
 
-export default connect(mapStateToProps)(AuthRoute);
+export default AuthRoute;

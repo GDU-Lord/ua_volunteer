@@ -93,7 +93,22 @@ export default {
     buttons: {
         textAlign: 'center',
         '& a': {
-            margin: '20px 10px',
+            margin: '10px 10px',
         },
+    },
+    navbarTitle: {
+        width: '100%',
+        backgroundColor: 'red',
+        textAlign: 'center',
+
+        '& h1': {
+            fontSize: '15px',
+        },
+    },
+    logo: {
+        position: 'absolute',
+        left: '0',
+        top: '16px',
+        left: '30px',
     },
 };

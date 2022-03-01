@@ -31,8 +31,7 @@ const styles = (theme) => ({
     },
 });
 
-const ProfileSkeleton = (props) => {
-    const { classes } = props;
+const ProfileSkeleton = ({ classes }) => {
     return (
         <Paper className={classes.paper}>
             <div className={classes.profile}>
@@ -46,11 +45,11 @@ const ProfileSkeleton = (props) => {
                     <div className={classes.fullLine} />
                     <div className={classes.fullLine} />
                     <hr />
-                    <LocationOn color="primary" /> <span>Location</span>
+                    <LocationOn color="primary" /> <span>Розташування</span>
                     <hr />
                     <LinkIcon color="primary" /> https://website.com
                     <hr />
-                    <CalendarToday color="primary" /> Joined date
+                    <CalendarToday color="primary" /> Дата реєстрації
                 </div>
             </div>
         </Paper>
