@@ -49,9 +49,7 @@ const styles = (theme) => ({
     },
 });
 
-const ScreamSkeleton = (props) => {
-    const { classes } = props;
-
+const PostersSkeleton = ({ classes }) => {
     const content = Array.from({ length: 5 }).map((item, index) => (
         <Card className={classes.card} key={index}>
             <CardMedia className={classes.cover} image={NoImg} />
@@ -68,8 +66,8 @@ const ScreamSkeleton = (props) => {
     return <Fragment>{content}</Fragment>;
 };
 
-ScreamSkeleton.propTypes = {
+PostersSkeleton.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ScreamSkeleton);
+export default withStyles(styles)(PostersSkeleton);

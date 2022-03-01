@@ -1,14 +1,14 @@
 import {
-    SET_SCREAMS,
+    SET_POSTERS,
     LOADING_DATA,
-    LIKE_SCREAM,
-    UNLIKE_SCREAM,
-    DELETE_SCREAM,
+    LIKE_POSTER,
+    UNLIKE_POSTER,
+    DELETE_POSTER,
     SET_ERRORS,
-    POST_SCREAM,
+    POST_POSTER,
     CLEAR_ERRORS,
     LOADING_UI,
-    SET_SCREAM,
+    SET_POSTER,
     STOP_LOADING_UI,
     SUBMIT_COMMENT,
 } from '../types';
@@ -20,14 +20,15 @@ export const getScreams = () => (dispatch) => {
     axios
         .get('/screams')
         .then((res) => {
+            console.log('res', res);
             dispatch({
-                type: SET_SCREAMS,
+                type: SET_POSTERS,
                 payload: res.data,
             });
         })
         .catch((err) => {
             dispatch({
-                type: SET_SCREAMS,
+                type: SET_POSTERS,
                 payload: [],
             });
         });
@@ -38,12 +39,15 @@ export const getScream = (screamId) => (dispatch) => {
         .get(`/scream/${screamId}`)
         .then((res) => {
             dispatch({
-                type: SET_SCREAM,
+                type: SET_POSTER,
                 payload: res.data,
             });
             dispatch({ type: STOP_LOADING_UI });
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+            dispatch({ type: STOP_LOADING_UI });
+            console.log(err);
+        });
 };
 // Post a scream
 export const postScream = (newScream) => (dispatch) => {
@@ -52,7 +56,7 @@ export const postScream = (newScream) => (dispatch) => {
         .post('/scream', newScream)
         .then((res) => {
             dispatch({
-                type: POST_SCREAM,
+                type: POST_POSTER,
                 payload: res.data,
             });
             dispatch(clearErrors());
@@ -70,7 +74,7 @@ export const likeScream = (screamId) => (dispatch) => {
         .get(`/scream/${screamId}/like`)
         .then((res) => {
             dispatch({
-                type: LIKE_SCREAM,
+                type: LIKE_POSTER,
                 payload: res.data,
             });
         })
@@ -82,7 +86,7 @@ export const unlikeScream = (screamId) => (dispatch) => {
         .get(`/scream/${screamId}/unlike`)
         .then((res) => {
             dispatch({
-                type: UNLIKE_SCREAM,
+                type: UNLIKE_POSTER,
                 payload: res.data,
             });
         })
@@ -110,7 +114,7 @@ export const deleteScream = (screamId) => (dispatch) => {
     axios
         .delete(`/scream/${screamId}`)
         .then(() => {
-            dispatch({ type: DELETE_SCREAM, payload: screamId });
+            dispatch({ type: DELETE_POSTER, payload: screamId });
         })
         .catch((err) => console.log(err));
 };
@@ -121,13 +125,13 @@ export const getUserData = (userHandle) => (dispatch) => {
         .get(`/user/${userHandle}`)
         .then((res) => {
             dispatch({
-                type: SET_SCREAMS,
+                type: SET_POSTERS,
                 payload: res.data.screams,
             });
         })
         .catch(() => {
             dispatch({
-                type: SET_SCREAMS,
+                type: SET_POSTERS,
                 payload: null,
             });
         });

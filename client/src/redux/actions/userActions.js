@@ -32,6 +32,7 @@ export const signupUser = (newUserData, history) => (dispatch) => {
     axios
         .post('/signup', newUserData)
         .then((res) => {
+            console.log('resss', res);
             setAuthorizationHeader(res.data.token);
             dispatch(getUserData());
             dispatch({ type: CLEAR_ERRORS });
@@ -40,7 +41,7 @@ export const signupUser = (newUserData, history) => (dispatch) => {
         .catch((err) => {
             dispatch({
                 type: SET_ERRORS,
-                payload: err.response.data,
+                payload: err,
             });
         });
 };

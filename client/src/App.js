@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
@@ -14,69 +14,73 @@ import Navbar from './components/layout/Navbar';
 import themeObject from './util/theme';
 import AuthRoute from './util/AuthRoute';
 // Pages
-import home from './pages/home';
-import login from './pages/login';
-import signup from './pages/signup';
-import user from './pages/user';
+import Posters from './pages/posters';
+import Login from './pages/login';
+import Signup from './pages/signup';
+import User from './pages/user';
 
 import axios from 'axios';
+import dayjs from 'dayjs';
+import 'dayjs/locale/uk';
 
 const theme = createMuiTheme(themeObject);
+dayjs.locale('uk');
 
-axios.defaults.baseURL =
-    'https://europe-west1-socialape-d081e.cloudfunctions.net/api';
+// axios.defaults.baseURL =
+//     'https://europe-west1-socialape-d081e.cloudfunctions.net/api';
 
-const token = localStorage.FBIdToken;
-if (token) {
-    const decodedToken = jwtDecode(token);
-    if (decodedToken.exp * 1000 < Date.now()) {
-        store.dispatch(logoutUser());
-        window.location.href = '/login';
-    } else {
-        store.dispatch({ type: SET_AUTHENTICATED });
-        axios.defaults.headers.common['Authorization'] = token;
-        store.dispatch(getUserData());
-    }
-}
+axios.defaults.baseURL = 'http://localhost:80';
 
-class App extends Component {
-    render() {
-        return (
-            <MuiThemeProvider theme={theme}>
-                <Provider store={store}>
-                    <Router>
-                        <h1>Русский военный корабль, иди на хуй</h1>
-                        <Navbar />
-                        <div className="container">
-                            <Switch>
-                                <Route exact path="/" component={home} />
-                                <AuthRoute
-                                    exact
-                                    path="/login"
-                                    component={login}
-                                />
-                                <AuthRoute
-                                    exact
-                                    path="/signup"
-                                    component={signup}
-                                />
-                                <Route
-                                    exact
-                                    path="/users/:handle"
-                                    component={user}
-                                />
-                                <Route
-                                    exact
-                                    path="/users/:handle/scream/:screamId"
-                                    component={user}
-                                />
-                            </Switch>
-                        </div>
-                    </Router>
-                </Provider>
-            </MuiThemeProvider>
-        );
-    }
+// const token = localStorage.FBIdToken;
+// if (token) {
+//     const decodedToken = jwtDecode(token);
+//     if (decodedToken.exp * 1000 < Date.now()) {
+//         store.dispatch(logoutUser());
+//         window.location.href = '/login';
+//     } else {
+//         store.dispatch({ type: SET_AUTHENTICATED });
+//         axios.defaults.headers.common['Authorization'] = token;
+//         store.dispatch(getUserData());
+//     }
+// }
+
+function App() {
+    return (
+        <MuiThemeProvider theme={theme}>
+            <Provider store={store}>
+                <BrowserRouter>
+                    <h1>Русский военный корабль, иди на хуй</h1>
+                    <Navbar />
+                    <div className="container">
+                        <Routes>
+                            <Route index path="/" element={<Posters />} />
+                            <Route
+                                path="/login"
+                                element={
+                                    <AuthRoute>
+                                        <Login />
+                                    </AuthRoute>
+                                }
+                            />
+                            <Route
+                                path="/signup"
+                                element={
+                                    <AuthRoute>
+                                        <Signup />
+                                    </AuthRoute>
+                                }
+                            />
+                            <Route path="/users/:handle" element={<User />} />
+                            <Route
+                                path="/users/:handle/scream/:screamId"
+                                element={<User />}
+                            />
+                        </Routes>
+                    </div>
+                </BrowserRouter>
+            </Provider>
+        </MuiThemeProvider>
+    );
 }
 
 export default App;

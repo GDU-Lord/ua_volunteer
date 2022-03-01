@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
-import PropTypes from 'prop-types';
 import AppIcon from '../images/icon.png';
 import { Link } from 'react-router-dom';
 
@@ -11,159 +10,144 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 // Redux stuff
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { signupUser } from '../redux/actions/userActions';
+import { errorsSelector } from '../redux/selectors/ui';
 
 const styles = (theme) => ({
     ...theme,
 });
 
-class signup extends Component {
-    constructor() {
-        super();
-        this.state = {
-            email: '',
-            password: '',
-            confirmPassword: '',
-            handle: '',
-            errors: {},
-        };
-    }
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.UI.errors) {
-            this.setState({ errors: nextProps.UI.errors });
+function Signup({ classes, history }) {
+    const dispatch = useDispatch();
+    const errorsUI = useSelector(errorsSelector);
+
+    const [formData, setFormData] = useState({
+        fullName: '',
+        phone: '',
+        socials: [''],
+        telegramId: '',
+    });
+
+    const [errors, setErrors] = useState({});
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (errorsUI !== errors) {
+            setErrors({ errors: errorsUI });
         }
-    }
-    handleSubmit = (event) => {
-        event.preventDefault();
-        this.setState({
-            loading: true,
-        });
-        const newUserData = {
-            email: this.state.email,
-            password: this.state.password,
-            confirmPassword: this.state.confirmPassword,
-            handle: this.state.handle,
-        };
-        this.props.signupUser(newUserData, this.props.history);
-    };
-    handleChange = (event) => {
-        this.setState({
+    }, [errorsUI]);
+
+    const handleChange = (event) => {
+        setFormData({
+            ...formData,
             [event.target.name]: event.target.value,
         });
     };
-    render() {
-        const {
-            classes,
-            UI: { loading },
-        } = this.props;
-        const { errors } = this.state;
 
-        return (
-            <Grid container className={classes.form}>
-                <Grid item sm />
-                <Grid item sm>
-                    <img src={AppIcon} alt="monkey" className={classes.image} />
-                    <Typography variant="h2" className={classes.pageTitle}>
-                        SignUp
-                    </Typography>
-                    <form noValidate onSubmit={this.handleSubmit}>
-                        <TextField
-                            id="email"
-                            name="email"
-                            type="email"
-                            label="Email"
-                            className={classes.textField}
-                            helperText={errors.email}
-                            error={errors.email ? true : false}
-                            value={this.state.email}
-                            onChange={this.handleChange}
-                            fullWidth
-                        />
-                        <TextField
-                            id="password"
-                            name="password"
-                            type="password"
-                            label="Password"
-                            className={classes.textField}
-                            helperText={errors.password}
-                            error={errors.password ? true : false}
-                            value={this.state.password}
-                            onChange={this.handleChange}
-                            fullWidth
-                        />
-                        <TextField
-                            id="confirmPassword"
-                            name="confirmPassword"
-                            type="password"
-                            label="Confirm Password"
-                            className={classes.textField}
-                            helperText={errors.confirmPassword}
-                            error={errors.confirmPassword ? true : false}
-                            value={this.state.confirmPassword}
-                            onChange={this.handleChange}
-                            fullWidth
-                        />
-                        <TextField
-                            id="handle"
-                            name="handle"
-                            type="text"
-                            label="Handle"
-                            className={classes.textField}
-                            helperText={errors.handle}
-                            error={errors.handle ? true : false}
-                            value={this.state.handle}
-                            onChange={this.handleChange}
-                            fullWidth
-                        />
-                        {errors.general && (
-                            <Typography
-                                variant="body2"
-                                className={classes.customError}
-                            >
-                                {errors.general}
-                            </Typography>
-                        )}
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            className={classes.button}
-                            disabled={loading}
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        setLoading(true);
+
+        const newUserData = {
+            fullName: formData.fullName,
+            phone: formData.phone,
+            socials: formData.socials,
+            telegramId: formData.telegramId,
+        };
+
+        dispatch(signupUser(newUserData, history));
+    };
+
+    return (
+        <Grid container className={classes.form}>
+            <Grid item sm />
+            <Grid item sm>
+                <img src={AppIcon} alt="monkey" className={classes.image} />
+                <Typography variant="h2" className={classes.pageTitle}>
+                    Реєстрація
+                </Typography>
+                <form noValidate onSubmit={handleSubmit}>
+                    <TextField
+                        id="fullName"
+                        name="fullName"
+                        type="text"
+                        label="Повне ім'я"
+                        className={classes.textField}
+                        helperText={errors.fullName}
+                        error={errors.fullName ? true : false}
+                        value={formData.fullName}
+                        onChange={handleChange}
+                        fullWidth
+                    />
+                    <TextField
+                        id="phone"
+                        name="phone"
+                        type="phone"
+                        label="Телефон"
+                        className={classes.textField}
+                        helperText={errors.phone}
+                        error={errors.phone ? true : false}
+                        value={formData.phone}
+                        onChange={handleChange}
+                        fullWidth
+                    />
+                    <TextField
+                        id="socials"
+                        name="socials"
+                        type="text"
+                        label="Посилання на соцільні мережі"
+                        className={classes.textField}
+                        helperText={errors.socials}
+                        error={errors.socials ? true : false}
+                        value={formData.socials}
+                        onChange={handleChange}
+                        fullWidth
+                    />
+                    <TextField
+                        id="telegramId"
+                        name="telegramId"
+                        type="text"
+                        label="Телеграм посилання користувача"
+                        className={classes.textField}
+                        helperText={errors.telegramId}
+                        error={errors.telegramId ? true : false}
+                        value={formData.telegramId}
+                        onChange={handleChange}
+                        fullWidth
+                    />
+                    {errors.general && (
+                        <Typography
+                            variant="body2"
+                            className={classes.customError}
                         >
-                            SignUp
-                            {loading && (
-                                <CircularProgress
-                                    size={30}
-                                    className={classes.progress}
-                                />
-                            )}
-                        </Button>
-                        <br />
-                        <small>
-                            Already have an account ? Login{' '}
-                            <Link to="/login">here</Link>
-                        </small>
-                    </form>
-                </Grid>
-                <Grid item sm />
+                            {errors.general}
+                        </Typography>
+                    )}
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}
+                        disabled={loading}
+                    >
+                        Реєстрація
+                        {loading && (
+                            <CircularProgress
+                                size={30}
+                                className={classes.progress}
+                            />
+                        )}
+                    </Button>
+                    <br />
+                    <small>
+                        Вже маєш акаунт ? Зайти <Link to="/login">тут</Link>
+                    </small>
+                </form>
             </Grid>
-        );
-    }
+            <Grid item sm />
+        </Grid>
+    );
 }
 
-signup.propTypes = {
-    classes: PropTypes.object.isRequired,
-    user: PropTypes.object.isRequired,
-    UI: PropTypes.object.isRequired,
-    signupUser: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-    user: state.user,
-    UI: state.UI,
-});
-
-export default connect(mapStateToProps, { signupUser })(
-    withStyles(styles)(signup)
-);
+export default withStyles(styles)(Signup);
