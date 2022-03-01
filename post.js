@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Post = exports.image = exports.upload = exports.getPosts = exports.getUser = exports.update = exports.create = void 0;
+exports.Post = exports.image = exports.upload = exports.getIHelp = exports.getHelpMe = exports.getUser = exports.update = exports.create = void 0;
 const mongodb_1 = require("mongodb");
 const login_1 = require("./login");
 const mongo_1 = require("./mongo");
@@ -50,9 +50,9 @@ async function getUser(session, res) {
     return user;
 }
 exports.getUser = getUser;
-async function getPosts(req, res) {
+async function getHelpMe(req, res) {
     try {
-        const posts = await mongo_1.client.get("posts", {}, 0);
+        const posts = await mongo_1.client.get("posts", { "data.help_type": "hempme" }, 0);
         res.send({
             success: true,
             posts: posts
@@ -65,7 +65,23 @@ async function getPosts(req, res) {
         });
     }
 }
-exports.getPosts = getPosts;
+exports.getHelpMe = getHelpMe;
+async function getIHelp(req, res) {
+    try {
+        const posts = await mongo_1.client.get("posts", { "data.help_type": "ihelp" }, 0);
+        res.send({
+            success: true,
+            posts: posts
+        });
+    }
+    catch (err) {
+        res.send({
+            success: true,
+            reason: err
+        });
+    }
+}
+exports.getIHelp = getIHelp;
 async function upload(req, res) {
     if (req.file == null)
         return res.send({

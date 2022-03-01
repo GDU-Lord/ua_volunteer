@@ -13,9 +13,7 @@ const cors = require("cors");
 const upload = multer({ dest: "files/" });
 const app = express();
 app.use(express.json());
-app.use(cors({
-    origin: "http://localhost"
-}));
+app.use(cors());
 const server = (0, http_1.createServer)(app);
 server.listen(3000, "localhost", () => {
     console.log("Сервер працює!");
@@ -33,6 +31,8 @@ app.post("/logout", express.json(), login.logout);
 app.get("/cities", login.verify, geo.cities);
 app.post("/post/create", express.json(), login.verify, post.create);
 app.post("/post/update", express.json(), login.verify, post.update);
+app.post("/ihelp", post.getIHelp);
+app.post("/helpme", post.getHelpMe);
 app.post("/image/upload", login.verify, upload.single("image"), post.upload);
 app.use(/\/image\/.{0,}/, post.image);
 // webhook

@@ -69,11 +69,33 @@ export async function getUser (session, res: express.Response) {
 
 }
 
-export async function getPosts (req: express.Request, res: express.Response) {
+export async function getHelpMe (req: express.Request, res: express.Response) {
 
     try {
 
-        const posts = await client.get("posts", {}, 0);
+        const posts = await client.get("posts", { "data.help_type": "hempme" }, 0);
+
+        res.send({
+            success: true,
+            posts: posts
+        });
+
+    } catch (err) {
+
+        res.send({
+            success: true,
+            reason: err
+        });
+
+    }
+
+}
+
+export async function getIHelp (req: express.Request, res: express.Response) {
+
+    try {
+
+        const posts = await client.get("posts", { "data.help_type": "ihelp" }, 0);
 
         res.send({
             success: true,

@@ -9,7 +9,7 @@ export const BOT_API_TOKEN = "5280684323:AAF04vPNY9obNv18G_z4xpHhxLim3j-7MDk";  
 const ID_PARAM_REGEX = /\/start id_([a-zA-Z0-9]+)/;
 const telegraf = new Telegraf(BOT_API_TOKEN).telegram;
 
-export function receive(req: express.Request, res: express.Response) {
+export async function receive(req: express.Request, res: express.Response) {
   const message: any = req.body?.message;
   const text = message?.text;
 
@@ -30,7 +30,7 @@ export function receive(req: express.Request, res: express.Response) {
     firstName: message?.chat?.first_name
   };
 
-  const verificationSuccess = check(verificationId, telegram_data, true);
+  const verificationSuccess = await check(verificationId, telegram_data, true);
   
   if (verificationSuccess) {
     telegraf
@@ -54,10 +54,19 @@ function extractIdParam(text: string): string | undefined {
 }
 
 const listeners = [];
+const responses = [];
 
 export function verify(code: ObjectId) {
 
   return new Promise<TELEGRAM>((res, rej) => {
+
+    for(let i in responses) {
+
+      const rs = responses[i](code) as TELEGRAM;
+      if(rs)
+        return res(rs);
+
+    }
 
     const index = listeners.length;
 
@@ -82,14 +91,29 @@ export function verify(code: ObjectId) {
 export function check(code: string, data: TELEGRAM, success: boolean, reason?: string) {
 
   if (!success)
-    return false;
+    return new Promise<boolean>((res, rej) => res(false));
 
   for (const i in listeners) {
     const res = listeners[i](data, code);
     if (res)
-      return true;
+      return new Promise<boolean>((res, rej) => res(true));
   }
 
-  return false;
+  return new Promise<boolean>((res, rej) => {
 
+    const index = listeners.length;
+
+    responses[index] = (_code: ObjectId) => {
+
+      if(code == String(_code)) {
+        delete responses[index];
+        res(true);
+        return data;
+      }
+
+      return null;
+
+    };
+
+  });
 }

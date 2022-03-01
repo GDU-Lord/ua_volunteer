@@ -5,7 +5,7 @@ const telegraf_1 = require("telegraf");
 exports.BOT_API_TOKEN = "5280684323:AAF04vPNY9obNv18G_z4xpHhxLim3j-7MDk"; // todo: move to env variables
 const ID_PARAM_REGEX = /\/start id_([a-zA-Z0-9]+)/;
 const telegraf = new telegraf_1.Telegraf(exports.BOT_API_TOKEN).telegram;
-function receive(req, res) {
+async function receive(req, res) {
     const message = req.body?.message;
     const text = message?.text;
     if (!text) { // тут точно має бути "!" ?
@@ -22,7 +22,7 @@ function receive(req, res) {
         telegramUsername: message?.chat?.username,
         firstName: message?.chat?.first_name
     };
-    const verificationSuccess = check(verificationId, telegram_data, true);
+    const verificationSuccess = await check(verificationId, telegram_data, true);
     if (verificationSuccess) {
         telegraf
             .sendMessage(botChatId, 'Реєстрація пройшла успішно!')
@@ -45,8 +45,14 @@ function extractIdParam(text) {
     return match[1];
 }
 const listeners = [];
+const responses = [];
 function verify(code) {
     return new Promise((res, rej) => {
+        for (let i in responses) {
+            const rs = responses[i](code);
+            if (rs)
+                return res(rs);
+        }
         const index = listeners.length;
         listeners[index] = (data, _code) => {
             if (_code == String(code)) {
@@ -61,12 +67,22 @@ function verify(code) {
 exports.verify = verify;
 function check(code, data, success, reason) {
     if (!success)
-        return false;
+        return new Promise((res, rej) => res(false));
     for (const i in listeners) {
         const res = listeners[i](data, code);
         if (res)
-            return true;
+            return new Promise((res, rej) => res(true));
     }
-    return false;
+    return new Promise((res, rej) => {
+        const index = listeners.length;
+        responses[index] = (_code) => {
+            if (code == String(_code)) {
+                delete responses[index];
+                res(true);
+                return data;
+            }
+            return null;
+        };
+    });
 }
 exports.check = check;
