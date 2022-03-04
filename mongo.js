@@ -7,31 +7,34 @@ const dbname = "volunteerua";
 class Data {
     client;
     name;
+    db;
     constructor(name = "default") {
         this.client = new mongodb_1.MongoClient(uri);
         this.name = name;
+        this.db = null;
     }
     // run a mongodb command
     async run(callback = () => { }) {
-        let res;
+        let res = null;
         try {
-            await this.client.connect();
-            const db = await this.client.db(dbname);
-            res = await callback(db);
+            if (this.db == null) {
+                await this.client.connect();
+                this.db = await this.client.db(dbname);
+            }
+            res = await callback(this.db);
         }
         catch (err) {
-            await this.client.close();
+            console.log(err);
             return "error";
         }
         finally {
-            await this.client.close();
             return res;
         }
     }
     // get documents by a certain parameter
-    async get(coll, filter, limit = 1) {
+    async get(coll, filter, limit = 1, offset = 0) {
         const res = await this.run(async (db) => {
-            return await db.collection(coll).find(filter).limit(limit).toArray();
+            return await db.collection(coll).find(filter).skip(offset).limit(limit).toArray();
         });
         return res;
     }

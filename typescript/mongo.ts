@@ -7,35 +7,39 @@ export default class Data {
 
     client: MongoClient;
     name: string;
+    db: Db
 
     constructor (name: string = "default") {
 
         this.client = new MongoClient(uri);
         this.name = name;
+        this.db = null;
 
     }
 
     // run a mongodb command
     async run (callback: (db: Db) => void = () => {}) {
 
-        let res;
+        let res = null;
 
         try {
 
-            await this.client.connect();
-            const db = await this.client.db(dbname);
-            res = await callback(db);
+            if(this.db == null) {
+                await this.client.connect();
+                this.db = await this.client.db(dbname);
+            }
+
+            res = await callback(this.db);
 
         }
         catch (err) {
 
-            await this.client.close();
+            console.log(err);
             return "error";
             
         }
         finally {
 
-            await this.client.close();
             return res;
 
         }
@@ -43,11 +47,11 @@ export default class Data {
     }
 
     // get documents by a certain parameter
-    async get (coll: string, filter: Object, limit: number = 1) {
+    async get (coll: string, filter: Object, limit: number = 1, offset: number = 0) {
 
         const res = await this.run(async (db) => {
 
-            return await db.collection(coll).find(filter).limit(limit).toArray();
+            return await db.collection(coll).find(filter).skip(offset).limit(limit).toArray();
 
         });
 

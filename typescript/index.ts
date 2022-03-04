@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(cors());
 const server = createServer(app);
 
-server.listen(3000, "localhost", () => {
+server.listen(80, "localhost", () => {
 
     console.log("Сервер працює!");
 
@@ -39,15 +39,17 @@ app.get("/login/verified", login.isVerifiedLogin);
 
 app.post("/logout", express.json(), login.logout);
 
-app.get("/cities", login.verify, geo.cities);
+app.get("/cities", geo.cities);
 app.post("/post/create", express.json(), login.verify, post.create);
 app.post("/post/update", express.json(), login.verify, post.update);
+app.get("/post/me", login.verify, post.getMyPosts);
 
-app.post("/ihelp", post.getIHelp);
-app.post("/helpme", post.getHelpMe);
+app.get("/ihelp", post.getIHelp);
+app.get("/helpme", post.getHelpMe);
 
 app.post("/image/upload", login.verify, upload.single("image"), post.upload);
-app.use(/\/image\/.{0,}/, post.image);
+app.get(/\/image\/.{0,}/, post.image);
+
+app.get("/login/active", login.verify, login.getUser);
 
 // webhook
-app.post(`/telegram/update/${BOT_API_TOKEN.replace(/:/g, "_")}`, express.json(), telegramWebhook.receive);

@@ -15,9 +15,11 @@ export async function signup (req: express.Request, res: express.Response) {
             reason: "logged-in"
         });
 
-    const user = req.body as USER;
+    let user = req.body as USER;
     user._id = new ObjectId();
     user.code = new ObjectId();
+
+    user = new User(user);
 
     const [u] = await client.get("users", { phone: user.phone });
 
@@ -47,13 +49,13 @@ export async function login (req: express.Request, res: express.Response) {
     const phone = req.body.phone;
     let [user] = await client.get("users", { phone: phone }) as USER[];
 
-    user = new User(user);
-
     if(user == null)
         return res.send({
             success: false,
             reason: "phone-not-found"
         });
+
+    user = new User(user);
 
     user.code = new ObjectId();
 
@@ -211,6 +213,28 @@ export function verify (req: express.Request, res: express.Response, next) {
 
 }
 
+export async function getUser (req: express.Request, res: express.Response, next) {
+
+    const token = req.session.token;
+    const session = sessions[token];
+
+    let user = session.user;
+    
+    if(user == null)
+        return res.send({
+            success: false,
+            reason: "access-denied"
+        });
+
+    user = new User(user);
+
+    res.send({
+        success: true,
+        user: user
+    });
+
+}
+
 export class User implements USER {
 
     fullName: string;
@@ -220,11 +244,11 @@ export class User implements USER {
     telegramId: string;
 
     constructor (user: USER) {
-        this.fullName = user.fullName || "";
-        this.phone = user.phone || "";
-        this.socials = user.socials || [];
-        this.telegram = user.telegram || null;
-        this.telegramId = user.telegramId || null;
+        this.fullName = user?.fullName || "";
+        this.phone = user?.phone || "";
+        this.socials = user?.socials || [];
+        this.telegram = user?.telegram || null;
+        this.telegramId = user?.telegramId || null;
     }
 
 }
@@ -246,13 +270,15 @@ export class Session implements SESSION {
     _id: ObjectId;
     created: Date;
     terminated: boolean;
+    user: USER;
 
     constructor (user: USER) {
 
         this._id = new ObjectId();
-        this.telegramId = user.telegramId;
+        this.telegramId = user?.telegramId;
         this.created = new Date();
         this.terminated = false;
+        this.user = user;
         sessions[String(this._id)] = this;
 
     }

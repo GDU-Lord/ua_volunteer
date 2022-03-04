@@ -2,20 +2,31 @@ import * as express from "express"
 import { ObjectId } from "mongodb";
 import { sessions, User } from "./login"; 
 import { client } from "./mongo";
-import { HELP_TYPE, POST, POST_DATA, STATUS, TELEGRAM, USER } from "./types";
+import { HELP_TYPE, POST, POST_DATA, SESSION, STATUS, TELEGRAM, USER } from "./types";
 import * as fs from "fs";
+import { session } from "telegraf";
 
 export async function create (req: express.Request, res: express.Response) {
 
     const session = sessions[req.session.token];
+
+    const [helpme] = await client.get("posts", { "telegram.telegramId": session.telegramId, helpType: "helpme" });
+    const [ihelp] = await client.get("posts", { "telegram.telegramId": session.telegramId, helpType: "ihelp" });
     
     const user = await getUser(session, res);
 
     const help_type = req.body.help_type;
     const message = req.body.message;
     const city = req.body.city;
+    const status = req.body.status;
 
-    const post = new Post(user, help_type, message, city);
+    if((helpme != null && help_type == "helpme") || (ihelp != null && help_type == "ihelp"))
+        res.send({
+            success: false,
+            reason: "too-many-ads"
+        });
+
+    const post = new Post(user, help_type, message, city, status);
 
     await client.add("posts", post);
 
@@ -35,6 +46,7 @@ export async function update (req: express.Request, res: express.Response) {
     const message = req.body.message;
     const city = req.body.city;
     const id = new ObjectId(req.body.id);
+    const status = req.body.status;
 
     let [post] = await client.get("posts", { _id: id }) as POST[];
     if(post == null)
@@ -43,7 +55,7 @@ export async function update (req: express.Request, res: express.Response) {
             reason: "post-not-found"
         });
     
-    post = new Post(user, help_type, message, city, post._id);
+    post = new Post(user, help_type, message, city, status, post._id);
 
     await client.update("posts", post._id, post);
 
@@ -55,8 +67,7 @@ export async function update (req: express.Request, res: express.Response) {
 
 export async function getUser (session, res: express.Response) {
 
-    let [user] = await client.get("users", { telegramId: session.telegramId }) as USER[];
-    user = new User(user);
+    let user = session.user;
 
     if(user == null) {
         res.send({
@@ -64,6 +75,8 @@ export async function getUser (session, res: express.Response) {
             reason: "access-denied"
         });
     }
+    
+    user = new User(user);
 
     return user;
 
@@ -73,11 +86,32 @@ export async function getHelpMe (req: express.Request, res: express.Response) {
 
     try {
 
-        const posts = await client.get("posts", { "data.help_type": "hempme" }, 0);
+        const page: number = +req.query.page || 0;
+        const city: string = req.query.city as string || "";
+        const offset = page * 5;
+
+        let posts;
+        let all;
+        const data = [];
+
+        if(city == "Всі міста") {
+            posts = await client.get("posts", { helpType: "helpme", status: "active" }, 5, offset);
+            all = await client.get("posts", { helpType: "helpme", status: "active" }, 0);
+        }
+        else {
+            posts = await client.get("posts", { helpType: "helpme", status: "active", "data.city": city }, 5, offset);
+            all = await client.get("posts", { helpType: "helpme", status: "active", "data.city": city }, 0);
+        }
+
+
+        for(const i in posts) {
+            data.push(posts[i].data);
+        }
 
         res.send({
             success: true,
-            posts: posts
+            posts: data,
+            count: Math.floor(all.length/5)
         });
 
     } catch (err) {
@@ -95,11 +129,31 @@ export async function getIHelp (req: express.Request, res: express.Response) {
 
     try {
 
-        const posts = await client.get("posts", { "data.help_type": "ihelp" }, 0);
+        const page: number = +req.query.page || 0;
+        const city: string = req.query.city as string || "";
+        const offset = page * 5;
+
+        let posts;
+        let all;
+        const data = [];
+
+        if(city == "Всі міста") {
+            posts = await client.get("posts", { helpType: "ihelp", status: "active" }, 5, offset);
+            all = await client.get("posts", { helpType: "ihelp", status: "active" }, 0);
+        }
+        else {
+            posts = await client.get("posts", { helpType: "ihelp", status: "active", "data.city": city }, 5, offset);
+            all = await client.get("posts", { helpType: "ihelp", status: "active", "data.city": city }, 0);
+        }
+
+        for(const i in posts) {
+            data.push(posts[i].data);
+        }
 
         res.send({
             success: true,
-            posts: posts
+            posts: data,
+            count: Math.floor(all.length/5)
         });
 
     } catch (err) {
@@ -110,6 +164,21 @@ export async function getIHelp (req: express.Request, res: express.Response) {
         });
 
     }
+
+}
+
+export async function getMyPosts (req: express.Request, res: express.Response) {
+
+    const session = sessions[req.session.token] as SESSION;
+
+    const [helpme] = await client.get("posts", { "telegram.telegramId": session.telegramId, helpType: "helpme" });
+    const [ihelp] = await client.get("posts", { "telegram.telegramId": session.telegramId, helpType: "ihelp" });
+
+    res.send({
+        success: true,
+        helpme: helpme?.data,
+        ihelp: ihelp?.data
+    });
 
 }
 
@@ -161,7 +230,7 @@ export class Post implements POST {
     created: Date;
     lastUpdated: Date;
 
-    constructor (user: USER, helpType: HELP_TYPE, message: string, city: string, id: ObjectId = null) {
+    constructor (user: USER, helpType: HELP_TYPE, message: string, city: string, status: STATUS, id: ObjectId = null) {
         
         if(id == null)
             this._id = new ObjectId();
@@ -171,14 +240,17 @@ export class Post implements POST {
         this.telegram = user.telegram;
         this.telegramUsername = user.telegram.telegramUsername;
         this.botChatId = user.telegram.botChatId;
-        this.status = "active";
+        this.status = status;
         this.deleted = false;
         this.helpType = helpType;
         this.data = {
             message: message,
             city: city,
             phone: user.phone,
+            fullName: user.fullName,
             socials: user.socials,
+            date: new Date(),
+            status: status,
             id: this._id
         };
         this.created = new Date();

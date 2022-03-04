@@ -27,6 +27,7 @@ export type USER = {
 export interface SESSION {
 
     telegramId: string,
+    user: USER,
     _id: ObjectId,
     terminated: boolean,
     created?: Date,
@@ -59,6 +60,8 @@ export interface POST_DATA {
     city: string,
     phone: string,
     socials: string[],
-    id: ObjectId
+    id: ObjectId,
+    status: STATUS,
+    fullName: string,
+    date: Date
 }
-  

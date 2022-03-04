@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Session = exports.User = exports.verify = exports.logout = exports.isVerifiedLogin = exports.isVerifiedSignup = exports.login = exports.signup = exports.sessions = exports.pending_users = void 0;
+exports.Session = exports.User = exports.getUser = exports.verify = exports.logout = exports.isVerifiedLogin = exports.isVerifiedSignup = exports.login = exports.signup = exports.sessions = exports.pending_users = void 0;
 const mongodb_1 = require("mongodb");
 const mongo_1 = require("./mongo");
 const telegramWebhook = require("./telegram-weebhook");
@@ -12,9 +12,10 @@ async function signup(req, res) {
             success: false,
             reason: "logged-in"
         });
-    const user = req.body;
+    let user = req.body;
     user._id = new mongodb_1.ObjectId();
     user.code = new mongodb_1.ObjectId();
+    user = new User(user);
     const [u] = await mongo_1.client.get("users", { phone: user.phone });
     if (u != null)
         return res.send({
@@ -36,12 +37,12 @@ async function login(req, res) {
         });
     const phone = req.body.phone;
     let [user] = await mongo_1.client.get("users", { phone: phone });
-    user = new User(user);
     if (user == null)
         return res.send({
             success: false,
             reason: "phone-not-found"
         });
+    user = new User(user);
     user.code = new mongodb_1.ObjectId();
     exports.pending_users[String(user.code)] = user;
     res.send({
@@ -160,6 +161,22 @@ function verify(req, res, next) {
     next();
 }
 exports.verify = verify;
+async function getUser(req, res, next) {
+    const token = req.session.token;
+    const session = exports.sessions[token];
+    let user = session.user;
+    if (user == null)
+        return res.send({
+            success: false,
+            reason: "access-denied"
+        });
+    user = new User(user);
+    res.send({
+        success: true,
+        user: user
+    });
+}
+exports.getUser = getUser;
 class User {
     fullName;
     phone;
@@ -167,11 +184,11 @@ class User {
     telegram;
     telegramId;
     constructor(user) {
-        this.fullName = user.fullName || "";
-        this.phone = user.phone || "";
-        this.socials = user.socials || [];
-        this.telegram = user.telegram || null;
-        this.telegramId = user.telegramId || null;
+        this.fullName = user?.fullName || "";
+        this.phone = user?.phone || "";
+        this.socials = user?.socials || [];
+        this.telegram = user?.telegram || null;
+        this.telegramId = user?.telegramId || null;
     }
 }
 exports.User = User;
@@ -187,11 +204,13 @@ class Session {
     _id;
     created;
     terminated;
+    user;
     constructor(user) {
         this._id = new mongodb_1.ObjectId();
-        this.telegramId = user.telegramId;
+        this.telegramId = user?.telegramId;
         this.created = new Date();
         this.terminated = false;
+        this.user = user;
         exports.sessions[String(this._id)] = this;
     }
     terminate() {

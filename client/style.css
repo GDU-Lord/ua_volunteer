@@ -1,0 +1,397 @@
+body {
+
+    padding: 0px;
+    margin: 0px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: #F3F4F6;
+    overflow-x: hidden;
+
+}
+
+#header {
+
+    width: 100vw;
+    height: 365pt;
+    background-color: #FFD262;
+    position: relative;
+    background-image: url(src/header.svg);
+    background-repeat: no-repeat;
+    background-size: 1100pt;
+    background-position: calc(50vw - 400pt) -90pt;
+    
+}
+
+
+#header #title {
+
+    font-size: 40pt;
+    font-weight: 500;
+    position: absolute;
+    left: calc(50vw - 450pt);
+    top: 96pt;
+
+}
+
+#header #welcome {
+
+    font-size: 20pt;
+    position: absolute;
+    left: calc(50vw - 450pt);
+    top: 176pt;
+
+}
+
+#header #login-options #login-button {
+
+    width: 150pt;
+    height: 40pt;
+    font-size: 17pt;
+    color: black;
+    background-color: rgba(255, 255, 255, 0);
+    border: 1pt solid black;
+    position: absolute;
+    cursor: pointer;
+    left: calc(50vw - 450pt);
+    top: 256pt;
+
+}
+
+#header #login-options #signup-button {
+
+    width: 150pt;
+    height: 40pt;
+    font-size: 17pt;
+    color: white;
+    background-color: #3C89FF;
+    border: none;
+    position: absolute;
+    cursor: pointer;
+    left: calc(50vw - 450pt + 190);
+    top: 256pt;
+
+}
+
+#header #page-options #page {
+
+    width: 190pt;
+    height: 40pt;
+    font-size: 17pt;
+    color: white;
+    background-color: #3C89FF;
+    border: none;
+    position: absolute;
+    cursor: pointer; 
+    right: calc(50vw - 450pt);
+    top: 16pt;
+
+}
+
+#header #logout #logout {
+
+    width: 150pt;
+    height: 40pt;
+    font-size: 17pt;
+    color: black;
+    background-color: rgba(255, 255, 255, 0);
+    border: 1pt solid black;
+    position: absolute;
+    cursor: pointer;
+    left: calc(50vw - 450pt);
+    top: 256pt;
+
+}
+
+#body {
+
+    /* width: 100vw; */
+    /* background-color: #F3F4F6; */
+
+}
+
+#signup, #login {
+    
+    width: 600pt;
+    background-color: white;
+    position: relative;
+    /* text-align: center; */
+    padding: 40pt;
+    margin: auto;
+    margin-top: 10pt;
+    margin-bottom: 10pt;
+    border-radius: 30pt;
+
+}
+
+#signup #title, #login #title {
+
+    font-size: 40pt;
+    text-align: center;
+    color: black;
+
+}
+
+#signup .lable, #login .lable {
+
+    text-align: left;
+    padding-top: 40pt;
+    font-size: 20pt;
+    color: black;
+    margin-left: 75pt;
+
+}
+
+#signup input, #login input {
+
+    width: 450pt;
+    height: 40pt;
+    background-color: #F3F4F6;
+    border: none;
+    margin-top: 20pt;
+    margin-left: 75pt;
+    font-size: 25pt;
+
+}
+
+#signup #submit, #login #submit {
+
+    width: 216pt;
+    height: 60pt;
+    font-size: 17pt;
+    color: white;
+    background-color: #3C89FF;
+    border: none;
+    cursor: pointer;
+    margin-left: 192pt;
+    margin-top: 40pt;
+    display: block;
+
+}
+
+#signup #cancel, #login #cancel {
+
+    font-size: 15pt;
+    color: black;
+    text-decoration: underline black;
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    display: block;
+    margin-top: 20pt;
+
+}
+
+#signup #link-title, #login #link-title {
+
+    text-align: center;
+    font-weight: 600;
+    font-size: 20pt;
+
+}
+
+#signup #link-lable, #login #link-lable {
+
+    text-align: center;
+    font-size: 20pt;
+
+}
+
+#signup #link, #login #link {
+
+    margin-top: 60pt;
+    text-align: center;
+
+}
+
+#signup #link a, #login #link a {
+
+    font-size: 45pt;
+    color: #01A0E1;
+    text-decoration: none;
+    font-weight: 600;
+
+}
+
+#find #find-title {
+
+    font-size: 30pt;
+    margin-top: 80pt;
+    margin-left: calc(50vw - 450pt);
+    font-weight: 600;
+
+}
+
+#find #help-options #helpme, #find #help-options #ihelp {
+
+    width: 340pt;
+    height: 40pt;
+    background-color: rgba(255, 255, 255, 0);
+    color: #9B9B9B;
+    font-size: 20pt;
+    border: none;
+    margin-top: 80pt;
+    cursor: pointer;
+
+}
+
+#find #help-options #helpme {
+
+    margin-left: calc(50vw - 450pt);
+
+}
+
+#find #help-options .select {
+
+    color: black !important;
+    border-bottom: 5pt solid black !important;
+
+}
+
+#cities {
+    position: absolute;
+    top: 650pt;
+    right: calc(50vw - 450pt);
+    width: 200pt;
+    cursor: pointer;
+    z-index: 100;
+    /* background-color: white; */
+}
+
+#cities #pin {
+    display: inline-block;
+    height: 30pt;
+    position: absolute;
+    left: -30pt;
+}
+
+#cities #city-button {
+    font-size: 20pt;
+}
+
+#cities input {
+    font-size: 15pt;
+    height: 30pt;
+    width: 100%;
+    border: none;
+    background-color: #fff;
+}
+
+#cities #city-list {
+    font-size: 15pt;
+    width: 100%;
+    max-height: 80pt;
+    overflow-y: hidden;
+}
+
+#cities #city-list .line {
+    background-color: #FFD262;
+    padding: 0pt 5pt;
+}
+
+#cities #city-list .line:hover {
+    background-color: #e0f6ff;
+    padding: 0pt 5pt;
+}
+
+#find #container {
+
+    padding-top: 90pt;
+    text-align: center;
+    border-top: 1pt solid black;
+    width: 900pt;
+    margin: auto;
+
+}
+
+#find .post {
+    
+    text-align: left;
+    width: 860pt;
+    background-color: white;
+    position: relative;
+    padding: 20pt;
+    margin: auto;
+    margin-bottom: 20pt;
+
+}
+
+#find .post .title {
+
+    margin-left: 140pt;
+    font-size: 20pt;
+    font-weight: 600;
+
+}
+
+#find .post .message {
+
+    margin-left: 140pt;
+    font-size: 20pt;
+    min-height: 150pt;
+
+}
+
+#find .post .date, #find .post .city {
+
+    color: #7C7C7C;
+    font-size: 10pt;
+    margin-right: 20pt;
+
+}
+
+#find .post .city {
+
+    margin-left: 140pt;
+}
+
+#find .post .contact {
+
+    width: 180pt;
+    height: 60pt;
+    color: white;
+    background-color: #65CE00;
+    font-size: 20pt;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: 80pt;
+    right: 100pt;
+
+}
+
+#find .post object {
+    position: absolute;
+    width: 30pt;
+    height: 30pt;
+    bottom: 20pt;
+}
+
+#find .post .phone {
+
+    right: 110pt;
+
+}
+
+#find .post .phone {
+
+    right: 110pt;
+
+}
+
+#find .post .facebook {
+
+    right: 150pt;
+
+}
+
+#find .post .mail {
+
+    right: 190pt;
+
+}
+
+.hidden {
+
+    display: none !important;
+
+}

@@ -1,30 +1,27 @@
 import * as express from "express";
-import {Telegraf} from "telegraf";
+// import {Telegraf} from "telegraf";
 import { TELEGRAM } from "./types";
 import { ObjectId } from "mongodb";
+import * as TelegramBot from "node-telegram-bot-api";
 
+export const BOT_API_TOKEN = "5127589339:AAHwaHQaBqWURrsCk2dLR_phFJ---f0s9OE";    // todo: move to env variables
 
-export const BOT_API_TOKEN = "5280684323:AAF04vPNY9obNv18G_z4xpHhxLim3j-7MDk";        // todo: move to env variables
+const bot = new TelegramBot(BOT_API_TOKEN, {polling: true});
 
 const ID_PARAM_REGEX = /\/start id_([a-zA-Z0-9]+)/;
-const telegraf = new Telegraf(BOT_API_TOKEN).telegram;
+// const telegraf = new Telegraf(BOT_API_TOKEN).telegram;
 
-export async function receive(req: express.Request, res: express.Response) {
-  const message: any = req.body?.message;
-  const text = message?.text;
+bot.onText(ID_PARAM_REGEX, async (message) => {
+  // const message: any = req.body?.message;
 
-  if (!text) { // тут точно має бути "!" ?
-    res.sendStatus(200);
-  }
-
-  const verificationId = extractIdParam(text);
+  const verificationId = extractIdParam(message.text);
   const telegramUserId = message?.from?.id;
   const botChatId = message?.chat?.id;
   const telegramUsername = message?.chat?.username;
   const firstName = message?.chat?.first_name;
 
   const telegram_data: TELEGRAM = {
-    telegramId: message?.from?.id,
+    telegramId: String(message?.from?.id),
     botChatId: message?.chat?.id,
     telegramUsername: message?.chat?.username,
     firstName: message?.chat?.first_name
@@ -33,17 +30,13 @@ export async function receive(req: express.Request, res: express.Response) {
   const verificationSuccess = await check(verificationId, telegram_data, true);
   
   if (verificationSuccess) {
-    telegraf
-      .sendMessage(botChatId, 'Реєстрація пройшла успішно!')
-      .catch(err => console.log(err))
-      .then(() => res.sendStatus(200));
+    bot
+      .sendMessage(botChatId, 'Реєстрація пройшла успішно!');
   } else {
-    telegraf
-      .sendMessage(botChatId, 'Помилка реєстрації. Будь ласка, спробуйте ще раз.')
-      .catch(err => console.log(err))
-      .then(() => res.sendStatus(200));
+    bot
+      .sendMessage(botChatId, 'Помилка реєстрації. Будь ласка, спробуйте ще раз.');
   }
-}
+});
 
 function extractIdParam(text: string): string | undefined {
   const match = text.match(ID_PARAM_REGEX);
