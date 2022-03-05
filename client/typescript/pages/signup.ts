@@ -12,23 +12,26 @@ export function create (parent: dom.HTMLComponent) {
     const title = SIGNUP.add(new dom.Div("title")) as dom.HTMLInner;
     title.innerText = "Реєстрація";
 
-    const fullanme_lable = SIGNUP.add(new dom.Div("fullname-lable", ["lable"])) as dom.Div;
-    fullanme_lable.innerText = "ПІБ";
+    const fullanme_label = SIGNUP.add(new dom.Div("fullname-label", ["label"])) as dom.Div;
+    fullanme_label.innerText = "ПІБ";
     const fullname = SIGNUP.add(new dom.Input("fullname")) as dom.Input;
-    const phone_lable = SIGNUP.add(new dom.Div("phone-lable", ["lable"])) as dom.Div;
-    phone_lable.innerText = "Номер телефону (міжнародний формат)";
+    const phone_label = SIGNUP.add(new dom.Div("phone-label", ["label"])) as dom.Div;
+    phone_label.innerText = "Номер телефону (міжнародний формат)";
     const phone = SIGNUP.add(new dom.Input("phone")) as dom.Input;
-    const email_lable = SIGNUP.add(new dom.Div("email-lable", ["lable"])) as dom.Div;
-    email_lable.innerText = "Електронна пошта";
+    const email_label = SIGNUP.add(new dom.Div("email-label", ["label"])) as dom.Div;
+    email_label.innerText = "Електронна пошта";
     const email = SIGNUP.add(new dom.Input("email")) as dom.Input;
-    const facebook_lable = SIGNUP.add(new dom.Div("facebook-lable", ["lable"])) as dom.Div;
-    facebook_lable.innerText = "Facebook (посилання на профіль)";
+    const facebook_label = SIGNUP.add(new dom.Div("facebook-label", ["label"])) as dom.Div;
+    facebook_label.innerText = "Facebook (посилання на профіль)";
     const facebook = SIGNUP.add(new dom.Input("facebook")) as dom.Input;
+
+    const link_img = SIGNUP.add(new dom.HTMLComponent("object", "link-img")) as dom.HTMLComponent;
+    link_img.set("data", "/src/verifycation.svg");
 
     const link_title = SIGNUP.add(new dom.Div("link-title")) as dom.Div;
     link_title.innerText = "Підтвердьте, що це дійсно ви";
-    const link_lable = SIGNUP.add(new dom.Div("link-lable")) as dom.Div;
-    link_lable.innerText = "Будь ласка, перейдіть за посиланням для верифікації";
+    const link_label = SIGNUP.add(new dom.Div("link-label")) as dom.Div;
+    link_label.innerText = "Будь ласка, перейдіть за посиланням для верифікації";
 
     const div = SIGNUP.add(new dom.Div("link")) as dom.Div;
 
@@ -36,7 +39,8 @@ export function create (parent: dom.HTMLComponent) {
     // link.set("target", "_blank");
     link.innerText = "T.ME";
     link.hide();
-    link_lable.hide();
+    link_img.hide();
+    link_label.hide();
     link_title.hide();
 
     const submit = SIGNUP.add(new dom.Button("submit")) as dom.Button;
@@ -49,17 +53,18 @@ export function create (parent: dom.HTMLComponent) {
 
         // LOGIN_OPTIONS.show();
         link.hide();
-        link_lable.hide();
+        link_img.hide();
+        link_label.hide();
         link_title.hide();
         phone.show();
         email.show();
         facebook.show();
         fullname.show();
 
-        phone_lable.show();
-        email_lable.show();
-        facebook_lable.show();
-        fullanme_lable.show();
+        phone_label.show();
+        email_label.show();
+        facebook_label.show();
+        fullanme_label.show();
         title.show();
 
         submit.show();
@@ -112,7 +117,8 @@ export function create (parent: dom.HTMLComponent) {
         link.component.onclick = () => {window.open(href, "Верифікація", "popup")};
 
         link.show();
-        link_lable.show();
+        link_img.show();
+        link_label.show();
         link_title.show();
         title.hide();
         
@@ -121,10 +127,10 @@ export function create (parent: dom.HTMLComponent) {
         facebook.hide();
         fullname.hide();
 
-        phone_lable.hide();
-        email_lable.hide();
-        facebook_lable.hide();
-        fullanme_lable.hide();
+        phone_label.hide();
+        email_label.hide();
+        facebook_label.hide();
+        fullanme_label.hide();
 
         submit.hide();
         submit.unset("disabled");
@@ -138,17 +144,18 @@ export function create (parent: dom.HTMLComponent) {
             setUser(res.user);
 
             link.hide();
-            link_lable.hide();
+            link_img.hide();
+            link_label.hide();
             link_title.hide();
             phone.show();
             email.show();
             facebook.show();
             fullname.show();
 
-            phone_lable.show();
-            email_lable.show();
-            facebook_lable.show();
-            fullanme_lable.show();
+            phone_label.show();
+            email_label.show();
+            facebook_label.show();
+            fullanme_label.show();
 
             submit.show();
             title.show();

@@ -1,91 +1,138 @@
 import * as dom from "../scripts/components.js";
 import { body, head, SIGNUP, LOGIN, HELPME, IHELP, CREATE, CITIES, _CREATE } from "../main.js";
-import * as cities from "./cities.js";
+import * as cities2 from "./cities2.js";
 import * as post from "../scripts/post.js";
+import * as helpme from "./helpme.js";
+import * as ihelp from "./ihelp.js";
 
 export let curId: string = null;
 export let editing = false;
+export let unsaved = false;
+
+function check () {
+
+    if(unsaved == true) {
+        if(confirm("Ви впевнені, що хочете покинути сторінку? Введена вами інформація буде знищена!")) {
+            unsaved = false;
+            return true;
+        }
+        return false;
+    }
+
+    return true;
+
+}
 
 export function create (parent: dom.HTMLComponent) {
 
-    const _CREATE = parent.add(new dom.Div("help-options")) as dom.HTMLInner;
+    const _CREATE = parent.add(new dom.Div("create-container")) as dom.Div;
 
-    const help_type = _CREATE.add(new dom.Div("select")) as dom.Div;
+    const heading = _CREATE.add(new dom.Div("heading")) as dom.Div;
+    heading.innerText = "Мої оголошення";
+
+    const top = _CREATE.add(new dom.Div("top")) as dom.Div;
+    const bottom = _CREATE.add(new dom.Div("bottom")) as dom.Div;
+
+    const help_type = top.add(new dom.Div("select")) as dom.Div;
 
     const helpme = help_type.add(new dom.Input("helpme")) as any;
     helpme.value = "helpme";
     helpme.set("type", "radio");
     helpme.set("name", "help_type");
 
-    const helpme_lable = help_type.add(new dom.HTMLInner("lable")) as dom.HTMLInner;
-    helpme_lable.innerText = "Мені потрібно";
+    const helpme_label = help_type.add(new dom.HTMLInner("div", "", ["label"])) as dom.HTMLInner;
+    helpme_label.innerText = "Я потребую допомоги";
 
     const ihelp = help_type.add(new dom.Input("ihelp")) as any;
     ihelp.value = "ihelp";
     ihelp.set("type", "radio");
     ihelp.set("name", "help_type");
 
-    const ihelp_lable = help_type.add(new dom.HTMLInner("lable")) as dom.HTMLInner;
-    ihelp_lable.innerText = "Я можу";
+    const ihelp_label = help_type.add(new dom.HTMLInner("div", "", ["label"])) as dom.HTMLInner;
+    ihelp_label.innerText = "Я готовий допомогти";
     
-    helpme.component.onclick = () => {
+    helpme.component.onclick = (e) => {
 
+        if(!check())
+            return ihelp.component.checked = true;
         update("helpme");
     
     }
 
-    ihelp.component.onclick = () => {
-
+    ihelp.component.onclick = (e) => {
+        
+        if(!check())
+            return helpme.component.checked = true;
         update("ihelp");
 
     }
 
-    const message = _CREATE.add(new dom.HTMLValue("textarea", "message")) as dom.HTMLValue;
-    message.set("placeholder", "Текст оголошення...");
+    const title_label = top.add(new dom.Div("title-label", ["label"])) as dom.Div;
+    title_label.innerText = "Назва";
 
-    const status = _CREATE.add(new dom.Div("status")) as dom.Div;
+    const title = top.add(new dom.Input("title")) as dom.Input;
 
-    const active = status.add(new dom.Input("active")) as any;
+    const message_label = bottom.add(new dom.Div("message-label", ["label"])) as dom.Div;
+    message_label.innerText = "Опис";
+
+    const message = bottom.add(new dom.HTMLValue("textarea", "message")) as dom.HTMLValue;
+    // message.set("placeholder", "Текст оголошення...");
+
+    const status = bottom.add(new dom.Div("status")) as dom.Div;
+
+    const active = status.add(new dom.Input("active", ["check"])) as any;
     active.value = "active";
     active.set("type", "radio");
     active.set("name", "status");
 
     active.component.click();
+    unsaved = false;
 
-    const active_lable = status.add(new dom.HTMLInner("lable")) as dom.HTMLInner;
-    active_lable.innerText = "Активний";
+    const active_label = status.add(new dom.HTMLInner("div", "", ["label"])) as dom.HTMLInner;
+    active_label.innerText = "Активний";
 
-    const paused = status.add(new dom.Input("paused")) as any;
+    const paused = status.add(new dom.Input("paused", ["check"])) as any;
     paused.value = "paused";
     paused.set("type", "radio");
     paused.set("name", "status");
 
-    const paused_lable = status.add(new dom.HTMLInner("lable")) as dom.HTMLInner;
-    paused_lable.innerText = "Призупенено";
+    const paused_label = status.add(new dom.HTMLInner("div", "", ["label"])) as dom.HTMLInner;
+    paused_label.innerText = "Призупенено";
 
-    const resolved = status.add(new dom.Input("resolved")) as any;
+    const resolved = status.add(new dom.Input("resolved", ["check"])) as any;
     resolved.value = "resolved";
     resolved.set("type", "radio");
     resolved.set("name", "status");
 
-    const resolved_lable = status.add(new dom.HTMLInner("lable")) as dom.HTMLInner;
-    resolved_lable.innerText = "Виконано";
+    const resolved_label = status.add(new dom.HTMLInner("div", "", ["label"])) as dom.HTMLInner;
+    resolved_label.innerText = "Виконано";
 
-    const submit = _CREATE.add(new dom.Button("submit")) as dom.Button;
+    const submit_buttons = _CREATE.add(new dom.Div("submit-buttons")) as dom.Div;
+
+    const submit = submit_buttons.add(new dom.Button("submit", ["button"])) as dom.Button;
     submit.innerText = "Зберегти";
 
-    const edit = _CREATE.add(new dom.Button("edit")) as dom.Button;
+    const edit = submit_buttons.add(new dom.Button("edit", ["button"])) as dom.Button;
     edit.innerText = "Змінити";
 
-    const remove = _CREATE.add(new dom.Button("remove")) as dom.Button;
+    const remove = submit_buttons.add(new dom.Button("remove", ["button"])) as dom.Button;
     remove.innerText = "Видалити";
 
     edit.hide();
     remove.hide();
 
+    active.component.onclick = paused.component.onclick = resolved.component.onclick = () => {
+        
+        unsaved = true;
+
+    };
+
     edit.component.onclick = function () {
 
         if(editing) {
+
+            if(!check())
+                return;
 
             if(helpme.component.checked)
                 update("helpme");
@@ -111,10 +158,11 @@ export function create (parent: dom.HTMLComponent) {
 
     submit.component.onclick = async function () {
 
-        const city = CITIES.component.querySelector(".city") as HTMLInputElement;
-
-        if(!(city.value in cities.cityList))
+        if(cities2.curCity == "Всі міста")
             return alert("Вкажіть місто!");
+
+        if(title.value == "")
+            return alert("Введіть назву оголошення!");
 
         let helpType: string;
         if(ihelp.component.checked)
@@ -148,9 +196,10 @@ export function create (parent: dom.HTMLComponent) {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    city: city.value,
+                    city: cities2.curCity,
                     help_type: helpType,
-                    message: message.value,
+                    title: title.value.slice(0,255),
+                    message: message.value.slice(0,999),
                     status: status
                 })
             });
@@ -162,9 +211,10 @@ export function create (parent: dom.HTMLComponent) {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    city: city.value,
+                    city: cities2.curCity,
                     help_type: helpType,
-                    message: message.value,
+                    title: title.value.slice(0,255),
+                    message: message.value.slice(0,999),
                     status: status,
                     id: curId
                 })
@@ -178,13 +228,15 @@ export function create (parent: dom.HTMLComponent) {
         if(!success)
             return;
 
-        message.value = "";
+        unsaved = false;
+        editing = false;
+        edit.innerText = "Редагувати";
         
         update(helpType);
 
     }
 
-    // helpme.component.click();
+    helpme.component.click();
 
     return _CREATE;
 
@@ -192,15 +244,24 @@ export function create (parent: dom.HTMLComponent) {
 
 export async function update (help_type) {
 
-    const [helpme, ihelp] = await post.getMyPosts();
+    const [_helpme, _ihelp] = await post.getMyPosts();
 
-    const remove = _CREATE.byId("remove") as dom.Button;
-    const edit = _CREATE.byId("edit") as dom.Button;
-    const message = _CREATE.byId("message") as dom.HTMLValue;
+    const top = _CREATE.byId("top") as dom.Div;
+    const bottom = _CREATE.byId("bottom") as dom.Div;
+    const submit_buttons = _CREATE.byId("submit-buttons") as dom.HTMLInner;
+
+    const remove = submit_buttons.byId("remove") as dom.Button;
+    const edit = submit_buttons.byId("edit") as dom.Button;
+    const submit = submit_buttons.byId("submit") as dom.Button;
+    const title = top.byId("title") as dom.HTMLValue;
+    title.value = "";
+    title.unset("disabled");
+    const message = bottom.byId("message") as dom.HTMLValue;
     message.value = "";
     message.unset("disabled");
+    submit.unset("disabled");
 
-    const status =_CREATE.byId("status") as dom.HTMLInner;
+    const status = bottom.byId("status") as dom.HTMLInner;
 
     const active = status.byId("active") as dom.HTMLValue;
     const paused = status.byId("paused") as dom.HTMLValue;
@@ -210,24 +271,43 @@ export async function update (help_type) {
     paused.unset("disabled");
     resolved.unset("disabled");
 
+    active.component.click();
+    unsaved = false;
+
     remove.hide();
     edit.hide();
+
+    helpme.load();
+    ihelp.load();
 
     let ad;
 
     curId = null;
 
+    cities2.set("Всі міста");
+
     if(help_type == "helpme")
-        ad = helpme;
+        ad = _helpme;
     else if(help_type == "ihelp")
-        ad = ihelp;
+        ad = _ihelp;
     else
         return;
 
     if(ad == null)
         return;
+
+    if(ad.status == "active")
+        active.component.click();
+    if(ad.status == "paused")
+        paused.component.click();
+    if(ad.status == "resolved")
+        resolved.component.click();
+
+    unsaved = false;
     
+    title.value = ad.title;
     message.value = ad.message;
+    title.set("disabled", "disabled");
     message.set("disabled", "disabled");
     active.set("disabled", "disabled");
     paused.set("disabled", "disabled");
@@ -236,11 +316,10 @@ export async function update (help_type) {
     const city = CITIES.component.querySelector(".city") as HTMLInputElement;
     city.value = ad.city;
 
-    cities.set(ad.city);
+    cities2.set(ad.city);
 
     curId = ad.id;
 
-    const submit = _CREATE.byId("submit") as dom.Button;
     submit.set("disabled", "disabled");
     remove.show();
     edit.show();

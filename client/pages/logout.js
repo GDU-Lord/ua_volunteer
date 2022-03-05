@@ -20,7 +20,6 @@ export function create(parent) {
         }
         else {
             submit.unset("disabled");
-            alert("Logged out!");
             setUser(null);
             LOGOUT.hide();
             LOGIN_OPTIONS.show();

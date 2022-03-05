@@ -8,96 +8,109 @@ body {
 
 }
 
+button:disabled {
+    opacity: 0.5;
+}
+
 #header {
 
     width: 100vw;
-    height: 365pt;
+    height: 365px;
     background-color: #FFD262;
     position: relative;
     background-image: url(src/header.svg);
     background-repeat: no-repeat;
-    background-size: 1100pt;
-    background-position: calc(50vw - 400pt) -90pt;
+    background-size: 1100px;
+    background-position: calc(50vw - 350px) -90px;
     
 }
 
 
 #header #title {
 
-    font-size: 40pt;
+    font-size: 40px;
     font-weight: 500;
     position: absolute;
-    left: calc(50vw - 450pt);
-    top: 96pt;
+    left: calc(50vw - 450px);
+    top: 96px;
 
 }
 
 #header #welcome {
 
-    font-size: 20pt;
+    font-size: 20px;
     position: absolute;
-    left: calc(50vw - 450pt);
-    top: 176pt;
+    left: calc(50vw - 450px);
+    top: 176px;
+
+}
+
+#header #logo {
+
+    width: 80px;
+    position: absolute;
+    left: calc(50vw - 450px);
+    top: 5px;
 
 }
 
 #header #login-options #login-button {
 
-    width: 150pt;
-    height: 40pt;
-    font-size: 17pt;
+    width: 150px;
+    height: 40px;
+    font-size: 17px;
     color: black;
     background-color: rgba(255, 255, 255, 0);
-    border: 1pt solid black;
+    border: 1px solid black;
     position: absolute;
     cursor: pointer;
-    left: calc(50vw - 450pt);
-    top: 256pt;
+    left: calc(50vw - 450px);
+    top: 256px;
 
 }
 
 #header #login-options #signup-button {
 
-    width: 150pt;
-    height: 40pt;
-    font-size: 17pt;
+    width: 150px;
+    height: 40px;
+    font-size: 17px;
     color: white;
     background-color: #3C89FF;
     border: none;
     position: absolute;
     cursor: pointer;
-    left: calc(50vw - 450pt + 190);
-    top: 256pt;
+    left: calc(50vw - 450px + 190px);
+    top: 256px;
 
 }
 
 #header #page-options #page {
 
-    width: 190pt;
-    height: 40pt;
-    font-size: 17pt;
+    width: 190px;
+    height: 40px;
+    font-size: 17px;
     color: white;
     background-color: #3C89FF;
     border: none;
     position: absolute;
     cursor: pointer; 
-    right: calc(50vw - 450pt);
-    top: 16pt;
+    right: calc(50vw - 450px);
+    top: 16px;
 
 }
 
 #header #logout #logout {
 
-    width: 150pt;
-    height: 40pt;
-    font-size: 17pt;
+    width: 150px;
+    height: 40px;
+    font-size: 17px;
     color: black;
     background-color: rgba(255, 255, 255, 0);
-    border: 1pt solid black;
+    border: 1px solid black;
     position: absolute;
     cursor: pointer;
-    left: calc(50vw - 450pt);
-    top: 256pt;
+    left: calc(50vw - 450px);
+    top: 256px;
 
 }
 
@@ -110,66 +123,66 @@ body {
 
 #signup, #login {
     
-    width: 600pt;
+    width: 600px;
     background-color: white;
     position: relative;
     /* text-align: center; */
-    padding: 40pt;
+    padding: 40px;
     margin: auto;
-    margin-top: 10pt;
-    margin-bottom: 10pt;
-    border-radius: 30pt;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 30px;
 
 }
 
 #signup #title, #login #title {
 
-    font-size: 40pt;
+    font-size: 40px;
     text-align: center;
     color: black;
 
 }
 
-#signup .lable, #login .lable {
+#signup .label, #login .label {
 
     text-align: left;
-    padding-top: 40pt;
-    font-size: 20pt;
+    padding-top: 40px;
+    font-size: 20px;
     color: black;
-    margin-left: 75pt;
+    margin-left: 75px;
 
 }
 
 #signup input, #login input {
 
-    width: 450pt;
-    height: 40pt;
+    width: 450px;
+    height: 40px;
     background-color: #F3F4F6;
     border: none;
-    margin-top: 20pt;
-    margin-left: 75pt;
-    font-size: 25pt;
+    margin-top: 20px;
+    margin-left: 75px;
+    font-size: 25px;
 
 }
 
 #signup #submit, #login #submit {
 
-    width: 216pt;
-    height: 60pt;
-    font-size: 17pt;
+    width: 216px;
+    height: 60px;
+    font-size: 17px;
     color: white;
     background-color: #3C89FF;
     border: none;
     cursor: pointer;
-    margin-left: 192pt;
-    margin-top: 40pt;
+    margin-left: 192px;
+    margin-top: 40px;
     display: block;
 
 }
 
 #signup #cancel, #login #cancel {
 
-    font-size: 15pt;
+    font-size: 15px;
     color: black;
     text-decoration: underline black;
     background-color: rgba(255, 255, 255, 0);
@@ -177,7 +190,14 @@ body {
     cursor: pointer;
     text-align: center;
     display: block;
-    margin-top: 20pt;
+    margin-top: 20px;
+
+}
+
+#signup #link-img, #login #link-img {
+
+    width: 300px;
+    margin-left: 150px;
 
 }
 
@@ -185,27 +205,27 @@ body {
 
     text-align: center;
     font-weight: 600;
-    font-size: 20pt;
+    font-size: 20px;
 
 }
 
-#signup #link-lable, #login #link-lable {
+#signup #link-label, #login #link-label {
 
     text-align: center;
-    font-size: 20pt;
+    font-size: 20px;
 
 }
 
 #signup #link, #login #link {
 
-    margin-top: 60pt;
+    margin-top: 60px;
     text-align: center;
 
 }
 
 #signup #link a, #login #link a {
 
-    font-size: 45pt;
+    font-size: 45px;
     color: #01A0E1;
     text-decoration: none;
     font-weight: 600;
@@ -214,91 +234,96 @@ body {
 
 #find #find-title {
 
-    font-size: 30pt;
-    margin-top: 80pt;
-    margin-left: calc(50vw - 450pt);
+    font-size: 30px;
+    margin-top: 80px;
+    margin-left: calc(50vw - 450px);
     font-weight: 600;
 
 }
 
 #find #help-options #helpme, #find #help-options #ihelp {
 
-    width: 340pt;
-    height: 40pt;
+    width: 340px;
+    height: 40px;
     background-color: rgba(255, 255, 255, 0);
     color: #9B9B9B;
-    font-size: 20pt;
+    font-size: 20px;
     border: none;
-    margin-top: 80pt;
+    margin-top: 80px;
     cursor: pointer;
 
 }
 
 #find #help-options #helpme {
 
-    margin-left: calc(50vw - 450pt);
+    margin-left: calc(50vw - 450px);
 
 }
 
 #find #help-options .select {
 
     color: black !important;
-    border-bottom: 5pt solid black !important;
+    border-bottom: 5px solid black !important;
 
 }
 
 #cities {
     position: absolute;
-    top: 650pt;
-    right: calc(50vw - 450pt);
-    width: 200pt;
+    top: 650px;
+    right: calc(50vw - 450px);
+    width: 200px;
     cursor: pointer;
     z-index: 100;
+    text-align: left;
     /* background-color: white; */
+}
+
+#create #cities {
+    top: 500px;
 }
 
 #cities #pin {
     display: inline-block;
-    height: 30pt;
+    height: 30px;
     position: absolute;
-    left: -30pt;
+    left: -30px;
 }
 
 #cities #city-button {
-    font-size: 20pt;
+    font-size: 20px;
 }
 
 #cities input {
-    font-size: 15pt;
-    height: 30pt;
+    font-size: 15px;
+    height: 30px;
     width: 100%;
     border: none;
     background-color: #fff;
 }
 
 #cities #city-list {
-    font-size: 15pt;
+    font-size: 15px;
     width: 100%;
-    max-height: 80pt;
+    max-height: 80px;
     overflow-y: hidden;
 }
 
 #cities #city-list .line {
     background-color: #FFD262;
-    padding: 0pt 5pt;
+    padding: 0px 5px;
 }
 
 #cities #city-list .line:hover {
     background-color: #e0f6ff;
-    padding: 0pt 5pt;
+    padding: 0px 5px;
 }
 
 #find #container {
 
-    padding-top: 90pt;
+    padding-top: 90px;
     text-align: center;
-    border-top: 1pt solid black;
-    width: 900pt;
+    border-top: 1px solid black;
+    width: 900px;
     margin: auto;
 
 }
@@ -306,89 +331,268 @@ body {
 #find .post {
     
     text-align: left;
-    width: 860pt;
+    width: 860px;
     background-color: white;
     position: relative;
-    padding: 20pt;
+    padding: 20px;
     margin: auto;
-    margin-bottom: 20pt;
+    margin-bottom: 20px;
 
 }
 
 #find .post .title {
 
-    margin-left: 140pt;
-    font-size: 20pt;
+    margin-left: 140px;
+    font-size: 20px;
     font-weight: 600;
 
 }
 
 #find .post .message {
 
-    margin-left: 140pt;
-    font-size: 20pt;
-    min-height: 150pt;
+    margin-left: 140px;
+    font-size: 20px;
+    min-height: 150px;
 
 }
 
 #find .post .date, #find .post .city {
 
     color: #7C7C7C;
-    font-size: 10pt;
-    margin-right: 20pt;
+    font-size: 15px;
+    margin-right: 25px;
+
+}
+
+#find .post .city .city-pin {
+
+    position: relative;
+    top: 8px;
 
 }
 
 #find .post .city {
 
-    margin-left: 140pt;
+    margin-left: 140px;
+
 }
 
 #find .post .contact {
 
-    width: 180pt;
-    height: 60pt;
+    width: 180px;
+    height: 60px;
     color: white;
     background-color: #65CE00;
-    font-size: 20pt;
+    font-size: 20px;
     border: none;
     cursor: pointer;
     position: absolute;
-    top: 80pt;
-    right: 100pt;
+    top: 80px;
+    right: 100px;
 
 }
 
 #find .post object {
     position: absolute;
-    width: 30pt;
-    height: 30pt;
-    bottom: 20pt;
+    width: 30px;
+    height: 30px;
+    bottom: 20px;
 }
 
 #find .post .phone {
 
-    right: 110pt;
+    right: 110px;
 
 }
 
 #find .post .phone {
 
-    right: 110pt;
+    right: 110px;
 
 }
 
 #find .post .facebook {
 
-    right: 150pt;
+    right: 150px;
 
 }
 
 #find .post .mail {
 
-    right: 190pt;
+    right: 190px;
 
 }
+
+#find #buttons {
+
+    margin: auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    text-align: center;
+
+}
+
+#find #buttons .button  {
+
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 0.5px solid black;
+    border-right: 0.5px solid black;
+    background-color: rgba(255, 255, 255, 0);
+
+}
+
+#find #buttons .select {
+
+    background-color: #3C89FF;
+    color: white;
+    border: none;
+
+}
+
+#create {
+    text-align: center;
+}
+
+#create #heading {
+
+    text-align: left;
+    margin-left: calc(50vw - 450px);
+    font-size: 30px;
+    font-weight: 600;
+    margin-top: 80px;
+    margin-bottom: 80px;
+
+}
+
+#create #top, #create #bottom {
+    
+    text-align: left;
+    width: 900px;
+    background-color: white;
+    margin: 20px auto;
+    padding-bottom: 30px;
+    padding-top: 20px;
+
+}
+
+#create #top #select input {
+
+    position: relative;
+    bottom: 2px;
+    margin-left: 30px;
+    transform: scale(2);
+
+}
+
+#create #top #select .label {
+
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 20px;
+    display: inline-block;
+
+}
+
+#create #top #title-label {
+
+    
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 20px;
+    margin-left: 25px;
+
+}
+
+#create #top #title {
+
+    font-size: 25px;
+    margin-top: 20px;
+    margin-left: 25px;
+    width: 420px;
+    border: none;
+    background-color: #F3F4F6;
+
+}
+
+#create #bottom #message-label {
+
+    
+    font-size: 20px;
+    font-weight: 600;
+    margin-left: 25px;
+
+}
+
+#create #bottom #message {
+
+    font-size: 25px;
+    margin-top: 20px;
+    margin-left: 25px;
+    width: 420px;
+    height: 200px;
+    border: none;
+    background-color: #F3F4F6;
+
+}
+
+#create #bottom #status input {
+
+    position: relative;
+    bottom: 2px;
+    margin-left: 30px;
+    transform: scale(2);
+
+}
+
+#create #bottom #status .label {
+
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 20px;
+    display: inline-block;
+
+}
+
+#create #submit-buttons {
+
+    margin: auto;
+
+}
+
+#create #submit-buttons .button {
+
+    width: 216px;
+    height: 60px;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+    margin: 40px 10px;
+    display: inline-block;
+
+}
+
+#create #submit-buttons #submit {
+    color: white;
+    background-color: #3C89FF;
+}
+
+#create #submit-buttons #edit {
+    color: black;
+    background-color: #65CE00;
+}
+
+
+#create #submit-buttons #remove {
+    color: black;
+    background-color: #ff6c62;
+}
+
 
 .hidden {
 

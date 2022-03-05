@@ -6,10 +6,10 @@ export function create (parent: dom.HTMLComponent) {
     const HELP_OPTIONS = parent.add(new dom.Div("help-options")) as dom.HTMLInner;
 
     const helpme = HELP_OPTIONS.add(new dom.Button("helpme")) as dom.Button;
-    helpme.innerText = "Готові допомогти";
+    helpme.innerText = "Потребують допомоги";
 
     const ihelp = HELP_OPTIONS.add(new dom.Button("ihelp")) as dom.Button;
-    ihelp.innerText = "Потребують допомоги";
+    ihelp.innerText = "Готові допомогти";
 
     helpme.addClass("select");
     

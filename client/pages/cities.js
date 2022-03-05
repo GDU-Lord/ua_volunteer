@@ -62,7 +62,9 @@ export function create(parent) {
         list.show();
         field.hide();
         input.show();
-        input.value = "";
+        input.value = field.innerText;
+        if (input.value == "Всі міста")
+            input.value = "";
         input.component.focus();
         opened = true;
     };

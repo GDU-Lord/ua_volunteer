@@ -16,8 +16,8 @@ export class Post {
         this.div = parent.add(new dom.Div("", ["post"]));
         this.title = this.div.add(new dom.Div("", ["title"]));
         this.message = this.div.add(new dom.Div("", ["message"]));
-        this.city = this.div.add(new dom.HTMLInner("lable", "", ["city"]));
-        this.date = this.div.add(new dom.HTMLInner("lable", "", ["date"]));
+        this.city = this.div.add(new dom.HTMLInner("label", "", ["city"]));
+        this.date = this.div.add(new dom.HTMLInner("label", "", ["date"]));
         this.phone = this.div.add(new dom.Div("", ["phone"]));
         this.facebook = this.div.add(new dom.Div("", ["facebook"]));
         this.email = this.div.add(new dom.Div("", ["email"]));
@@ -26,7 +26,7 @@ export class Post {
         this.contact.innerText = "Зв'язатись";
         this.title.innerText = "Оголошення";
         this.message.innerText = post.message;
-        this.city.innerText = post.city;
+        this.city.innerHTML = `<object class="city-pin" data="src/pin outline.svg"></object><label>${post.city}</label>`;
         this.date.innerText = post.date;
         // this.email.innerHTML = `<object src="${post.socials[0]}"></object>`;
         // this.facebook.innerHTML = `<object src="${post.socials[1]}"></object>`;

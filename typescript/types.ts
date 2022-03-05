@@ -63,5 +63,6 @@ export interface POST_DATA {
     id: ObjectId,
     status: STATUS,
     fullName: string,
+    title: string,
     date: Date
 }

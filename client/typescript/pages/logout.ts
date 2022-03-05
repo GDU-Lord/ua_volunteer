@@ -27,7 +27,6 @@ export function create (parent: dom.HTMLComponent) {
         }
         else {
             submit.unset("disabled");
-            alert("Logged out!");
             setUser(null);
             LOGOUT.hide();
             LOGIN_OPTIONS.show();

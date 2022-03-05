@@ -3,9 +3,9 @@ import { HELPME, IHELP } from "../main.js";
 export function create(parent) {
     const HELP_OPTIONS = parent.add(new dom.Div("help-options"));
     const helpme = HELP_OPTIONS.add(new dom.Button("helpme"));
-    helpme.innerText = "Готові допомогти";
+    helpme.innerText = "Потребують допомоги";
     const ihelp = HELP_OPTIONS.add(new dom.Button("ihelp"));
-    ihelp.innerText = "Потребують допомоги";
+    ihelp.innerText = "Готові допомогти";
     helpme.addClass("select");
     helpme.component.onclick = () => {
         HELPME.show();

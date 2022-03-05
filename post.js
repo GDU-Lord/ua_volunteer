@@ -14,12 +14,13 @@ async function create(req, res) {
     const message = req.body.message;
     const city = req.body.city;
     const status = req.body.status;
+    const title = req.body.title;
     if ((helpme != null && help_type == "helpme") || (ihelp != null && help_type == "ihelp"))
         res.send({
             success: false,
             reason: "too-many-ads"
         });
-    const post = new Post(user, help_type, message, city, status);
+    const post = new Post(user, help_type, title, message, city, status);
     await mongo_1.client.add("posts", post);
     res.send({
         success: true
@@ -34,13 +35,14 @@ async function update(req, res) {
     const city = req.body.city;
     const id = new mongodb_1.ObjectId(req.body.id);
     const status = req.body.status;
+    const title = req.body.title;
     let [post] = await mongo_1.client.get("posts", { _id: id });
     if (post == null)
         return res.send({
             success: false,
             reason: "post-not-found"
         });
-    post = new Post(user, help_type, message, city, status, post._id);
+    post = new Post(user, help_type, title, message, city, status, post._id);
     await mongo_1.client.update("posts", post._id, post);
     res.send({
         success: true
@@ -81,7 +83,7 @@ async function getHelpMe(req, res) {
         res.send({
             success: true,
             posts: data,
-            count: Math.floor(all.length / 5)
+            count: Math.ceil(all.length / 5)
         });
     }
     catch (err) {
@@ -114,7 +116,7 @@ async function getIHelp(req, res) {
         res.send({
             success: true,
             posts: data,
-            count: Math.floor(all.length / 5)
+            count: Math.ceil(all.length / 5)
         });
     }
     catch (err) {
@@ -172,7 +174,7 @@ class Post {
     additionalParams; // start params
     created;
     lastUpdated;
-    constructor(user, helpType, message, city, status, id = null) {
+    constructor(user, helpType, title, message, city, status, id = null) {
         if (id == null)
             this._id = new mongodb_1.ObjectId();
         else
@@ -192,6 +194,7 @@ class Post {
             socials: user.socials,
             date: new Date(),
             status: status,
+            title: title,
             id: this._id
         };
         this.created = new Date();

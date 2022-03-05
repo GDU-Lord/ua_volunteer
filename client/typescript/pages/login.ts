@@ -12,14 +12,17 @@ export function create (parent: dom.HTMLComponent) {
     const title = LOGIN.add(new dom.Div("title")) as dom.HTMLInner;
     title.innerText = "Вхід";
 
-    const phone_lable = LOGIN.add(new dom.Div("phone-lable", ["lable"])) as dom.Div;
-    phone_lable.innerText = "Номер телефону (міжнародний формат)";
+    const phone_label = LOGIN.add(new dom.Div("phone-label", ["label"])) as dom.Div;
+    phone_label.innerText = "Номер телефону (міжнародний формат)";
     const phone = LOGIN.add(new dom.Input("phone")) as dom.Input;
+
+    const link_img = LOGIN.add(new dom.HTMLComponent("object", "link-img")) as dom.HTMLComponent;
+    link_img.set("data", "/src/verifycation.svg");
 
     const link_title = LOGIN.add(new dom.Div("link-title")) as dom.Div;
     link_title.innerText = "Підтвердьте, що це дійсно ви";
-    const link_lable = LOGIN.add(new dom.Div("link-lable")) as dom.Div;
-    link_lable.innerText = "Будь ласка, перейдіть за посиланням для верифікації";
+    const link_label = LOGIN.add(new dom.Div("link-label")) as dom.Div;
+    link_label.innerText = "Будь ласка, перейдіть за посиланням для верифікації";
 
     const div = LOGIN.add(new dom.Div("link")) as dom.Div;
 
@@ -27,7 +30,8 @@ export function create (parent: dom.HTMLComponent) {
     link.set("target", "_blank");
     link.innerText = "T.ME";
     link.hide();
-    link_lable.hide();
+    link_img.hide();
+    link_label.hide();
     link_title.hide();
 
     const submit = LOGIN.add(new dom.Button("submit")) as dom.Button;
@@ -40,10 +44,11 @@ export function create (parent: dom.HTMLComponent) {
 
         // LOGIN_OPTIONS.show();
         link.hide();
-        link_lable.hide();
+        link_img.hide();
+        link_label.hide();
         link_title.hide();
         phone.show();
-        phone_lable.show();
+        phone_label.show();
         submit.show();
         title.show();
 
@@ -82,10 +87,11 @@ export function create (parent: dom.HTMLComponent) {
         link.component.onclick = () => {window.open(href, "Верифікація", "popup")};
 
         link.show();
-        link_lable.show();
+        link_img.show();
+        link_label.show();
         link_title.show();
         phone.hide();
-        phone_lable.hide();
+        phone_label.hide();
         submit.hide();
         submit.unset("disabled");
         title.hide();
@@ -99,10 +105,11 @@ export function create (parent: dom.HTMLComponent) {
             setUser(res.user);
 
             link.hide();
-            link_lable.hide();
+            link_img.hide();
+            link_label.hide();
             link_title.hide();
             phone.show();
-            phone_lable.show();
+            phone_label.show();
             submit.show();
             title.show();
 

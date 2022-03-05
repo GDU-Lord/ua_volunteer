@@ -22,8 +22,8 @@ export class Post {
 
         this.title = this.div.add(new dom.Div("", ["title"])) as dom.Div;
         this.message = this.div.add(new dom.Div("", ["message"])) as dom.Div;
-        this.city = this.div.add(new dom.HTMLInner("lable", "", ["city"])) as dom.Div;
-        this.date = this.div.add(new dom.HTMLInner("lable", "", ["date"])) as dom.Div;
+        this.city = this.div.add(new dom.HTMLInner("label", "", ["city"])) as dom.Div;
+        this.date = this.div.add(new dom.HTMLInner("label", "", ["date"])) as dom.Div;
         this.phone = this.div.add(new dom.Div("", ["phone"])) as dom.Div;
         this.facebook = this.div.add(new dom.Div("", ["facebook"])) as dom.Div;
         this.email = this.div.add(new dom.Div("", ["email"])) as dom.Div;
@@ -33,7 +33,7 @@ export class Post {
 
         this.title.innerText = "Оголошення";
         this.message.innerText = post.message;
-        this.city.innerText = post.city;
+        this.city.innerHTML = `<object class="city-pin" data="src/pin outline.svg"></object><label>${post.city}</label>`;
         this.date.innerText = post.date;
         // this.email.innerHTML = `<object src="${post.socials[0]}"></object>`;
         // this.facebook.innerHTML = `<object src="${post.socials[1]}"></object>`;

@@ -10,10 +10,10 @@ export let opened: boolean = false;
 export function set (city) {
 
     curCity = city;
-    helpme.reset();
-    ihelp.reset();
-    helpme.load();
-    ihelp.load();
+    const i = document.querySelector("#create").querySelector(".city") as HTMLInputElement;
+    const f = document.querySelector("#create").querySelector("#city-button") as HTMLDivElement;
+    i.value = curCity;
+    f.innerText = curCity;
 
 }
 
