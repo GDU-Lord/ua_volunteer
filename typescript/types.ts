@@ -5,8 +5,8 @@ export type TELEGRAM = {
     firstName: string,
     botChatId: number,
     telegramUsername?: string,
-    telegramId: string
-
+    telegramId: string,
+    picture: string
 
 }
 
@@ -64,5 +64,6 @@ export interface POST_DATA {
     status: STATUS,
     fullName: string,
     title: string,
-    date: Date
+    date: Date,
+    picture: string
 }

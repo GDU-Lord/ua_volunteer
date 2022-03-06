@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Post = exports.image = exports.upload = exports.getMyPosts = exports.getIHelp = exports.getHelpMe = exports.getUser = exports.update = exports.create = void 0;
+exports.Post = exports.image = exports.upload = exports.getMyPosts = exports.getIHelp = exports.getHelpMe = exports.getUser = exports.remove = exports.update = exports.create = void 0;
 const mongodb_1 = require("mongodb");
 const login_1 = require("./login");
 const mongo_1 = require("./mongo");
@@ -36,7 +36,7 @@ async function update(req, res) {
     const id = new mongodb_1.ObjectId(req.body.id);
     const status = req.body.status;
     const title = req.body.title;
-    let [post] = await mongo_1.client.get("posts", { _id: id });
+    let [post] = await mongo_1.client.get("posts", { _id: id, "telegram.telegramId": user.telegramId });
     if (post == null)
         return res.send({
             success: false,
@@ -49,6 +49,22 @@ async function update(req, res) {
     });
 }
 exports.update = update;
+async function remove(req, res) {
+    const session = login_1.sessions[req.session.token];
+    const user = await getUser(session, res);
+    const id = new mongodb_1.ObjectId(req.body.id);
+    let [post] = await mongo_1.client.get("posts", { _id: id, "telegram.telegramId": user.telegramId });
+    if (post == null)
+        return res.send({
+            success: false,
+            reason: "post-not-found"
+        });
+    await mongo_1.client.remove("posts", post._id);
+    res.send({
+        success: true
+    });
+}
+exports.remove = remove;
 async function getUser(session, res) {
     let user = session.user;
     if (user == null) {
@@ -195,6 +211,7 @@ class Post {
             date: new Date(),
             status: status,
             title: title,
+            picture: user.telegram.picture,
             id: this._id
         };
         this.created = new Date();

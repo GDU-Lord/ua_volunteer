@@ -4,12 +4,13 @@ import * as cities2 from "./cities2.js";
 import * as post from "../scripts/post.js";
 import * as helpme from "./helpme.js";
 import * as ihelp from "./ihelp.js";
+import { Alert, Confirm } from "../scripts/alert.js";
 export let curId = null;
 export let editing = false;
 export let unsaved = false;
-function check() {
+async function check() {
     if (unsaved == true) {
-        if (confirm("Ви впевнені, що хочете покинути сторінку? Введена вами інформація буде знищена!")) {
+        if (await Confirm("Ви впевнені, що хочете покинути сторінку? Введена вами інформація буде знищена!")) {
             unsaved = false;
             return true;
         }
@@ -36,13 +37,13 @@ export function create(parent) {
     ihelp.set("name", "help_type");
     const ihelp_label = help_type.add(new dom.HTMLInner("div", "", ["label"]));
     ihelp_label.innerText = "Я готовий допомогти";
-    helpme.component.onclick = (e) => {
-        if (!check())
+    helpme.component.onclick = async (e) => {
+        if (!await check())
             return ihelp.component.checked = true;
         update("helpme");
     };
-    ihelp.component.onclick = (e) => {
-        if (!check())
+    ihelp.component.onclick = async (e) => {
+        if (!await check())
             return helpme.component.checked = true;
         update("ihelp");
     };
@@ -86,9 +87,29 @@ export function create(parent) {
     active.component.onclick = paused.component.onclick = resolved.component.onclick = () => {
         unsaved = true;
     };
-    edit.component.onclick = function () {
+    remove.component.onclick = async function () {
+        if (!await Confirm("Ви дійсно впевнені, що хочете видалити оголошення?"))
+            return;
+        const res = await fetch("/post/remove", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: curId
+            })
+        });
+        const { success } = await res.json();
+        if (!success)
+            return Alert("Помилка!");
+        if (helpme.component.checked)
+            update("helpme");
+        if (ihelp.component.checked)
+            update("ihelp");
+    };
+    edit.component.onclick = async function () {
         if (editing) {
-            if (!check())
+            if (!await check())
                 return;
             if (helpme.component.checked)
                 update("helpme");
@@ -96,6 +117,7 @@ export function create(parent) {
                 update("ihelp");
             edit.innerText = "Редагувати";
             editing = false;
+            cities2.setStatus(false);
             return;
         }
         editing = true;
@@ -105,21 +127,23 @@ export function create(parent) {
         paused.unset("disabled");
         resolved.unset("disabled");
         edit.innerText = "Скасувати";
+        unsaved = true;
+        cities2.setStatus(true);
     };
     submit.component.onclick = async function () {
         if (cities2.curCity == "Всі міста")
-            return alert("Вкажіть місто!");
+            return await Alert("Вкажіть місто!");
         if (title.value == "")
-            return alert("Введіть назву оголошення!");
+            return await Alert("Введіть назву оголошення!");
         let helpType;
         if (ihelp.component.checked)
             helpType = "ihelp";
         else if (helpme.component.checked)
             helpType = "helpme";
         else
-            return alert("Вкажіть тип оголошення!");
+            return await Alert("Вкажіть тип оголошення!");
         if (message.value.length < 20)
-            return alert("Оголошення закоротке!");
+            return await Alert("Оголошення закоротке!");
         let status;
         if (active.component.checked)
             status = "active";
@@ -128,7 +152,7 @@ export function create(parent) {
         else if (resolved.component.checked)
             status = "resolved";
         else
-            return alert("Вкажіть статус оголошення!");
+            return await Alert("Вкажіть статус оголошення!");
         submit.set("disabled", "disabled");
         let res;
         if (curId == null) {
@@ -198,6 +222,7 @@ export async function update(help_type) {
     resolved.unset("disabled");
     active.component.click();
     unsaved = false;
+    cities2.setStatus(true);
     remove.hide();
     edit.hide();
     helpme.load();
@@ -220,6 +245,8 @@ export async function update(help_type) {
     if (ad.status == "resolved")
         resolved.component.click();
     unsaved = false;
+    editing = false;
+    edit.innerText = "Редагувати";
     title.value = ad.title;
     message.value = ad.message;
     title.set("disabled", "disabled");
@@ -230,6 +257,7 @@ export async function update(help_type) {
     const city = CITIES.component.querySelector(".city");
     city.value = ad.city;
     cities2.set(ad.city);
+    cities2.setStatus(false);
     curId = ad.id;
     submit.set("disabled", "disabled");
     remove.show();

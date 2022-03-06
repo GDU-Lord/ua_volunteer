@@ -1,5 +1,5 @@
 import * as dom from "../scripts/components.js";
-import { SIGNUP, LOGIN } from "../main.js";
+import { SIGNUP, LOGIN, guide } from "../main.js";
 export function create(parent) {
     const LOGIN_OPTIONS = parent.add(new dom.Div("login-options"));
     const login = LOGIN_OPTIONS.add(new dom.Button("login-button"));
@@ -10,11 +10,13 @@ export function create(parent) {
         // LOGIN_OPTIONS.hide();
         LOGIN.show();
         SIGNUP.hide();
+        guide.hide();
     };
     signup.component.onclick = () => {
         // LOGIN_OPTIONS.hide();
         SIGNUP.show();
         LOGIN.hide();
+        guide.hide();
     };
     return LOGIN_OPTIONS;
 }

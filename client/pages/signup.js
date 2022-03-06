@@ -1,7 +1,8 @@
 import * as dom from "../scripts/components.js";
-import { setUser, LOGIN_OPTIONS, HELPME, LOGOUT, HELP_OPTIONS, CITIES, PAGE_OPTIONS } from "../main.js";
+import { setUser, LOGIN_OPTIONS, HELPME, LOGOUT, HELP_OPTIONS, CITIES, PAGE_OPTIONS, guide } from "../main.js";
 import * as helpme from "./helpme.js";
 import * as ihelp from "./ihelp.js";
+import { Alert } from "../scripts/alert.js";
 const PHONE_REGEX = /^\+380[0-9]{9}$/g;
 const EMAIL_REGEX = /^[a-zA-Z0-9.]{0,}@[a-zA-Z0-9.]{0,}$/g;
 export function create(parent) {
@@ -53,19 +54,20 @@ export function create(parent) {
         facebook_label.show();
         fullanme_label.show();
         title.show();
+        guide.show();
         submit.show();
         SIGNUP.hide();
     };
     submit.component.onclick = async () => {
         fullname.value = fullname.value.trim();
         if (fullname.value == "")
-            return alert("Введіть П.І.Б!");
+            return await Alert("Введіть П.І.Б!");
         if (phone.value.search(PHONE_REGEX) == -1)
-            return alert("Введіть номер телефону!");
+            return await Alert("Введіть номер телефону!");
         if (email.value.search(EMAIL_REGEX) == -1)
-            return alert("Введіть свій email!");
+            return await Alert("Введіть свій email!");
         if (facebook.value == "")
-            return alert("Дайте посиланн на свій Facebook профіль!");
+            return await Alert("Дайте посиланн на свій Facebook профіль!");
         submit.set("disabled", "disabled");
         const signup_res = await fetch("/signup", {
             method: "POST",
@@ -80,12 +82,12 @@ export function create(parent) {
         });
         let { success, code, reason } = await signup_res.json();
         if (!success) {
-            alert("Error");
+            await Alert("Error");
             submit.unset("disabled");
             return;
         }
+        link.unset("href");
         const href = `https://t.me/volunteeruaVerify_bot?start=id_${code}`;
-        link.href = "#";
         link.component.onclick = () => { window.open(href, "Верифікація", "popup"); };
         link.show();
         link_img.show();

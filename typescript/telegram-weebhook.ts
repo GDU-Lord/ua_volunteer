@@ -1,10 +1,12 @@
 import * as express from "express";
 // import {Telegraf} from "telegraf";
-import { TELEGRAM } from "./types";
+import { TELEGRAM, USER } from "./types";
 import { ObjectId } from "mongodb";
 import * as TelegramBot from "node-telegram-bot-api";
+import { env } from "./index";
+import { client } from "./mongo";
 
-export const BOT_API_TOKEN = "5127589339:AAHwaHQaBqWURrsCk2dLR_phFJ---f0s9OE";    // todo: move to env variables
+export const BOT_API_TOKEN = env.token;    // todo: move to env variables
 
 const bot = new TelegramBot(BOT_API_TOKEN, {polling: true});
 
@@ -20,21 +22,32 @@ bot.onText(ID_PARAM_REGEX, async (message) => {
   const telegramUsername = message?.chat?.username;
   const firstName = message?.chat?.first_name;
 
+  const user_profile = await bot.getUserProfilePhotos(message?.from?.id);
+  let photo_url;
+
+  if(user_profile.photos.length > 0) {
+    const file_id = user_profile.photos[0][0].file_id;
+    const file = await bot.getFile(file_id);
+    const file_path = file.file_path;
+    photo_url = `https://api.telegram.org/file/bot${BOT_API_TOKEN}/${file_path}`;
+  }
+
   const telegram_data: TELEGRAM = {
     telegramId: String(message?.from?.id),
     botChatId: message?.chat?.id,
     telegramUsername: message?.chat?.username,
-    firstName: message?.chat?.first_name
+    firstName: message?.chat?.first_name,
+    picture: photo_url
   };
 
-  const verificationSuccess = await check(verificationId, telegram_data, true);
-  
+  let verificationSuccess = await check(verificationId, telegram_data, true);
+
   if (verificationSuccess) {
     bot
-      .sendMessage(botChatId, 'Реєстрація пройшла успішно!');
+      .sendMessage(botChatId, 'Верифікація пройшла успішно! Повертайтеся на сайт.\n\nВам будуть надходити сповіщення в цей чат.');
   } else {
     bot
-      .sendMessage(botChatId, 'Помилка реєстрації. Будь ласка, спробуйте ще раз.');
+      .sendMessage(botChatId, 'Помилка верифікації! Можливо номер телефону неправильний. Перевірте свої дані на сайті і спробуйте ще раз.');
   }
 });
 
@@ -49,15 +62,18 @@ function extractIdParam(text: string): string | undefined {
 const listeners = [];
 const responses = [];
 
-export function verify(code: ObjectId) {
+export function verify(user: USER, signup: boolean = true) {
 
   return new Promise<TELEGRAM>((res, rej) => {
 
     for(let i in responses) {
 
-      const rs = responses[i](code) as TELEGRAM;
-      if(rs)
+      const rs = responses[i](user.code) as TELEGRAM;
+      if(rs) {
+        if(!signup && user.telegramId != rs.telegramId)
+          return false;
         return res(rs);
+      }
 
     }
 
@@ -65,9 +81,13 @@ export function verify(code: ObjectId) {
 
     listeners[index] = (data: TELEGRAM, _code: string) => {
 
-      if (_code == String(code)) {
+      if (_code == String(user.code)) {
+
+        if(!signup && user.telegramId != data.telegramId)
+          return false;
 
         delete listeners[index];
+
         res(data);
 
         return true;
@@ -90,6 +110,8 @@ export function check(code: string, data: TELEGRAM, success: boolean, reason?: s
     const res = listeners[i](data, code);
     if (res)
       return new Promise<boolean>((res, rej) => res(true));
+    else
+      return new Promise<boolean>((res, rej) => res(false));
   }
 
   return new Promise<boolean>((res, rej) => {

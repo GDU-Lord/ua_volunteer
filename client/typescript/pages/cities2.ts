@@ -6,6 +6,23 @@ import * as ihelp from "./ihelp.js";
 export let curCity = "Всі міста";
 export let cityList: Object = {};
 export let opened: boolean = false;
+export let enabled: boolean = true;
+
+let list, input, field, pin;
+
+export function setStatus (en: boolean) {
+    enabled = en;
+    if(enabled)
+        return;
+    helpme.reset();
+    ihelp.reset();
+    helpme.load();
+    ihelp.load();
+    list.hide();
+    input.hide();
+    field.show();
+    opened = false;
+}
 
 export function set (city) {
 
@@ -22,14 +39,14 @@ export function create (parent: dom.HTMLComponent) {
     const CITIES = parent.add(new dom.HTMLInner("form", "cities")) as dom.HTMLInner;
     CITIES.set("autofill", "false");
 
-    const pin = CITIES.add(new dom.HTMLComponent("object", "pin")) as dom.HTMLComponent;
+    pin = CITIES.add(new dom.HTMLComponent("object", "pin")) as dom.HTMLComponent;
     pin.set("data", "/src/pin.svg");
-    const input = CITIES.add(new dom.Input("", ["city"])) as dom.Input;
+    input = CITIES.add(new dom.Input("", ["city"])) as dom.Input;
     input.set("autocomplete", "false");
     input.set("placeholder", "Почніть друкувати...");
-    const field = CITIES.add(new dom.Div("city-button")) as dom.Div;
+    field = CITIES.add(new dom.Div("city-button")) as dom.Div;
     field.innerText = "Всі міста";
-    const list = CITIES.add(new dom.Div("city-list")) as dom.Div;
+    list = CITIES.add(new dom.Div("city-list")) as dom.Div;
 
     input.hide();
     list.hide();
@@ -74,6 +91,9 @@ export function create (parent: dom.HTMLComponent) {
     // list.hide();
 
     field.component.onclick = () => {
+
+        if(!enabled)
+            return;
 
         if(opened) {
 

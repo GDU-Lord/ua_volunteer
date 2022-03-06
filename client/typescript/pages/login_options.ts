@@ -1,5 +1,5 @@
 import * as dom from "../scripts/components.js";
-import { body, head, SIGNUP, LOGIN } from "../main.js";
+import { body, head, SIGNUP, LOGIN, guide } from "../main.js";
 
 export function create (parent: dom.HTMLComponent) {
 
@@ -16,6 +16,7 @@ export function create (parent: dom.HTMLComponent) {
         // LOGIN_OPTIONS.hide();
         LOGIN.show();
         SIGNUP.hide();
+        guide.hide();
     
     }
 
@@ -24,6 +25,7 @@ export function create (parent: dom.HTMLComponent) {
         // LOGIN_OPTIONS.hide();
         SIGNUP.show();
         LOGIN.hide();
+        guide.hide();
 
     }
 

@@ -10,17 +10,26 @@ import * as cities from "./pages/cities.js";
 import * as cities2 from "./pages/cities2.js";
 import * as page_options from "./pages/page_options.js";
 import * as create from "./pages/create.js";
+import { init, Alert, Confirm } from "./scripts/alert.js";
+
+window.addEventListener("scroll", () => {
+    window.scroll(0, window.pageYOffset);
+}, false);
 
 export const body = new dom.Div("body");
 export const head = new dom.Div("head");
 export let USER = null;
 
+init();
+
 document.body.appendChild(body.component);
 document.head.appendChild(head.component);
 
+
 // head
 
-(head.add(new dom.Title()) as dom.Title).innerText = "Заголовок";
+export const TITLE = head.add(new dom.Title()) as dom.Title;
+TITLE.innerText = "Volunteer UA - Український волонтерський портал";
 
 // body
 
@@ -29,12 +38,12 @@ export const HEADER = body.add(new dom.Div("header"));
 const title = HEADER.add(new dom.Div("title")) as dom.HTMLInner;
 const welcome = HEADER.add(new dom.Div("welcome")) as dom.HTMLInner;
 const logo = HEADER.add(new dom.HTMLComponent("object", "logo")) as dom.HTMLComponent;
-// const banner = HEADER.add(new dom.HTMLComponent("object", "banner")) as dom.HTMLComponent;
+const cover = body.add(new dom.HTMLComponent("object", "cover")) as dom.HTMLComponent;
 
-// banner.set("data", "/src/header.svg");
+cover.set("data", "/src/header2.svg");
 
-title.innerText = "Волонтери України";
-welcome.innerText = "Ласкаво просимо на загальну\nволонтерську базу українських міст.";
+title.innerText = "Volunteer UA";
+welcome.innerText = "Ласкаво просимо на загальний\nволонтерський портал України.";
 
 logo.set("data", "/src/logo.svg");
 
@@ -68,6 +77,27 @@ CREATE.hide();
 PAGE_OPTIONS.hide();
 FIND.hide();
 
+export const guide = body.add(new dom.Div("guide")) as dom.Div;
+
+const heading = guide.add(new dom.Div("heading")) as dom.Div;
+heading.innerText = "Я хочу допомогти/потребую допомоги.\nЩо робити?";
+
+const step1 = guide.add(new dom.Div("step1"));
+const step2 = guide.add(new dom.Div("step2"));
+const step3 = guide.add(new dom.Div("step3"));
+
+(step1.add(new dom.Div("", ["step"])) as dom.Div).innerText = "Крок 1";
+(step1.add(new dom.Div("", ["title"])) as dom.Div).innerText = "Зареєструйся";
+(step1.add(new dom.Div("", ["text"])) as dom.Div).innerText = "Просимо підтвердити твою\nособистість задля безпечного\nкористування порталом.";
+
+(step2.add(new dom.Div("", ["step"])) as dom.Div).innerText = "Крок 2";
+(step2.add(new dom.Div("", ["title"])) as dom.Div).innerText = "Знайди або створи оголошення";
+(step2.add(new dom.Div("", ["text"])) as dom.Div).innerText = "Для тих, хто потребує допомоги,\nми зібрали цілий список волонтерів.\nЯкщо ти сам волонтер - просто\nствори оголошення.";
+
+(step3.add(new dom.Div("", ["step"])) as dom.Div).innerText = "Крок 3";
+(step3.add(new dom.Div("", ["title"])) as dom.Div).innerText = "Зв'яжись із користувачем";
+(step3.add(new dom.Div("", ["text"])) as dom.Div).innerText = "Це можна зробити за допомогою\nвказаного номеру телефону,\nпошти або Facebook.";
+
 login.loginActive()
     .then(({success, user = null}) => {
 
@@ -82,6 +112,7 @@ login.loginActive()
         CITIES.show();
         PAGE_OPTIONS.show();
         FIND.show();
+        guide.hide();
 
         if(page_options.createMode)
             PAGE_OPTIONS.byId("page").component.click();
@@ -97,8 +128,6 @@ export function setUser (user) {
 
 }
 
-
-
 // login page +
 // signup page +
 // loading ads +
@@ -107,7 +136,14 @@ export function setUser (user) {
 // ad creation +
 // ad myAds +
 // ad editing +
-// ad status changing
-// login & signup timeout (30s)
-// login & signup field verification
-// styles
+// ad status changing +
+
+// додати посилання в бота /
+// додати події при кліках на контакти +
+// додати ПІБ в пост +
+
+// виправити баг із телефоном (коли не той тг все одно заходить) +
+// додати "результатів не знайдено" +
+// додати "зв'язатись" +
+// додати заголовки +
+// перенести на https

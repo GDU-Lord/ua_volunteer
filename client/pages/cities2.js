@@ -4,6 +4,21 @@ import * as ihelp from "./ihelp.js";
 export let curCity = "Всі міста";
 export let cityList = {};
 export let opened = false;
+export let enabled = true;
+let list, input, field, pin;
+export function setStatus(en) {
+    enabled = en;
+    if (enabled)
+        return;
+    helpme.reset();
+    ihelp.reset();
+    helpme.load();
+    ihelp.load();
+    list.hide();
+    input.hide();
+    field.show();
+    opened = false;
+}
 export function set(city) {
     curCity = city;
     const i = document.querySelector("#create").querySelector(".city");
@@ -14,14 +29,14 @@ export function set(city) {
 export function create(parent) {
     const CITIES = parent.add(new dom.HTMLInner("form", "cities"));
     CITIES.set("autofill", "false");
-    const pin = CITIES.add(new dom.HTMLComponent("object", "pin"));
+    pin = CITIES.add(new dom.HTMLComponent("object", "pin"));
     pin.set("data", "/src/pin.svg");
-    const input = CITIES.add(new dom.Input("", ["city"]));
+    input = CITIES.add(new dom.Input("", ["city"]));
     input.set("autocomplete", "false");
     input.set("placeholder", "Почніть друкувати...");
-    const field = CITIES.add(new dom.Div("city-button"));
+    field = CITIES.add(new dom.Div("city-button"));
     field.innerText = "Всі міста";
-    const list = CITIES.add(new dom.Div("city-list"));
+    list = CITIES.add(new dom.Div("city-list"));
     input.hide();
     list.hide();
     fetch("/cities").then(res => res.json()).then(({ success, data }) => {
@@ -53,6 +68,8 @@ export function create(parent) {
     });
     // list.hide();
     field.component.onclick = () => {
+        if (!enabled)
+            return;
         if (opened) {
             list.hide();
             opened = false;

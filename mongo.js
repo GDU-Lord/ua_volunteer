@@ -2,8 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.client = void 0;
 const mongodb_1 = require("mongodb");
-const uri = "mongodb+srv://volunteerua_dev_site:lQ5Xub5186IKvHXV@cluster0.9na5w.mongodb.net";
-const dbname = "volunteerua";
+const index_1 = require("./index");
+const uri = index_1.env.mongo_url;
+const dbname = index_1.env.mongo_db;
 class Data {
     client;
     name;

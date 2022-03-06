@@ -10,22 +10,28 @@ import * as cities from "./pages/cities.js";
 import * as cities2 from "./pages/cities2.js";
 import * as page_options from "./pages/page_options.js";
 import * as create from "./pages/create.js";
+import { init } from "./scripts/alert.js";
+window.addEventListener("scroll", () => {
+    window.scroll(0, window.pageYOffset);
+}, false);
 export const body = new dom.Div("body");
 export const head = new dom.Div("head");
 export let USER = null;
+init();
 document.body.appendChild(body.component);
 document.head.appendChild(head.component);
 // head
-head.add(new dom.Title()).innerText = "Заголовок";
+export const TITLE = head.add(new dom.Title());
+TITLE.innerText = "Volunteer UA - Український волонтерський портал";
 // body
 export const HEADER = body.add(new dom.Div("header"));
 const title = HEADER.add(new dom.Div("title"));
 const welcome = HEADER.add(new dom.Div("welcome"));
 const logo = HEADER.add(new dom.HTMLComponent("object", "logo"));
-// const banner = HEADER.add(new dom.HTMLComponent("object", "banner")) as dom.HTMLComponent;
-// banner.set("data", "/src/header.svg");
-title.innerText = "Волонтери України";
-welcome.innerText = "Ласкаво просимо на загальну\nволонтерську базу українських міст.";
+const cover = body.add(new dom.HTMLComponent("object", "cover"));
+cover.set("data", "/src/header2.svg");
+title.innerText = "Volunteer UA";
+welcome.innerText = "Ласкаво просимо на загальний\nволонтерський портал України.";
 logo.set("data", "/src/logo.svg");
 // option signup/login
 export const LOGIN = login.create(body);
@@ -54,6 +60,21 @@ CITIES.hide();
 CREATE.hide();
 PAGE_OPTIONS.hide();
 FIND.hide();
+export const guide = body.add(new dom.Div("guide"));
+const heading = guide.add(new dom.Div("heading"));
+heading.innerText = "Я хочу допомогти/потребую допомоги.\nЩо робити?";
+const step1 = guide.add(new dom.Div("step1"));
+const step2 = guide.add(new dom.Div("step2"));
+const step3 = guide.add(new dom.Div("step3"));
+step1.add(new dom.Div("", ["step"])).innerText = "Крок 1";
+step1.add(new dom.Div("", ["title"])).innerText = "Зареєструйся";
+step1.add(new dom.Div("", ["text"])).innerText = "Просимо підтвердити твою\nособистість задля безпечного\nкористування порталом.";
+step2.add(new dom.Div("", ["step"])).innerText = "Крок 2";
+step2.add(new dom.Div("", ["title"])).innerText = "Знайди або створи оголошення";
+step2.add(new dom.Div("", ["text"])).innerText = "Для тих, хто потребує допомоги,\nми зібрали цілий список волонтерів.\nЯкщо ти сам волонтер - просто\nствори оголошення.";
+step3.add(new dom.Div("", ["step"])).innerText = "Крок 3";
+step3.add(new dom.Div("", ["title"])).innerText = "Зв'яжись із користувачем";
+step3.add(new dom.Div("", ["text"])).innerText = "Це можна зробити за допомогою\nвказаного номеру телефону,\nпошти або Facebook.";
 login.loginActive()
     .then(({ success, user = null }) => {
     USER = user;
@@ -65,6 +86,7 @@ login.loginActive()
     CITIES.show();
     PAGE_OPTIONS.show();
     FIND.show();
+    guide.hide();
     if (page_options.createMode)
         PAGE_OPTIONS.byId("page").component.click();
     helpme.load();
@@ -81,7 +103,12 @@ export function setUser(user) {
 // ad creation +
 // ad myAds +
 // ad editing +
-// ad status changing
-// login & signup timeout (30s)
-// login & signup field verification
-// styles
+// ad status changing +
+// додати посилання в бота /
+// додати події при кліках на контакти +
+// додати ПІБ в пост +
+// виправити баг із телефоном (коли не той тг все одно заходить) +
+// додати "результатів не знайдено" +
+// додати "зв'язатись" +
+// додати заголовки
+// перенести на https

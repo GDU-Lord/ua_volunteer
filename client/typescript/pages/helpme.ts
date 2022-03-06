@@ -125,6 +125,10 @@ export function create (parent: dom.HTMLComponent) {
 
     // };
 
+    const not_found = HELPME.add(new dom.Div("not-found")) as dom.Div;
+    not_found.innerText = "Упс...\nНа жаль, нічого не знайдено.";
+    not_found.hide();
+
     return [HELPME, container];
 
 }
@@ -134,12 +138,12 @@ export async function load () {
     if(busy)
         return;
 
+    const not_found = HELPME.byId("not-found");
+
     busy = true;
 
     helpme_container.children = [];
     helpme_container.innerHTML = "";
-
-    console.log(curCity, "load");
 
     const res = await fetch("/helpme?page="+page+"&city="+curCity);
 
@@ -184,7 +188,12 @@ export async function load () {
     }
 
     for(const but of buts)
-        but.unset("disabled")
+        but.unset("disabled");
+
+    if(count == 0)
+        not_found.show();
+    else
+        not_found.hide();
 
     busy = false;
 

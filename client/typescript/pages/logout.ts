@@ -1,5 +1,6 @@
 import * as dom from "../scripts/components.js";
-import { body, head, setUser, LOGIN_OPTIONS, CITIES, HELPME, HELP_OPTIONS, PAGE_OPTIONS, CREATE, FIND } from "../main.js";
+import { TITLE, body, head, setUser, LOGIN_OPTIONS, CITIES, HELPME, HELP_OPTIONS, PAGE_OPTIONS, CREATE, FIND, guide } from "../main.js";
+import { Alert } from "../scripts/alert.js";
 
 export function create (parent: dom.HTMLComponent) {
     const LOGOUT = parent.add(new dom.Div("logout")) as dom.HTMLInner;
@@ -21,7 +22,7 @@ export function create (parent: dom.HTMLComponent) {
         const {success, code, reason} = await res.json() as any;
 
         if(!success) {
-            alert("Error");
+            await Alert("Error");
             submit.unset("disabled");
             return;
         }
@@ -36,6 +37,7 @@ export function create (parent: dom.HTMLComponent) {
             PAGE_OPTIONS.hide();
             CREATE.hide();
             FIND.hide();
+            guide.show();
         }
     
     }

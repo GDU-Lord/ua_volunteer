@@ -1,5 +1,6 @@
 import * as dom from "../scripts/components.js";
-import { setUser, LOGIN_OPTIONS, CITIES, HELPME, HELP_OPTIONS, PAGE_OPTIONS, CREATE, FIND } from "../main.js";
+import { setUser, LOGIN_OPTIONS, CITIES, HELPME, HELP_OPTIONS, PAGE_OPTIONS, CREATE, FIND, guide } from "../main.js";
+import { Alert } from "../scripts/alert.js";
 export function create(parent) {
     const LOGOUT = parent.add(new dom.Div("logout"));
     const submit = LOGOUT.add(new dom.Button("logout"));
@@ -14,7 +15,7 @@ export function create(parent) {
         });
         const { success, code, reason } = await res.json();
         if (!success) {
-            alert("Error");
+            await Alert("Error");
             submit.unset("disabled");
             return;
         }
@@ -29,6 +30,7 @@ export function create(parent) {
             PAGE_OPTIONS.hide();
             CREATE.hide();
             FIND.hide();
+            guide.show();
         }
     };
     return LOGOUT;

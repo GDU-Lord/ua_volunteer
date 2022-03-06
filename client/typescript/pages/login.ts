@@ -1,8 +1,9 @@
 import * as dom from "../scripts/components.js";
-import { body, head, setUser, LOGIN_OPTIONS, HELPME, IHELP, LOGOUT, CITIES, HELP_OPTIONS, PAGE_OPTIONS, FIND } from "../main.js";
+import { body, head, setUser, LOGIN_OPTIONS, HELPME, IHELP, LOGOUT, CITIES, HELP_OPTIONS, PAGE_OPTIONS, FIND, guide } from "../main.js";
 import * as helpme from "./helpme.js";
 import * as ihelp from "./ihelp.js";
 import * as page_options from "./page_options.js";
+import { Alert } from "../scripts/alert.js";
 
 const PHONE_REGEX = /\+380[0-9]{9}/g;
 
@@ -27,7 +28,7 @@ export function create (parent: dom.HTMLComponent) {
     const div = LOGIN.add(new dom.Div("link")) as dom.Div;
 
     const link = div.add(new dom.A("")) as dom.A;
-    link.set("target", "_blank");
+    // link.set("target", "_blank");
     link.innerText = "T.ME";
     link.hide();
     link_img.hide();
@@ -51,6 +52,7 @@ export function create (parent: dom.HTMLComponent) {
         phone_label.show();
         submit.show();
         title.show();
+        guide.show();
 
         LOGIN.hide();
 
@@ -59,7 +61,7 @@ export function create (parent: dom.HTMLComponent) {
     submit.component.onclick = async () => {
 
         if(phone.value.search(PHONE_REGEX) == -1)
-            return alert("Введіть український номер телефону!");
+            return await Alert("Введіть український номер телефону!");
 
         submit.set("disabled", "disabled");
 
@@ -76,13 +78,13 @@ export function create (parent: dom.HTMLComponent) {
         const {success, code, reason} = await login_res.json() as any;
 
         if(!success) {
-            alert("Error");
+            await Alert("Error");
             submit.unset("disabled");
             return;
         }
 
+        link.unset("href");
         const href = `https://t.me/volunteeruaVerify_bot?start=id_${code}`;
-        link.href = "#";
 
         link.component.onclick = () => {window.open(href, "Верифікація", "popup")};
 

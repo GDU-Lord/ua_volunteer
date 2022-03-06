@@ -65,11 +65,15 @@ export function create(parent) {
     buts.push(right);
     left.hide();
     right.hide();
+    const not_found = IHELP.add(new dom.Div("not-found"));
+    not_found.innerText = "Упс...\nНа жаль, нічого не знайдено.";
+    not_found.hide();
     return [IHELP, container];
 }
 export async function load() {
     if (busy)
         return;
+    const not_found = IHELP.byId("not-found");
     busy = true;
     ihelp_container.children = [];
     ihelp_container.innerHTML = "";
@@ -105,5 +109,9 @@ export async function load() {
     }
     for (const but of buts)
         but.unset("disabled");
+    if (count == 0)
+        not_found.show();
+    else
+        not_found.hide();
     busy = false;
 }

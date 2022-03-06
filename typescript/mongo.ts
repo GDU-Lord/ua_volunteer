@@ -1,7 +1,8 @@
 import { MongoClient, Db, ObjectId } from "mongodb";
+import { env } from "./index";
 
-const uri = "mongodb+srv://volunteerua_dev_site:lQ5Xub5186IKvHXV@cluster0.9na5w.mongodb.net";
-const dbname = "volunteerua";
+const uri = env.mongo_url;
+const dbname = env.mongo_db;
 
 export default class Data {
 

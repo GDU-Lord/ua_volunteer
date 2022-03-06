@@ -1,8 +1,9 @@
 import * as dom from "../scripts/components.js";
-import { setUser, LOGIN_OPTIONS, HELPME, LOGOUT, CITIES, HELP_OPTIONS, PAGE_OPTIONS, FIND } from "../main.js";
+import { setUser, LOGIN_OPTIONS, HELPME, LOGOUT, CITIES, HELP_OPTIONS, PAGE_OPTIONS, FIND, guide } from "../main.js";
 import * as helpme from "./helpme.js";
 import * as ihelp from "./ihelp.js";
 import * as page_options from "./page_options.js";
+import { Alert } from "../scripts/alert.js";
 const PHONE_REGEX = /\+380[0-9]{9}/g;
 export function create(parent) {
     const LOGIN = parent.add(new dom.Div("login"));
@@ -19,7 +20,7 @@ export function create(parent) {
     link_label.innerText = "Будь ласка, перейдіть за посиланням для верифікації";
     const div = LOGIN.add(new dom.Div("link"));
     const link = div.add(new dom.A(""));
-    link.set("target", "_blank");
+    // link.set("target", "_blank");
     link.innerText = "T.ME";
     link.hide();
     link_img.hide();
@@ -39,11 +40,12 @@ export function create(parent) {
         phone_label.show();
         submit.show();
         title.show();
+        guide.show();
         LOGIN.hide();
     };
     submit.component.onclick = async () => {
         if (phone.value.search(PHONE_REGEX) == -1)
-            return alert("Введіть український номер телефону!");
+            return await Alert("Введіть український номер телефону!");
         submit.set("disabled", "disabled");
         const login_res = await fetch("/login", {
             method: "POST",
@@ -56,12 +58,12 @@ export function create(parent) {
         });
         const { success, code, reason } = await login_res.json();
         if (!success) {
-            alert("Error");
+            await Alert("Error");
             submit.unset("disabled");
             return;
         }
+        link.unset("href");
         const href = `https://t.me/volunteeruaVerify_bot?start=id_${code}`;
-        link.href = "#";
         link.component.onclick = () => { window.open(href, "Верифікація", "popup"); };
         link.show();
         link_img.show();

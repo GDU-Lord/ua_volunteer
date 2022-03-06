@@ -50,7 +50,7 @@ export async function update (req: express.Request, res: express.Response) {
     const status = req.body.status;
     const title = req.body.title;
 
-    let [post] = await client.get("posts", { _id: id }) as POST[];
+    let [post] = await client.get("posts", { _id: id, "telegram.telegramId": user.telegramId }) as POST[];
     if(post == null)
         return res.send({
             success: false,
@@ -60,6 +60,29 @@ export async function update (req: express.Request, res: express.Response) {
     post = new Post(user, help_type, title, message, city, status, post._id);
 
     await client.update("posts", post._id, post);
+
+    res.send({
+        success: true
+    });
+
+}
+
+export async function remove (req: express.Request, res: express.Response) {
+
+    const session = sessions[req.session.token];
+    
+    const user = await getUser(session, res);
+
+    const id = new ObjectId(req.body.id);
+
+    let [post] = await client.get("posts", { _id: id, "telegram.telegramId": user.telegramId }) as POST[];
+    if(post == null)
+        return res.send({
+            success: false,
+            reason: "post-not-found"
+        });
+
+    await client.remove("posts", post._id);
 
     res.send({
         success: true
@@ -254,6 +277,7 @@ export class Post implements POST {
             date: new Date(),
             status: status,
             title: title,
+            picture: user.telegram.picture,
             id: this._id
         };
         this.created = new Date();

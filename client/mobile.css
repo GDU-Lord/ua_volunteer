@@ -1,4 +1,4 @@
-@media (min-aspect-ratio: 1/1) {
+@media (max-aspect-ratio: 1/1) {
     body {
 
         padding: 0px;
@@ -16,105 +16,99 @@
     #header {
 
         width: 100vw;
-        height: 365px;
+        height: 90vw;
         background-color: #FFD262;
         position: relative;
-        background-image: url(src/header.svg);
-        background-repeat: no-repeat;
-        background-size: 1100px;
-        background-position: calc(50vw - 350px) -90px;
+        text-align: center;
+        padding-top: 18vw;
+        clip-path: polygon(0vw 0vw, 100vw 0vw, 100vw 93vw, 0vw 105vw);
         
     }
 
     #cover {
-        display: none;
+        
+        position: absolute;
+        top: 70vw;
+        left: 0px;
+        transform: scale(1.1);
+
     }
+
 
     #header #title {
 
-        font-size: 40px;
+        font-size: 6vw;
         font-weight: 500;
-        position: absolute;
-        left: calc(50vw - 450px);
-        top: 96px;
 
     }
 
     #header #welcome {
 
-        font-size: 20px;
-        position: absolute;
-        left: calc(50vw - 450px);
-        top: 176px;
+        font-size: 4vw;
+        margin-top: 6vw;
 
     }
 
     #header #logo {
 
-        width: 80px;
+        width: 16vw;
         position: absolute;
-        left: calc(50vw - 450px);
-        top: 5px;
+        left: 3vw;
+        top: 2vw;
 
     }
 
     #header #login-options #login-button {
 
-        width: 150px;
-        height: 40px;
-        font-size: 17px;
+        width: 40vw;
+        height: 12vw;
+        font-size: 5vw;
         color: black;
         background-color: rgba(255, 255, 255, 0);
         border: 1px solid black;
-        position: absolute;
         cursor: pointer;
-        left: calc(50vw - 450px);
-        top: 256px;
+        margin: 8vw 3vw;
 
     }
 
     #header #login-options #signup-button {
 
-        width: 150px;
-        height: 40px;
-        font-size: 17px;
+        width: 40vw;
+        height: 12vw;
+        font-size: 5vw;
         color: white;
         background-color: #3C89FF;
         border: none;
-        position: absolute;
         cursor: pointer;
-        left: calc(50vw - 450px + 190px);
-        top: 256px;
+        margin: 8vw 3vw;
 
     }
 
     #header #page-options #page {
 
-        width: 190px;
-        height: 40px;
-        font-size: 17px;
+        width: 45vw;
+        height: 10vw;
+        font-size: 3.9vw;
         color: white;
         background-color: #3C89FF;
         border: none;
-        position: absolute;
-        cursor: pointer; 
-        left: calc(50vw - 450px);
-        top: 256px;
+        cursor: pointer;
+        margin: 8vw 3vw;
 
     }
 
     #header #logout #logout {
 
-        width: 150px;
-        height: 40px;
-        font-size: 17px;
+        width: 30vw;
+        height: 10vw;
+        font-size: 4vw;
         color: black;
         background-color: rgba(255, 255, 255, 0);
         border: 1px solid black;
-        position: absolute;
         cursor: pointer;
-        right: calc(50vw - 450px);
-        top: 16px;
+        position: absolute;
+        top: 3vw;
+        right: 6vw;
 
     }
 
@@ -127,21 +121,22 @@
 
     #signup, #login {
         
-        width: 600px;
+        width: 85vw;
         background-color: white;
         position: relative;
         /* text-align: center; */
-        padding: 40px;
+        padding: 5vw;
         margin: auto;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        border-radius: 30px;
+        margin-top: 30vw;
+        margin-bottom: 2vw;
+        border-radius: 1vw;
+        text-align: center;
 
     }
 
     #signup #title, #login #title {
 
-        font-size: 40px;
+        font-size: 8vw;
         text-align: center;
         color: black;
 
@@ -150,43 +145,42 @@
     #signup .label, #login .label {
 
         text-align: left;
-        padding-top: 40px;
-        font-size: 20px;
+        padding-top: 5vw;
+        font-size: 4vw;
         color: black;
-        margin-left: 75px;
+        margin-left: 2.1vw;
 
     }
 
     #signup input, #login input {
 
-        width: 450px;
-        height: 40px;
+        width: 80vw;
+        height: 8vw;
         background-color: #F3F4F6;
         border: none;
-        margin-top: 20px;
-        margin-left: 75px;
-        font-size: 25px;
+        margin-top: 6vw;
+        font-size: 6vw;
 
     }
 
     #signup #submit, #login #submit {
 
-        width: 216px;
-        height: 60px;
-        font-size: 17px;
+        width: 40vw;
+        height: 12vw;
+        font-size: 4.5vw;
         color: white;
         background-color: #3C89FF;
         border: none;
         cursor: pointer;
-        margin-left: 192px;
-        margin-top: 40px;
+        margin: auto;
+        margin-top: 8vw;
         display: block;
 
     }
 
     #signup #cancel, #login #cancel {
 
-        font-size: 15px;
+        font-size: 3vw;
         color: black;
         text-decoration: underline black;
         background-color: rgba(255, 255, 255, 0);
@@ -194,14 +188,13 @@
         cursor: pointer;
         text-align: center;
         display: block;
-        margin-top: 20px;
+        margin-top: 6vw;
 
     }
 
     #signup #link-img, #login #link-img {
 
-        width: 300px;
-        margin-left: 150px;
+        width: 60vw;
 
     }
 
@@ -209,20 +202,20 @@
 
         text-align: center;
         font-weight: 600;
-        font-size: 20px;
+        font-size: 5vw;
 
     }
 
     #signup #link-label, #login #link-label {
 
         text-align: center;
-        font-size: 20px;
+        font-size: 5vw;
 
     }
 
     #signup #link, #login #link {
 
-        margin-top: 60px;
+        margin-top: 8vw;
         text-align: center;
         cursor: pointer;
 
@@ -230,53 +223,58 @@
 
     #signup #link a, #login #link a {
 
-        font-size: 45px;
+        font-size: 8vw;
         color: #01A0E1;
         text-decoration: none;
         font-weight: 600;
 
     }
 
+    #find {
+        width: 100vw;
+        text-align: center;
+        margin-top: 30vw;
+    }
+
     #find #find-title {
 
-        font-size: 30px;
-        margin-top: 80px;
-        margin-left: calc(50vw - 450px);
+        font-size: 7vw;
+        margin-top: 14vw;
         font-weight: 600;
 
     }
 
     #find #help-options #helpme, #find #help-options #ihelp {
 
-        width: 340px;
-        height: 40px;
+        width: 47vw;
+        height: 8vw;
         background-color: rgba(255, 255, 255, 0);
         color: #9B9B9B;
-        font-size: 20px;
+        font-size: 4vw;
         border: none;
-        margin-top: 80px;
+        margin-top: 14vw;
         cursor: pointer;
 
     }
 
     #find #help-options #helpme {
 
-        margin-left: calc(50vw - 450px);
+        
 
     }
 
     #find #help-options .select {
 
         color: black !important;
-        border-bottom: 5px solid black !important;
+        border-bottom: 1vw solid black !important;
 
     }
 
     #cities {
         position: absolute;
-        top: 650px;
-        right: calc(50vw - 450px);
-        width: 200px;
+        top: 175vw;
+        left: 12vw;
+        width: 40vw;
         cursor: pointer;
         z-index: 100;
         text-align: left;
@@ -284,51 +282,51 @@
     }
 
     #create #cities {
-        top: 500px;
+        top: 170vw;
     }
 
     #cities #pin {
         display: inline-block;
-        height: 30px;
+        height: 7vw;
         position: absolute;
-        left: -30px;
+        left: -7vw;
     }
 
     #cities #city-button {
-        font-size: 20px;
+        font-size: 6vw;
     }
 
     #cities input {
-        font-size: 15px;
-        height: 30px;
+        font-size: 4vw;
+        height: 8vw;
         width: 100%;
         border: none;
         background-color: #fff;
     }
 
     #cities #city-list {
-        font-size: 15px;
+        font-size: 4vw;
         width: 100%;
-        max-height: 80px;
+        max-height: 20vw;
         overflow-y: hidden;
     }
 
     #cities #city-list .line {
         background-color: #FFD262;
-        padding: 0px 5px;
+        padding: 0px 1vw;
     }
 
     #cities #city-list .line:hover {
         background-color: #e0f6ff;
-        padding: 0px 5px;
+        padding: 0px 1vw;
     }
 
     #find #container {
 
-        padding-top: 90px;
+        padding-top: 20vw;
         text-align: center;
-        border-top: 1px solid black;
-        width: 900px;
+        border-top: 0.2vw solid black;
+        width: 95vw;
         margin: auto;
 
     }
@@ -336,21 +334,20 @@
     #find .post {
         
         text-align: left;
-        width: 860px;
+        width: 75vw;
         background-color: white;
         position: relative;
-        padding: 20px;
-        margin: auto;
-        margin-bottom: 20px;
+        padding: 10vw;
+        margin-bottom: 6vw;
 
     }
 
     #find .post .picture {
 
         position: absolute;
-        width: 90px;
-        top: 20px;
-        left: 35px;
+        width: 20vw;
+        top: 9vw;
+        left: 10vw;
         clip-path: circle();
 
     }
@@ -365,132 +362,156 @@
 
     #find .post .fullname {
 
-        width: 120px;
-        /* background-color: red; */
-        font-size: 15px;
-        text-align: center;
+        width: 50vw;
+        font-size: 4vw;
         position: absolute;
-        left: 20px;
-        top: 120px;
+        left: 35vw;
+        top: 19vw;
 
     }
 
     #find .post .title {
 
-        margin-left: 140px;
-        font-size: 20px;
+        margin-left: 25vw;
+        font-size: 6vw;
         font-weight: 600;
 
     }
 
     #find .post .message {
 
-        margin-left: 140px;
-        font-size: 20px;
-        min-height: 100px;
-        width: 440px;
+        font-size: 6vw;
+        min-height: 10vw;
+        margin-top: 15vw;
+        margin-bottom: 50vw;
+        width: 75vw;
 
     }
 
     #find .post .date, #find .post .city {
 
         color: #7C7C7C;
-        font-size: 15px;
-        margin-right: 25px;
+        font-size: 3.5vw;
+        position: absolute;
+        /* left: 0px; */
 
     }
 
     #find .post .city .city-pin {
 
         position: relative;
-        top: 8px;
+        top: 5vw;
+        left: 6vw;
+        transform: scale(0.7);
+
+    }
+
+    #find .post .city label {
+
+        margin-left: 3vw;
 
     }
 
     #find .post .city {
 
-        margin-left: 140px;
+        left: 0vw;
+        bottom: 42vw;
+
+    }
+
+    #find .post .date {
+
+        right: 10vw;
+        bottom: 42vw;
 
     }
 
     #find .post .contact {
 
-        width: 180px;
-        height: 60px;
+        width: 75vw;
+        height: 16vw;
         color: white;
         background-color: #65CE00;
-        font-size: 20px;
+        font-size: 6vw;
         border: none;
         cursor: pointer;
         position: absolute;
-        top: 50px;
-        right: 100px;
+        bottom: 22vw;
+        left: 10vw;
 
     }
 
     #find .post object {
-        width: 30px;
-        height: 30px;
+        position: absolute;
+        width: 14vw;
+        height: 14vw;
+        top: 0px;
+        left: 0px;
     }
 
     #find .post .phone {
+
         position: absolute;
-        right: 110px;
-        bottom: 20px;
-        width: 30px;
-        height: 30px;
-        cursor: pointer;
+        width: 14vw;
+        height: 14vw;
+        right: 20vw;
+        bottom: 6vw;
         /* background-color: red; */
         background-image: url(src/phone.svg);
         background-size: contain;
         background-repeat: no-repeat;
+
+
     }
 
     #find .post .facebook {
+
         position: absolute;
-        right: 150px;
-        bottom: 20px;
-        width: 30px;
-        height: 30px;
-        cursor: pointer;
+        width: 14vw;
+        height: 14vw;
+        right: 40.5vw;
+        bottom: 6vw;
         /* background-color: red; */
         background-image: url(src/facebook.svg);
         background-size: contain;
         background-repeat: no-repeat;
 
+
     }
 
     #find .post .mail {
+
         position: absolute;
-        right: 190px;
-        bottom: 20px;
-        width: 30px;
-        height: 30px;
-        cursor: pointer;
+        width: 14vw;
+        height: 14vw;
+        left: 20vw;
+        bottom: 6vw;
         /* background-color: red; */
         background-image: url(src/mail.svg);
         background-size: contain;
         background-repeat: no-repeat;
+
+
     }
 
     #find #buttons {
 
         margin: auto;
-        margin-top: 40px;
-        margin-bottom: 40px;
+        margin-top: 8vw;
+        margin-bottom: 8vw;
         text-align: center;
 
     }
 
     #find #buttons .button  {
 
-        width: 40px;
-        height: 40px;
-        font-size: 20px;
-        border-top: 1px solid black;
-        border-bottom: 1px solid black;
-        border-left: 0.5px solid black;
-        border-right: 0.5px solid black;
+        width: 12vw;
+        height: 12vw;
+        font-size: 6vw;
+        border-top: 0.2vw solid black;
+        border-bottom: 0.2vw solid black;
+        border-left: 0.1vw solid black;
+        border-right: 0.1vw solid black;
         background-color: rgba(255, 255, 255, 0);
 
     }
@@ -503,63 +524,45 @@
 
     }
 
-    #find #not-found {
-
-        width: 900px;
-        text-align: center;
-        margin: auto;
-        height: 550px;
-        background-image: url(src/illustartion\ no\ result.svg);
-        background-repeat: no-repeat;
-        background-size: contain;
-        background-position: 200px 50px;
-        font-size: 30px;
-        position: relative;
-        bottom: 40px;
-
-    }
-
     #create {
         text-align: center;
+        margin-top: 40vw;
     }
 
     #create #heading {
 
-        text-align: left;
-        margin-left: calc(50vw - 450px);
-        font-size: 30px;
+        font-size: 7vw;
         font-weight: 600;
-        margin-top: 80px;
-        margin-bottom: 80px;
+        margin-top: 12vw;
+        margin-bottom: 30vw;
 
     }
 
     #create #top, #create #bottom {
         
         text-align: left;
-        width: 900px;
+        width: 95vw;
         background-color: white;
-        margin: 20px auto;
-        padding-bottom: 30px;
-        padding-top: 20px;
+        margin: 6vw auto;
+        padding-bottom: 8vw;
+        padding-top: 6vw;
 
     }
 
     #create #top #select input {
 
         position: relative;
-        bottom: 2px;
-        margin-left: 30px;
-        transform: scale(2);
+        bottom: 1vw;
+        margin-left: 8vw;
 
     }
 
     #create #top #select .label {
 
-        margin-top: 20px;
-        margin-left: 10px;
-        margin-right: 10px;
-        font-size: 20px;
+        margin-top: 6vw;
+        margin-left: 3vw;
+        margin-right: 21vw;
+        font-size: 5vw;
         display: inline-block;
 
     }
@@ -567,19 +570,19 @@
     #create #top #title-label {
 
         
-        font-size: 20px;
+        font-size: 6vw;
         font-weight: 600;
-        margin-top: 20px;
-        margin-left: 25px;
+        margin-top: 6vw;
+        margin-left: 6vw;
 
     }
 
     #create #top #title {
 
-        font-size: 25px;
-        margin-top: 20px;
-        margin-left: 25px;
-        width: 420px;
+        font-size: 7vw;
+        margin-top: 6vw;
+        margin-left: 6vw;
+        width: 83vw;
         border: none;
         background-color: #F3F4F6;
 
@@ -588,19 +591,19 @@
     #create #bottom #message-label {
 
         
-        font-size: 20px;
+        font-size: 6vw;
         font-weight: 600;
-        margin-left: 25px;
+        margin-left: 6vw;
 
     }
 
     #create #bottom #message {
 
-        font-size: 25px;
-        margin-top: 20px;
-        margin-left: 25px;
-        width: 420px;
-        height: 200px;
+        font-size: 6vw;
+        margin-top: 6vw;
+        margin-left: 6vw;
+        width: 83vw;
+        height: 55vw;
         border: none;
         background-color: #F3F4F6;
 
@@ -609,18 +612,16 @@
     #create #bottom #status input {
 
         position: relative;
-        bottom: 2px;
-        margin-left: 30px;
-        transform: scale(2);
+        margin-right: 3vw;
+        margin-left: 6vw;
 
     }
 
     #create #bottom #status .label {
 
-        margin-top: 20px;
-        margin-left: 10px;
-        margin-right: 10px;
-        font-size: 20px;
+        margin-top: 6vw;
+        margin-right: 50vw;
+        font-size: 5vw;
         display: inline-block;
 
     }
@@ -633,12 +634,12 @@
 
     #create #submit-buttons .button {
 
-        width: 216px;
-        height: 60px;
-        font-size: 17px;
+        width: 50vw;
+        height: 14vw;
+        font-size: 6vw;
         border: none;
         cursor: pointer;
-        margin: 40px 10px;
+        margin: 2vw 10vw;
         display: inline-block;
 
     }
@@ -682,9 +683,9 @@
 
         z-index: 1001;
         position: fixed;
-        top: calc((100vh - 8vw) / 2);
-        left: 37vw;
-        width: 26vw;
+        top: 20vw;
+        left: 20vw;
+        width: 60vw;
         /* height: 8vw; */
         background-color: white;
         text-align: center;
@@ -693,18 +694,18 @@
 
     #alert-box #text {
 
-        font-size: 20pt;
+        font-size: 6vw;
         margin-top: 20pt;
 
     }
 
     #alert-box .button {
 
-        font-size: 1vw;
-        width: 7vw;
-        height: 2vw;
+        font-size: 6vw;
+        width: 50vw;
+        height: 15vw;
+        margin: 2vw 5vw;
         position: relative;
-        margin: 20pt 10pt;
 
     }
 
@@ -720,12 +721,6 @@
         color: black;
     }
 
-    #alert-box a {
-
-        text-decoration: none;
-
-    }
-
     #guide {
 
         
@@ -734,73 +729,65 @@
 
     #guide #heading {
 
-        font-size: 40px;
+        font-size: 8vw;
         font-weight: 600;
-        width: 800px;
-        margin-left: calc(50vw - 450px);
-        margin-top: 40px;
+        margin-top: 40vw;
+        margin-bottom: 10vw;
+        text-align: center;
 
     }
 
     #step1, #step2, #step3 {
 
-        width: 260px;
-        height: 600px;
-        display: inline-block;
-        margin-bottom: 100px;
-        position: absolute;
+        width: 85vw;
+        margin-bottom: 10vw;
+        display: block;
         background-repeat: no-repeat;
-        background-size: 360px;
-        background-position: -55px 70px;
-        text-align: left;
+        background-size: 100%;
+        background-position: 0px 5vw;
+        text-align: center;
+        margin: auto;
 
     }
 
     #step1 {
 
-        left: calc(50vw - 450px);
         background-image: url(src/register.svg);
 
     }
 
     #step2 {
 
-        left: calc(50vw - 150px);
         background-image: url(src/search.svg);
 
     }
 
     #step3 {
 
-        right: calc(50vw - 450px);
         background-image: url(src/contact.svg);
 
     }
 
     #step1 .step, #step2 .step, #step3 .step {
 
-        margin-top: 20px;
-        font-size: 40px;
-        font-weight: lighter;
-        width: 100%;
+        font-size: 8vw;
+        font-weight: 300;
 
     }
 
     #step1 .title, #step2 .title, #step3 .title {
 
-        margin-top: 270px;
-        font-size: 20px;
-        font-weight: 500;
-        width: 100%;
+        margin-top: 55vw;
+        font-size: 6vw;
+        font-weight: 600;
 
     }
 
     #step1 .text, #step2 .text, #step3 .text {
 
-        margin-top: 60px;
-        position: absolute;
-        top: 350px;
-        width: 100%;
+        margin-top: 8vw;
+        font-size: 4.5vw;
+        margin-bottom: 15vw;
 
     }
 

@@ -64,7 +64,7 @@ async function isVerifiedSignup(req, res) {
             success: false,
             reason: "insufficient-code"
         });
-    user.telegram = await telegramWebhook.verify(user.code);
+    user.telegram = await telegramWebhook.verify(user);
     delete exports.pending_users[code];
     if (user.telegram) {
         user.telegramId = user.telegram.telegramId;
@@ -103,7 +103,7 @@ async function isVerifiedLogin(req, res) {
             success: false,
             reason: "insufficient-code"
         });
-    user.telegram = await telegramWebhook.verify(user.code);
+    user.telegram = await telegramWebhook.verify(user, false);
     delete exports.pending_users[code];
     if (user.telegram) {
         user.telegramId = user.telegram.telegramId;
