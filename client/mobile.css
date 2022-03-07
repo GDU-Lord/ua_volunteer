@@ -16,19 +16,19 @@
     #header {
 
         width: 100vw;
-        height: 90vw;
+        height: 100vw;
         background-color: #FFD262;
         position: relative;
         text-align: center;
         padding-top: 18vw;
-        clip-path: polygon(0vw 0vw, 100vw 0vw, 100vw 93vw, 0vw 105vw);
+        clip-path: polygon(0vw 0vw, 100vw 0vw, 100vw 103vw, 0vw 115vw);
         
     }
 
     #cover {
         
         position: absolute;
-        top: 70vw;
+        top: 80vw;
         left: 0px;
         transform: scale(1.1);
 
@@ -37,14 +37,14 @@
 
     #header #title {
 
-        font-size: 6vw;
+        font-size: 10vw;
         font-weight: 500;
 
     }
 
     #header #welcome {
 
-        font-size: 4vw;
+        font-size: 6vw;
         margin-top: 6vw;
 
     }
@@ -272,7 +272,7 @@
 
     #cities {
         position: absolute;
-        top: 175vw;
+        top: 188vw;
         left: 12vw;
         width: 40vw;
         cursor: pointer;
@@ -282,18 +282,19 @@
     }
 
     #create #cities {
-        top: 170vw;
+        top: 173vw;
     }
 
     #cities #pin {
         display: inline-block;
-        height: 7vw;
+        height: 12vw;
         position: absolute;
-        left: -7vw;
+        top: -3.5vw;
+        left: -10vw;
     }
 
     #cities #city-button {
-        font-size: 6vw;
+        font-size: 5vw;
     }
 
     #cities input {
@@ -326,7 +327,7 @@
         padding-top: 20vw;
         text-align: center;
         border-top: 0.2vw solid black;
-        width: 95vw;
+        width: 94vw;
         margin: auto;
 
     }
@@ -415,14 +416,14 @@
     #find .post .city {
 
         left: 0vw;
-        bottom: 42vw;
+        bottom: 48vw;
 
     }
 
     #find .post .date {
 
         right: 10vw;
-        bottom: 42vw;
+        bottom: 48vw;
 
     }
 
@@ -436,7 +437,7 @@
         border: none;
         cursor: pointer;
         position: absolute;
-        bottom: 22vw;
+        bottom: 26vw;
         left: 10vw;
 
     }
@@ -526,7 +527,7 @@
 
     #create {
         text-align: center;
-        margin-top: 40vw;
+        margin-top: 30vw;
     }
 
     #create #heading {
@@ -546,15 +547,15 @@
         margin: 6vw auto;
         padding-bottom: 8vw;
         padding-top: 6vw;
+        position: relative;
 
     }
 
     #create #top #select input {
 
         position: relative;
-        bottom: 1vw;
+        /* bottom: 1vw; */
         margin-left: 8vw;
-
     }
 
     #create #top #select .label {
@@ -606,6 +607,13 @@
         height: 55vw;
         border: none;
         background-color: #F3F4F6;
+        border: none;
+
+    }
+
+    #create #bottom #status {
+
+        margin-bottom: 40vw;
 
     }
 
@@ -614,6 +622,7 @@
         position: relative;
         margin-right: 3vw;
         margin-left: 6vw;
+        /* top: -1vw; */
 
     }
 
@@ -659,7 +668,17 @@
         color: black;
         background-color: #ff6c62;
     }
+    
+    #create #bottom #text {
 
+        width: 85vw;
+        font-size: 4vw;
+        color:#bd6767;
+        position: absolute;
+        bottom: 6vw;
+        left: 6vw;
+
+    }
 
     .hidden {
 

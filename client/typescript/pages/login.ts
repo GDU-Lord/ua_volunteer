@@ -1,5 +1,5 @@
 import * as dom from "../scripts/components.js";
-import { body, head, setUser, LOGIN_OPTIONS, HELPME, IHELP, LOGOUT, CITIES, HELP_OPTIONS, PAGE_OPTIONS, FIND, guide } from "../main.js";
+import { botname, body, head, setUser, LOGIN_OPTIONS, HELPME, IHELP, LOGOUT, CITIES, HELP_OPTIONS, PAGE_OPTIONS, FIND, guide } from "../main.js";
 import * as helpme from "./helpme.js";
 import * as ihelp from "./ihelp.js";
 import * as page_options from "./page_options.js";
@@ -84,7 +84,7 @@ export function create (parent: dom.HTMLComponent) {
         }
 
         link.unset("href");
-        const href = `https://t.me/volunteeruaVerify_bot?start=id_${code}`;
+        const href = `https://t.me/${botname}?start=id_${code}`;
 
         link.component.onclick = () => {window.open(href, "Верифікація", "popup")};
 

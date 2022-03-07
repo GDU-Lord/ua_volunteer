@@ -11,6 +11,8 @@ import * as cities2 from "./pages/cities2.js";
 import * as page_options from "./pages/page_options.js";
 import * as create from "./pages/create.js";
 import { init } from "./scripts/alert.js";
+export let botname;
+fetch("/bot/name").then(res => res.text().then(res => botname = res));
 window.addEventListener("scroll", () => {
     window.scroll(0, window.pageYOffset);
 }, false);
@@ -110,5 +112,8 @@ export function setUser(user) {
 // виправити баг із телефоном (коли не той тг все одно заходить) +
 // додати "результатів не знайдено" +
 // додати "зв'язатись" +
-// додати заголовки
+// додати заголовки +
+// виправити стилі +
+// додати текст "можна лише 1 повідомлення/чєла"
 // перенести на https
+// додати посилання "на головну" під редактором

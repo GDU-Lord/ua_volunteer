@@ -15,7 +15,7 @@ const app = express();
 app.use(express.json());
 // app.use(cors());
 const server = (0, http_1.createServer)(app);
-server.listen(80, exports.env.ip, () => {
+server.listen(exports.env.port, exports.env.ip, () => {
     console.log("Сервер працює!");
 });
 app.use(cookieSession({
@@ -38,3 +38,4 @@ app.get("/helpme", post.getHelpMe);
 app.post("/image/upload", login.verify, upload.single("image"), post.upload);
 app.get(/\/image\/.{0,}/, post.image);
 app.get("/login/active", login.verify, login.getUser);
+app.get("/bot/name", (req, res) => { res.send(exports.env.botname); });

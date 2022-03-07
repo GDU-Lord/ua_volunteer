@@ -21,8 +21,8 @@
         position: relative;
         background-image: url(src/header.svg);
         background-repeat: no-repeat;
-        background-size: 1100px;
-        background-position: calc(50vw - 350px) -90px;
+        background-size: 1180px;
+        background-position: calc(50vw - 400px) -110px;
         
     }
 
@@ -275,7 +275,7 @@
     #cities {
         position: absolute;
         top: 650px;
-        right: calc(50vw - 450px);
+        left: calc(50vw - 415px);
         width: 200px;
         cursor: pointer;
         z-index: 100;
@@ -284,14 +284,15 @@
     }
 
     #create #cities {
-        top: 500px;
+        top: 525px;
     }
 
     #cities #pin {
         display: inline-block;
-        height: 30px;
+        height: 50px;
         position: absolute;
-        left: -30px;
+        left: -40px;
+        top: -15px;
     }
 
     #cities #city-button {
@@ -328,7 +329,7 @@
         padding-top: 90px;
         text-align: center;
         border-top: 1px solid black;
-        width: 900px;
+        width: 884px;
         margin: auto;
 
     }
@@ -349,7 +350,7 @@
 
         position: absolute;
         width: 90px;
-        top: 20px;
+        top: 35px;
         left: 35px;
         clip-path: circle();
 
@@ -371,7 +372,7 @@
         text-align: center;
         position: absolute;
         left: 20px;
-        top: 120px;
+        top: 135px;
 
     }
 
@@ -387,7 +388,7 @@
 
         margin-left: 140px;
         font-size: 20px;
-        min-height: 100px;
+        min-height: 120px;
         width: 440px;
 
     }
@@ -409,22 +410,22 @@
 
     #find .post .city {
 
-        margin-left: 140px;
+        margin-left: 130px;
 
     }
 
     #find .post .contact {
 
-        width: 180px;
-        height: 60px;
+        width: 200px;
+        height: 70px;
         color: white;
         background-color: #65CE00;
-        font-size: 20px;
+        font-size: 25px;
         border: none;
         cursor: pointer;
         position: absolute;
-        top: 50px;
-        right: 100px;
+        top: calc(50% - 35px);
+        right: 50px;
 
     }
 
@@ -435,10 +436,10 @@
 
     #find .post .phone {
         position: absolute;
-        right: 110px;
+        right: 70px;
         bottom: 20px;
-        width: 30px;
-        height: 30px;
+        width: 40px;
+        height: 40px;
         cursor: pointer;
         /* background-color: red; */
         background-image: url(src/phone.svg);
@@ -448,10 +449,10 @@
 
     #find .post .facebook {
         position: absolute;
-        right: 150px;
+        right: 130px;
         bottom: 20px;
-        width: 30px;
-        height: 30px;
+        width: 40px;
+        height: 40px;
         cursor: pointer;
         /* background-color: red; */
         background-image: url(src/facebook.svg);
@@ -464,8 +465,8 @@
         position: absolute;
         right: 190px;
         bottom: 20px;
-        width: 30px;
-        height: 30px;
+        width: 40px;
+        height: 40px;
         cursor: pointer;
         /* background-color: red; */
         background-image: url(src/mail.svg);
@@ -540,7 +541,7 @@
         width: 900px;
         background-color: white;
         margin: 20px auto;
-        padding-bottom: 30px;
+        padding-bottom: 40px;
         padding-top: 20px;
 
     }
@@ -576,7 +577,7 @@
 
     #create #top #title {
 
-        font-size: 25px;
+        font-size: 22px;
         margin-top: 20px;
         margin-left: 25px;
         width: 420px;
@@ -596,13 +597,14 @@
 
     #create #bottom #message {
 
-        font-size: 25px;
+        font-size: 22px;
         margin-top: 20px;
         margin-left: 25px;
         width: 420px;
         height: 200px;
         border: none;
         background-color: #F3F4F6;
+        resize: none;
 
     }
 
@@ -628,14 +630,16 @@
     #create #submit-buttons {
 
         margin: auto;
+        margin-bottom: 20px;
 
     }
 
     #create #submit-buttons .button {
 
-        width: 216px;
-        height: 60px;
-        font-size: 17px;
+        /* width: 216px;
+        height: 60px; */
+        padding: 15px 45px;
+        font-size: 20px;
         border: none;
         cursor: pointer;
         margin: 40px 10px;
@@ -659,6 +663,20 @@
         background-color: #ff6c62;
     }
 
+    #create #bottom {
+        position: relative;
+    }
+
+    #create #bottom #text {
+
+        position: absolute;
+        width: 350px;
+        top: 65px;
+        right: 50px;
+        font-size: 17px;
+        color:#bd6767;
+
+    }
 
     .hidden {
 
@@ -734,7 +752,7 @@
 
     #guide #heading {
 
-        font-size: 40px;
+        font-size: 30px;
         font-weight: 600;
         width: 800px;
         margin-left: calc(50vw - 450px);
@@ -780,7 +798,7 @@
     #step1 .step, #step2 .step, #step3 .step {
 
         margin-top: 20px;
-        font-size: 40px;
+        font-size: 30px;
         font-weight: lighter;
         width: 100%;
 

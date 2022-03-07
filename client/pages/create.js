@@ -54,6 +54,9 @@ export function create(parent) {
     message_label.innerText = "Опис";
     const message = bottom.add(new dom.HTMLValue("textarea", "message"));
     // message.set("placeholder", "Текст оголошення...");
+    const text = bottom.add(new dom.Div("text"));
+    text.innerHTML = "Аби запобігти спаму, діють певні обмеження.<br>Ви можете мати лише одне оголошення з кожної категорії.<br><br>Щоб додати нове оголошення,<br>змініть категорію або видаліть<br>попереднє оголошення.";
+    text.hide();
     const status = bottom.add(new dom.Div("status"));
     const active = status.add(new dom.Input("active", ["check"]));
     active.value = "active";
@@ -217,6 +220,8 @@ export async function update(help_type) {
     const active = status.byId("active");
     const paused = status.byId("paused");
     const resolved = status.byId("resolved");
+    const text = bottom.byId("text");
+    text.hide();
     active.unset("disabled");
     paused.unset("disabled");
     resolved.unset("disabled");
@@ -262,4 +267,5 @@ export async function update(help_type) {
     submit.set("disabled", "disabled");
     remove.show();
     edit.show();
+    text.show();
 }

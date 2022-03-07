@@ -1,6 +1,6 @@
 import * as fs from "fs";
 
-export const env = JSON.parse(fs.readFileSync(__dirname + "/" + (process.env.ENV_FILE || "dev") + ".json", "utf8"));
+export const env = JSON.parse(fs.readFileSync(__dirname + "/" + (process.env.ENV_FILE || "prod") + ".json", "utf8"));
 
 import * as express from 'express';
 import { createServer } from 'http';
@@ -17,7 +17,7 @@ app.use(express.json());
 // app.use(cors());
 const server = createServer(app);
 
-server.listen(80, env.ip, () => {
+server.listen(env.port, env.ip, () => {
 
     console.log("Сервер працює!");
 
@@ -53,3 +53,5 @@ app.post("/image/upload", login.verify, upload.single("image"), post.upload);
 app.get(/\/image\/.{0,}/, post.image);
 
 app.get("/login/active", login.verify, login.getUser);
+
+app.get("/bot/name", (req, res) => { res.send(env.botname) });

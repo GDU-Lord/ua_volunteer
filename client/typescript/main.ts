@@ -12,6 +12,10 @@ import * as page_options from "./pages/page_options.js";
 import * as create from "./pages/create.js";
 import { init, Alert, Confirm } from "./scripts/alert.js";
 
+export let botname;
+
+fetch("/bot/name").then(res => res.text().then( res => botname = res ));
+
 window.addEventListener("scroll", () => {
     window.scroll(0, window.pageYOffset);
 }, false);
@@ -146,4 +150,8 @@ export function setUser (user) {
 // додати "результатів не знайдено" +
 // додати "зв'язатись" +
 // додати заголовки +
+// виправити стилі +
+// додати текст "можна лише 1 повідомлення/чєла" +
 // перенести на https
+
+// додати посилання "на головну" під редактором
