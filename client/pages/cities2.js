@@ -1,6 +1,7 @@
 import * as dom from "../scripts/components.js";
 import * as helpme from "./helpme.js";
 import * as ihelp from "./ihelp.js";
+import { makeUnsaved } from "./create.js";
 export let curCity = "Всі міста";
 export let cityList = {};
 export let opened = false;
@@ -45,6 +46,7 @@ export function create(parent) {
         cityList = {};
         function onclick() {
             field.innerText = curCity = this.innerText;
+            makeUnsaved();
             helpme.reset();
             ihelp.reset();
             helpme.load();

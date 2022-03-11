@@ -17,13 +17,13 @@ export class Post {
     constructor(post, parent) {
         this.div = parent.add(new dom.Div("", ["post"]));
         this.title = this.div.add(new dom.Div("", ["title"]));
+        this.fullname = this.div.add(new dom.Div("", ["fullname"]));
         this.message = this.div.add(new dom.Div("", ["message"]));
         this.city = this.div.add(new dom.HTMLInner("label", "", ["city"]));
         this.date = this.div.add(new dom.HTMLInner("label", "", ["date"]));
         this.phone = this.div.add(new dom.Div("", ["phone"]));
         this.facebook = this.div.add(new dom.Div("", ["facebook"]));
         this.email = this.div.add(new dom.Div("", ["mail"]));
-        this.fullname = this.div.add(new dom.Div("", ["fullname"]));
         this.contact = this.div.add(new dom.Button("", ["contact"]));
         this.picture = this.div.add(new dom.Div("", ["picture"]));
         this.contact.innerText = "Зв'язатись";

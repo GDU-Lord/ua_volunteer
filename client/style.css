@@ -1,4 +1,5 @@
-@media (min-aspect-ratio: 1/1) {
+/* @media (min-aspect-ratio: 1/1) { */
+@media (max-resolution: 1dppx) {
     body {
 
         padding: 0px;

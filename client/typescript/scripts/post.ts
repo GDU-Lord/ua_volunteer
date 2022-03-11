@@ -23,13 +23,13 @@ export class Post {
         this.div = parent.add(new dom.Div("", ["post"])) as dom.Div;
 
         this.title = this.div.add(new dom.Div("", ["title"])) as dom.Div;
+        this.fullname = this.div.add(new dom.Div("", ["fullname"])) as dom.Div;
         this.message = this.div.add(new dom.Div("", ["message"])) as dom.Div;
         this.city = this.div.add(new dom.HTMLInner("label", "", ["city"])) as dom.Div;
         this.date = this.div.add(new dom.HTMLInner("label", "", ["date"])) as dom.Div;
         this.phone = this.div.add(new dom.Div("", ["phone"])) as dom.Div;
         this.facebook = this.div.add(new dom.Div("", ["facebook"])) as dom.Div;
         this.email = this.div.add(new dom.Div("", ["mail"])) as dom.Div;
-        this.fullname = this.div.add(new dom.Div("", ["fullname"])) as dom.Div;
         this.contact = this.div.add(new dom.Button("", ["contact"])) as dom.Button;
         this.picture = this.div.add(new dom.Div("", ["picture"])) as dom.Div;
 

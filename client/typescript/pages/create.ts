@@ -13,7 +13,7 @@ export let unsaved = false;
 async function check () {
 
     if(unsaved == true) {
-        if(await Confirm("Ви впевнені, що хочете покинути сторінку? Введена вами інформація буде знищена!")) {
+        if(await Confirm("Ви впевнені, що хочете покинути сторінку? Незбережені зміни буде втрачено!")) {
             unsaved = false;
             return true;
         }
@@ -21,6 +21,12 @@ async function check () {
     }
 
     return true;
+
+}
+
+export function makeUnsaved () {
+
+    unsaved = true;
 
 }
 
@@ -126,6 +132,12 @@ export function create (parent: dom.HTMLComponent) {
     edit.hide();
     remove.hide();
 
+    message.component.oninput = title.component.oninput = () => {
+
+        unsaved = true;
+
+    };
+
     active.component.onclick = paused.component.onclick = resolved.component.onclick = () => {
         
         unsaved = true;
@@ -182,6 +194,7 @@ export function create (parent: dom.HTMLComponent) {
 
         submit.unset("disabled");
         message.unset("disabled");
+        title.unset("disabled");
         active.unset("disabled");
         paused.unset("disabled");
         resolved.unset("disabled");

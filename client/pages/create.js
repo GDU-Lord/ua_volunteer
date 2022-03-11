@@ -10,13 +10,16 @@ export let editing = false;
 export let unsaved = false;
 async function check() {
     if (unsaved == true) {
-        if (await Confirm("Ви впевнені, що хочете покинути сторінку? Введена вами інформація буде знищена!")) {
+        if (await Confirm("Ви впевнені, що хочете покинути сторінку? Незбережені зміни буде втрачено!")) {
             unsaved = false;
             return true;
         }
         return false;
     }
     return true;
+}
+export function makeUnsaved() {
+    unsaved = true;
 }
 export function create(parent) {
     const _CREATE = parent.add(new dom.Div("create-container"));
@@ -87,6 +90,9 @@ export function create(parent) {
     remove.innerText = "Видалити";
     edit.hide();
     remove.hide();
+    message.component.oninput = title.component.oninput = () => {
+        unsaved = true;
+    };
     active.component.onclick = paused.component.onclick = resolved.component.onclick = () => {
         unsaved = true;
     };
@@ -126,6 +132,7 @@ export function create(parent) {
         editing = true;
         submit.unset("disabled");
         message.unset("disabled");
+        title.unset("disabled");
         active.unset("disabled");
         paused.unset("disabled");
         resolved.unset("disabled");

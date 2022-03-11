@@ -1,4 +1,5 @@
-@media (max-aspect-ratio: 1/1) {
+/* @media (max-aspect-ratio: 1/1) { */
+@media not all and (max-resolution: 1dppx) {
     body {
 
         padding: 0px;
@@ -365,9 +366,11 @@
 
         width: 50vw;
         font-size: 4vw;
-        position: absolute;
-        left: 35vw;
-        top: 19vw;
+        /* position: absolute; */
+        /* left: 35vw;
+        top: 19vw; */
+        margin-left: 25vw;
+        margin-top: 3vw;
 
     }
 
@@ -376,6 +379,7 @@
         margin-left: 25vw;
         font-size: 6vw;
         font-weight: 600;
+        overflow: hidden;
 
     }
 
@@ -522,6 +526,22 @@
         background-color: #3C89FF;
         color: white;
         border: none;
+
+    }
+
+    #find #not-found {
+
+        width: 95vw;
+        text-align: center;
+        margin: auto;
+        height: 100vw;
+        background-image: url(src/illustartion\ no\ result.svg);
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: 0vw 10vw;
+        font-size: 6vw;
+        position: relative;
+        bottom: 6vw;
 
     }
 
@@ -702,19 +722,21 @@
 
         z-index: 1001;
         position: fixed;
-        top: 20vw;
-        left: 20vw;
-        width: 60vw;
+        top: 40vw;
+        left: 10vw;
+        width: 80vw;
         /* height: 8vw; */
         background-color: white;
         text-align: center;
+        overflow: hidden;
 
     }
 
     #alert-box #text {
 
-        font-size: 6vw;
+        font-size: 5vw;
         margin-top: 20pt;
+        /* margin-bottom: 5vw; */
 
     }
 
@@ -723,7 +745,7 @@
         font-size: 6vw;
         width: 50vw;
         height: 15vw;
-        margin: 2vw 5vw;
+        margin: 5vw 5vw;
         position: relative;
 
     }
