@@ -4,6 +4,7 @@ import * as helpme from "./helpme.js";
 import * as ihelp from "./ihelp.js";
 import * as page_options from "./page_options.js";
 import { Alert } from "../scripts/alert.js";
+import error from "../scripts/error.js";
 const PHONE_REGEX = /\+380[0-9]{9}/g;
 export function create(parent) {
     const LOGIN = parent.add(new dom.Div("login"));
@@ -58,7 +59,7 @@ export function create(parent) {
         });
         const { success, code, reason } = await login_res.json();
         if (!success) {
-            await Alert("Error");
+            await Alert(error(reason));
             submit.unset("disabled");
             return;
         }
@@ -98,6 +99,9 @@ export function create(parent) {
                 PAGE_OPTIONS.byId("page").component.click();
             helpme.load();
             ihelp.load();
+        }
+        else {
+            await Alert(error(res.reason));
         }
         // console.log(await res.json());
     };

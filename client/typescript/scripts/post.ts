@@ -1,5 +1,8 @@
-import { Alert } from "./alert.js";
+import { Alert, Confirm } from "./alert.js";
 import * as dom from "./components.js";
+import * as helpme from "../pages/helpme.js";
+import * as ihelp from "../pages/ihelp.js";
+import error from "./error.js";
 
 export let my_helpme: Object = null; 
 export let my_ihelp: Object = null;
@@ -17,6 +20,8 @@ export class Post {
     fullname: dom.Div;
     contact: dom.Button;
     picture: dom.Div;
+    remove: dom.Div;
+    ban: dom.Div;
 
     constructor (post, parent: dom.HTMLComponent) {
 
@@ -85,26 +90,101 @@ export class Post {
             src = "/src/profile.png";
 
         this.picture.innerHTML = `<img src="${src}">`;
+        this.picture.component.querySelector("img").onerror = function () {
+
+            this.src = "/src/profile.png";
+
+        };
+
+        fetch("/admin").then(res => res.json().then(({success}) => {
+
+            if(!success)
+                return;
+
+            this.remove = this.div.add(new dom.Div("", ["admin-remove"])) as dom.Div;
+            this.remove.innerText = "BAN";
+            this.remove.component.onclick = async () => {
+                
+                if(await Confirm("Ви впевнені що хочете безповоротно видалити це оголошення?")) {
+                    if(await Confirm("Точно?")) {
+
+                        const res = await fetch("/post/admin/remove", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                id: post.id
+                            })
+                        });
+
+                        console.log(post);
+
+                        const {success, reason} = await res.json();
+
+                        if(!success)
+                            return Alert(error(reason));
+                        
+                        helpme.load();
+                        ihelp.load();
+
+                    }
+                }
+
+            };
+
+            this.ban = this.div.add(new dom.Div("", ["admin-ban"])) as dom.Div;
+            this.ban.innerText = "DEL";
+            this.ban.component.onclick = async () => {
+                
+                if(await Confirm("Ви впевнені що хочете заблокувати цього користувача і видалити всі його оголошення?")) {
+                    if(await Confirm("Точно?")) {
+
+                        const res = await fetch("/ban", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                id: post.id
+                            })
+                        });
+
+                        const {success, reason} = await res.json();
+
+                        if(!success)
+                            return Alert(error(reason));
+                        
+                        helpme.load();
+                        ihelp.load();
+
+                    }
+                }
+
+            };
+
+        }));
+
     }
 
 }
 
-export function createPost () {
+// export function createPost () {
 
-    fetch("/post/create", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            help_type: "helpme", // category
-            message: "test", // ad message
-            city: "м. Київ", // the city's public name
-            photos: [] // the list of photos (relitive links)
-        })
-    }).then(res => res.text().then(res => console.log("CREATE", res)));
+//     fetch("/post/create", {
+//         method: "POST",
+//         headers: {
+//             "Content-Type": "application/json"
+//         },
+//         body: JSON.stringify({
+//             help_type: "helpme", // category
+//             message: "test", // ad message
+//             city: "м. Київ", // the city's public name
+//             photos: [] // the list of photos (relitive links)
+//         })
+//     }).then(res => res.text().then(res => console.log("CREATE", res)));
 
-}
+// }
 
 export async function getMyPosts () {
 

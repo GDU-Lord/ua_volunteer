@@ -1,5 +1,8 @@
-import { Alert } from "./alert.js";
+import { Alert, Confirm } from "./alert.js";
 import * as dom from "./components.js";
+import * as helpme from "../pages/helpme.js";
+import * as ihelp from "../pages/ihelp.js";
+import error from "./error.js";
 export let my_helpme = null;
 export let my_ihelp = null;
 export class Post {
@@ -14,6 +17,8 @@ export class Post {
     fullname;
     contact;
     picture;
+    remove;
+    ban;
     constructor(post, parent) {
         this.div = parent.add(new dom.Div("", ["post"]));
         this.title = this.div.add(new dom.Div("", ["title"]));
@@ -60,22 +65,74 @@ export class Post {
         if (src == null)
             src = "/src/profile.png";
         this.picture.innerHTML = `<img src="${src}">`;
+        this.picture.component.querySelector("img").onerror = function () {
+            this.src = "/src/profile.png";
+        };
+        fetch("/admin").then(res => res.json().then(({ success }) => {
+            if (!success)
+                return;
+            this.remove = this.div.add(new dom.Div("", ["admin-remove"]));
+            this.remove.innerText = "BAN";
+            this.remove.component.onclick = async () => {
+                if (await Confirm("Ви впевнені що хочете безповоротно видалити це оголошення?")) {
+                    if (await Confirm("Точно?")) {
+                        const res = await fetch("/post/admin/remove", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                id: post.id
+                            })
+                        });
+                        console.log(post);
+                        const { success, reason } = await res.json();
+                        if (!success)
+                            return Alert(error(reason));
+                        helpme.load();
+                        ihelp.load();
+                    }
+                }
+            };
+            this.ban = this.div.add(new dom.Div("", ["admin-ban"]));
+            this.ban.innerText = "DEL";
+            this.ban.component.onclick = async () => {
+                if (await Confirm("Ви впевнені що хочете заблокувати цього користувача і видалити всі його оголошення?")) {
+                    if (await Confirm("Точно?")) {
+                        const res = await fetch("/ban", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                id: post.id
+                            })
+                        });
+                        const { success, reason } = await res.json();
+                        if (!success)
+                            return Alert(error(reason));
+                        helpme.load();
+                        ihelp.load();
+                    }
+                }
+            };
+        }));
     }
 }
-export function createPost() {
-    fetch("/post/create", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            help_type: "helpme",
-            message: "test",
-            city: "м. Київ",
-            photos: [] // the list of photos (relitive links)
-        })
-    }).then(res => res.text().then(res => console.log("CREATE", res)));
-}
+// export function createPost () {
+//     fetch("/post/create", {
+//         method: "POST",
+//         headers: {
+//             "Content-Type": "application/json"
+//         },
+//         body: JSON.stringify({
+//             help_type: "helpme", // category
+//             message: "test", // ad message
+//             city: "м. Київ", // the city's public name
+//             photos: [] // the list of photos (relitive links)
+//         })
+//     }).then(res => res.text().then(res => console.log("CREATE", res)));
+// }
 export async function getMyPosts() {
     const res = await fetch("/post/me");
     const { success, helpme, ihelp } = await res.json();

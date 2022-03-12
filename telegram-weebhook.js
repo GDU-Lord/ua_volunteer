@@ -32,7 +32,7 @@ bot.onText(ID_PARAM_REGEX, async (message) => {
     let verificationSuccess = await check(verificationId, telegram_data, true);
     if (verificationSuccess) {
         bot
-            .sendMessage(botChatId, 'Верифікація пройшла успішно! Повертайтеся на сайт.\n\nВам будуть надходити сповіщення в цей чат.');
+            .sendMessage(botChatId, 'Верифікація пройшла успішно! Повертайтеся на сайт.');
     }
     else {
         bot
@@ -50,14 +50,14 @@ const listeners = [];
 const responses = [];
 function verify(user, signup = true) {
     return new Promise((res, rej) => {
-        for (let i in responses) {
-            const rs = responses[i](user.code);
-            if (rs) {
-                if (!signup && user.telegramId != rs.telegramId)
-                    return false;
-                return res(rs);
-            }
-        }
+        // for(let i in responses) {
+        //   const rs = responses[i](user.code) as TELEGRAM;
+        //   if(rs) {
+        //     if(!signup && user.telegramId != rs.telegramId)
+        //       return false;
+        //     return res(rs);
+        //   }
+        // }
         const index = listeners.length;
         listeners[index] = (data, _code) => {
             if (_code == String(user.code)) {
@@ -79,19 +79,18 @@ function check(code, data, success, reason) {
         const res = listeners[i](data, code);
         if (res)
             return new Promise((res, rej) => res(true));
-        else
-            return new Promise((res, rej) => res(false));
     }
-    return new Promise((res, rej) => {
-        const index = listeners.length;
-        responses[index] = (_code) => {
-            if (code == String(_code)) {
-                delete responses[index];
-                res(true);
-                return data;
-            }
-            return null;
-        };
-    });
+    return new Promise((res, rej) => res(false));
+    // return new Promise<boolean>((res, rej) => {
+    //   const index = responses.length;
+    //   responses[index] = (_code: ObjectId) => {
+    //     if(code == String(_code)) {
+    //       delete responses[index];
+    //       res(true);
+    //       return data;
+    //     }
+    //     return null;
+    //   };
+    // });
 }
 exports.check = check;

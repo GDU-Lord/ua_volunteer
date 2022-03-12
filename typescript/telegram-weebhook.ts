@@ -1,10 +1,7 @@
-import * as express from "express";
-// import {Telegraf} from "telegraf";
 import { TELEGRAM, USER } from "./types";
 import { ObjectId } from "mongodb";
 import * as TelegramBot from "node-telegram-bot-api";
 import { env } from "./index";
-import { client } from "./mongo";
 
 export const BOT_API_TOKEN = env.token;    // todo: move to env variables
 
@@ -44,7 +41,7 @@ bot.onText(ID_PARAM_REGEX, async (message) => {
 
   if (verificationSuccess) {
     bot
-      .sendMessage(botChatId, 'Верифікація пройшла успішно! Повертайтеся на сайт.\n\nВам будуть надходити сповіщення в цей чат.');
+      .sendMessage(botChatId, 'Верифікація пройшла успішно! Повертайтеся на сайт.');
   } else {
     bot
       .sendMessage(botChatId, 'Помилка верифікації! Можливо номер телефону неправильний. Перевірте свої дані на сайті і спробуйте ще раз.');
@@ -66,16 +63,16 @@ export function verify(user: USER, signup: boolean = true) {
 
   return new Promise<TELEGRAM>((res, rej) => {
 
-    for(let i in responses) {
+    // for(let i in responses) {
 
-      const rs = responses[i](user.code) as TELEGRAM;
-      if(rs) {
-        if(!signup && user.telegramId != rs.telegramId)
-          return false;
-        return res(rs);
-      }
+    //   const rs = responses[i](user.code) as TELEGRAM;
+    //   if(rs) {
+    //     if(!signup && user.telegramId != rs.telegramId)
+    //       return false;
+    //     return res(rs);
+    //   }
 
-    }
+    // }
 
     const index = listeners.length;
 
@@ -110,25 +107,24 @@ export function check(code: string, data: TELEGRAM, success: boolean, reason?: s
     const res = listeners[i](data, code);
     if (res)
       return new Promise<boolean>((res, rej) => res(true));
-    else
-      return new Promise<boolean>((res, rej) => res(false));
   }
+  return new Promise<boolean>((res, rej) => res(false));
 
-  return new Promise<boolean>((res, rej) => {
+  // return new Promise<boolean>((res, rej) => {
 
-    const index = listeners.length;
+  //   const index = responses.length;
 
-    responses[index] = (_code: ObjectId) => {
+  //   responses[index] = (_code: ObjectId) => {
 
-      if(code == String(_code)) {
-        delete responses[index];
-        res(true);
-        return data;
-      }
+  //     if(code == String(_code)) {
+  //       delete responses[index];
+  //       res(true);
+  //       return data;
+  //     }
 
-      return null;
+  //     return null;
 
-    };
+  //   };
 
-  });
+  // });
 }

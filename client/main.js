@@ -97,6 +97,11 @@ login.loginActive()
 export function setUser(user) {
     USER = user;
 }
+export async function isAdmin() {
+    const res = await fetch("/admin");
+    const { success } = await res.json();
+    return success;
+}
 // login page +
 // signup page +
 // loading ads +

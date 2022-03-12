@@ -499,6 +499,34 @@
 
     }
 
+    #find .post .admin-remove {
+        width: 7vw;
+        height: 4vw;
+        font-size: 3.5vw;
+        border: 1vw solid red;
+        font-weight: 500;
+        position: absolute;
+        left: 10vw;
+        top: 35vw;
+        text-align: center;
+        padding: 1.5vw 0px;
+        cursor: pointer;
+    }
+
+    #find .post .admin-ban {
+        width: 7vw;
+        height: 4vw;
+        font-size: 3.5vw;
+        border: 1vw solid red;
+        font-weight: 500;
+        position: absolute;
+        left: 20vw;
+        top: 35vw;
+        text-align: center;
+        padding: 1.5vw 0px;
+        cursor: pointer;
+    }
+
     #find #buttons {
 
         margin: auto;

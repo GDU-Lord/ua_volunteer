@@ -1,6 +1,8 @@
 import * as fs from "fs";
 
-export const env = JSON.parse(fs.readFileSync(__dirname + "/" + (process.env.ENV_FILE || "prod") + ".json", "utf8"));
+export const env = JSON.parse(fs.readFileSync(__dirname + "/" + (process.env.ENV_FILE || "dev") + ".json", "utf8"));
+
+console.log(process.env.ENV_FILE || "dev");
 
 import * as express from 'express';
 import { createServer } from 'http';
@@ -55,3 +57,7 @@ app.get(/\/image\/.{0,}/, post.image);
 app.get("/login/active", login.verify, login.getUser);
 
 app.get("/bot/name", (req, res) => { res.send(env.botname) });
+
+app.get("/admin", login.verify, login.isAdmin);
+app.post("/post/admin/remove", express.json(), login.verify, login.verifyAdmin, login.remove);
+app.post("/ban", express.json(), login.verify, login.verifyAdmin, login.ban);

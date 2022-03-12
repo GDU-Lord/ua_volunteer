@@ -3,6 +3,7 @@ import { body, head, setUser, LOGIN_OPTIONS, HELPME, IHELP, LOGOUT, HELP_OPTIONS
 import * as helpme from "./helpme.js";
 import * as ihelp from "./ihelp.js";
 import { Alert, Confirm } from "../scripts/alert.js";
+import error from "../scripts/error.js";
 
 const PHONE_REGEX = /^\+380[0-9]{9}$/g;
 const EMAIL_REGEX = /^[a-zA-Z0-9.]{0,}@[a-zA-Z0-9.]{0,}$/g;
@@ -108,7 +109,7 @@ export function create (parent: dom.HTMLComponent) {
         let {success, code, reason} = await signup_res.json() as any;
 
         if(!success) {
-            await Alert("Error");
+            await Alert(error(reason));
             submit.unset("disabled");
             return;
         }

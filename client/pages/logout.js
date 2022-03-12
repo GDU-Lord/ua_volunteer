@@ -1,6 +1,7 @@
 import * as dom from "../scripts/components.js";
 import { setUser, LOGIN_OPTIONS, CITIES, HELPME, HELP_OPTIONS, PAGE_OPTIONS, CREATE, FIND, guide } from "../main.js";
 import { Alert } from "../scripts/alert.js";
+import error from "../scripts/error.js";
 export function create(parent) {
     const LOGOUT = parent.add(new dom.Div("logout"));
     const submit = LOGOUT.add(new dom.Button("logout"));
@@ -15,7 +16,7 @@ export function create(parent) {
         });
         const { success, code, reason } = await res.json();
         if (!success) {
-            await Alert("Error");
+            await Alert(error(reason));
             submit.unset("disabled");
             return;
         }

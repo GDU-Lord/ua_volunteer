@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Session = exports.User = exports.getUser = exports.verify = exports.logout = exports.isVerifiedLogin = exports.isVerifiedSignup = exports.login = exports.signup = exports.sessions = exports.pending_users = void 0;
+exports.Session = exports.User = exports.remove = exports.ban = exports.verifyAdmin = exports.isAdmin = exports.getUser = exports.verify = exports.logout = exports.isVerifiedLogin = exports.isVerifiedSignup = exports.login = exports.signup = exports.sessions = exports.pending_users = void 0;
 const mongodb_1 = require("mongodb");
 const mongo_1 = require("./mongo");
 const telegramWebhook = require("./telegram-weebhook");
+const index_1 = require("./index");
 exports.pending_users = {};
 exports.sessions = {};
 async function signup(req, res) {
@@ -15,6 +16,12 @@ async function signup(req, res) {
     let user = req.body;
     user._id = new mongodb_1.ObjectId();
     user.code = new mongodb_1.ObjectId();
+    let [banned] = await mongo_1.client.get("blacklist", { phone: user.phone });
+    if (banned != null)
+        return res.send({
+            success: false,
+            reason: "banned"
+        });
     user = new User(user);
     const [u] = await mongo_1.client.get("users", { phone: user.phone });
     if (u != null)
@@ -36,6 +43,12 @@ async function login(req, res) {
             reason: "logged-in"
         });
     const phone = req.body.phone;
+    let [banned] = await mongo_1.client.get("blacklist", { phone: phone });
+    if (banned != null)
+        return res.send({
+            success: false,
+            reason: "banned"
+        });
     let [user] = await mongo_1.client.get("users", { phone: phone });
     if (user == null)
         return res.send({
@@ -177,18 +190,105 @@ async function getUser(req, res, next) {
     });
 }
 exports.getUser = getUser;
+async function isAdmin(req, res) {
+    const token = req.session.token;
+    const session = exports.sessions[token];
+    let user = session.user;
+    if (user == null)
+        return res.send({
+            success: false,
+            reason: "access-denied"
+        });
+    user = new User(user);
+    if (user.admin === index_1.env.admin)
+        return res.send({
+            success: true
+        });
+    return res.send({
+        success: false,
+        reason: "access-denied"
+    });
+}
+exports.isAdmin = isAdmin;
+async function verifyAdmin(req, res, next) {
+    const token = req.session.token;
+    const session = exports.sessions[token];
+    let user = session.user;
+    if (user == null)
+        return res.send({
+            success: false,
+            reason: "access-denied"
+        });
+    user = new User(user);
+    if (user.admin === index_1.env.admin)
+        next();
+    else
+        return res.send({
+            success: false,
+            reason: "access-denied"
+        });
+}
+exports.verifyAdmin = verifyAdmin;
+async function ban(req, res) {
+    let id = new mongodb_1.ObjectId(req.body.id);
+    let [post] = await mongo_1.client.get("posts", { _id: id });
+    if (post == null)
+        return res.send({
+            success: false,
+            reason: "not-found"
+        });
+    const telegramId = post.telegram.telegramId;
+    let [user] = await mongo_1.client.get("users", { telegramId: telegramId });
+    if (user == null)
+        return res.send({
+            success: false,
+            reason: "not-found"
+        });
+    user = new User(user);
+    await mongo_1.client.add("blacklist", user);
+    const posts = await mongo_1.client.get("posts", { "telegram.telegramId": user.telegramId });
+    for (const post of posts) {
+        await mongo_1.client.add("archive", post);
+        await mongo_1.client.remove("posts", post._id);
+    }
+    for (const i in exports.sessions) {
+        const session = exports.sessions[i];
+        if (session.telegramId == telegramId)
+            session.terminate();
+    }
+    res.send({
+        success: true
+    });
+}
+exports.ban = ban;
+async function remove(req, res) {
+    let id = new mongodb_1.ObjectId(req.body.id);
+    let [post] = await mongo_1.client.get("posts", { _id: id });
+    if (post == null)
+        return res.send({
+            success: false,
+            reason: "not-found"
+        });
+    await mongo_1.client.remove("posts", id);
+    res.send({
+        success: true
+    });
+}
+exports.remove = remove;
 class User {
     fullName;
     phone;
     socials;
     telegram;
     telegramId;
+    admin;
     constructor(user) {
         this.fullName = user?.fullName || "";
         this.phone = user?.phone || "";
         this.socials = user?.socials || [];
         this.telegram = user?.telegram || null;
         this.telegramId = user?.telegramId || null;
+        this.admin = user?.admin || "";
     }
 }
 exports.User = User;

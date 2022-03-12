@@ -1,5 +1,5 @@
 import * as dom from "../scripts/components.js";
-import { body, head, HELPME, helpme_container, FIND  } from "../main.js";
+import { body, head, HELPME, helpme_container, FIND, isAdmin  } from "../main.js";
 import * as post from "../scripts/post.js";
 import { curCity } from "./cities.js";
 

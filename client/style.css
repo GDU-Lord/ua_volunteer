@@ -475,6 +475,34 @@
         background-repeat: no-repeat;
     }
 
+    #find .post .admin-remove {
+        width: 40px;
+        height: 18px;
+        font-size: 15px;
+        border: 3px solid red;
+        font-weight: 500;
+        position: absolute;
+        right: 50px;
+        top: 25px;
+        text-align: center;
+        padding: 6px 0px;
+        cursor: pointer;
+    }
+
+    #find .post .admin-ban {
+        width: 40px;
+        height: 18px;
+        font-size: 15px;
+        border: 3px solid red;
+        font-weight: 500;
+        position: absolute;
+        right: 100px;
+        top: 25px;
+        text-align: center;
+        padding: 6px 0px;
+        cursor: pointer;
+    }
+
     #find #buttons {
 
         margin: auto;

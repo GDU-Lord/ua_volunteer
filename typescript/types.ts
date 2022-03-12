@@ -12,15 +12,16 @@ export type TELEGRAM = {
 
 export type USER = {
 
-    fullName: string,
-    phone: string,
-    socials: string[],
-    ip?: string,
-    _id?: ObjectId,
-    code?: ObjectId,
-    sessionId?: ObjectId,
-    telegram?: TELEGRAM
-    telegramId: string
+    fullName: string;
+    phone: string;
+    socials: string[];
+    ip?: string;
+    _id?: ObjectId;
+    code?: ObjectId;
+    sessionId?: ObjectId;
+    telegram?: TELEGRAM;
+    telegramId: string;
+    admin: string;
 
 };
 
