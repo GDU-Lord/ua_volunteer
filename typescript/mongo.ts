@@ -52,7 +52,7 @@ export default class Data {
 
         const res = await this.run(async (db) => {
 
-            return await db.collection(coll).find(filter).skip(offset).limit(limit).toArray();
+            return await db.collection(coll).find(filter).sort({created: -1}).skip(offset).limit(limit).toArray();
 
         });
 
